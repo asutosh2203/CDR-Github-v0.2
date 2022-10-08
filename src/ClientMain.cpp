@@ -5,6 +5,13 @@
 
 Utils ut;
 
+// signal handling
+//  void signalHandler(int sig){
+//      if (sig == SIGINT){
+//          send()
+//      }
+//  }
+
 int main(int argc, char *argv[])
 {
     Operator op;
@@ -17,7 +24,7 @@ int main(int argc, char *argv[])
 
     User newUser;
     char buf[MAX_BUFF];
-
+    char c;
     while (1)
     {
         showMenu(0);
@@ -88,7 +95,6 @@ int main(int argc, char *argv[])
                             recv(clientFD, buf, sizeof(buf), 0);
                             if (strcmp(buf, "processed") == 0)
                             {
-                                ut.log("Info log: Processed CDR file", "logs/ClientData.log");
                                 cout << "CDR file processed successfully." << endl;
                             }
                             else
@@ -129,6 +135,9 @@ int main(int argc, char *argv[])
                                         showMenu(3);
 
                                         cin >> choice;
+
+                                        int MSISDN = 0;
+
                                         switch (choice)
                                         {
                                         case 1:
@@ -138,6 +147,46 @@ int main(int argc, char *argv[])
                                                 ut.log("Fatal log: send() error", "logs/ClientData.log");
                                                 exit(EXIT_FAILURE);
                                             }
+
+                                            memset(&buf, 0, MAX_BUFF);
+
+                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                cout << "Could not connect to server" << endl;
+                                                ut.log("Fatal log: recv() error", "logs/ClientData.log");
+                                                exit(EXIT_FAILURE);
+                                            }
+
+                                            if (strcmp(buf, "searchmsisdn") == 0)
+                                            {
+
+                                                cout << "Enter MSISDN to be searched: "
+                                                     << endl;
+                                                cin >> MSISDN;
+
+                                                string sdn = to_string(MSISDN);
+
+                                                // sending msisdn to be searched
+                                                if (send(clientFD, sdn.c_str(), MAX_BUFF, 0) < 0)
+                                                {
+                                                    cout << "Could not connect to server" << endl;
+                                                    ut.log("Fatal log: send() error", "logs/ClientData.log");
+                                                    exit(EXIT_FAILURE);
+                                                }
+
+                                                memset(&buf, 0, MAX_BUFF);
+
+                                                // receiving msisdn search results
+                                                if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+                                                {
+                                                    cout << "Could not connect to server" << endl;
+                                                    ut.log("Fatal log: recv() error", "logs/ClientData.log");
+                                                    exit(EXIT_FAILURE);
+                                                }
+
+                                                cout << buf << endl;
+                                            }
+
                                             // for searching by MSISDN
                                             break;
 
@@ -149,9 +198,32 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
                                             // for generating CB.txt
+                                            memset(&buf, 0, MAX_BUFF);
+
+                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                cout << "Could not connect to server" << endl;
+                                                ut.log("Fatal log: recv() error", "logs/ClientData.log");
+                                                exit(EXIT_FAILURE);
+                                            }
+
+                                            if (strcmp(buf, "generated") == 0)
+                                            {
+                                                cout << "Generated CB.txt file." << endl;
+                                            }
+                                            else
+                                            {
+                                                cout << "Required files could not be generated, please try again." << endl;
+                                            }
                                             break;
 
                                         case 3:
+                                         if (send(clientFD, "3", 2, 0) < 0)
+                                            {
+                                                cout << "Could not connect to server" << endl;
+                                                ut.log("Fatal log: send() error", "logs/ClientData.log");
+                                                exit(EXIT_FAILURE);
+                                            }
                                             cout << "Going back..." << endl;
                                             break;
 
@@ -224,6 +296,9 @@ int main(int argc, char *argv[])
 
                                                 cout << buf << endl;
                                             }
+                                            cout << "Press ENTER to continue";
+                                            cin.ignore();
+                                            c = getchar();
                                             break;
 
                                         case 2:

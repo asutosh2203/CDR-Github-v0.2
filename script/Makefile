@@ -41,6 +41,10 @@ $(OBJ)/interoperator.o: $(SRC)/interoperator.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/interoperator.cpp -I $(INC)
 	mv *.o $(OBJ)/
 
+$(OBJ)/customer.o: $(SRC)/customer.cpp
+	$(CC) $(CPPFLAGS) $(SRC)/customer.cpp -I $(INC)
+	mv *.o $(OBJ)/
+
 $(OBJ)/utils.o: $(SRC)/utils.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/utils.cpp -I $(INC)
 	mv *.o $(OBJ)/

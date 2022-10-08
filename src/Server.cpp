@@ -1,7 +1,4 @@
 #include <server.h>
-#include <user.h>
-#include <interoperator.h>
-#include <utils.h>
 
 Utils ut;
 
@@ -61,6 +58,7 @@ void Server::acceptClient()
         if (fork() == 0)
         {
             registerLoginUser(clientSockfd);
+            cout << getpid() << endl;
         }
         close(clientSockfd);
     }
@@ -75,7 +73,8 @@ void Server::registerLoginUser(int newfd)
     char buf[MAX_BUFF] = {
         '\0',
     };
-    int flag = 0;
+
+    int flag = 0, checkInvalidInput = 0;
 
     fstream fs;
     string line;
@@ -177,6 +176,7 @@ void Server::registerLoginUser(int newfd)
                         }
 
                         Operator op;
+                        Customer cust;
                         bool isProcessed;
                         switch (atoi(buf))
                         {
@@ -211,21 +211,57 @@ void Server::registerLoginUser(int newfd)
                                             ut.log("Fatal log: recv() error", "logs/ServerData.log");
                                             // exit(EXIT_FAILURE);
                                         }
-
+                                        string msisdnSearchResult;
+                                        bool isCBgen = true;
                                         switch (atoi(buf))
                                         {
                                         case 1:
-                                            cout << "Searching by MSISDN" << endl;
+                                            if (send(newfd, "searchmsisdn", strlen("searchmsisdn"), 0) < 0)
+                                            {
+                                                ut.log("Fatal log: send() error", "logs/ServerData.log");
+                                                // exit(EXIT_FAILURE);
+                                            }
+
+                                            memset(&buf, 0, MAX_BUFF);
+
+                                            // receiving MSISDN to be searched
+                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                ut.log("Fatal log: recv() error", "logs/ServerData.log");
+                                                // exit(EXIT_FAILURE);
+                                            }
+
+                                            cout << "MSISDN received: " << buf << endl;
+                                            cust.processCDR();
+                                            msisdnSearchResult = cust.searchMSISDN(stol(buf));
+
+                                            if (send(newfd, msisdnSearchResult.c_str(), msisdnSearchResult.length(), 0) < 0)
+                                            {
+                                                ut.log("Fatal log: send() error", "logs/ServerData.log");
+                                            }
+
                                             break;
                                         case 2:
-                                            cout << "Putting all Customer bills into CB.txt" << endl;
+                                            if (isCBgen)
+                                            {
+                                                cust.processCDR();
+                                                cust.mapToFile();
+                                                cout << "Putting all Customer bills into CB.txt" << endl;
+                                                if (send(newfd, "generated", strlen("generated"), 0))
+                                                {
+                                                    ut.log("Fatal log: send() error", "logs/ServerData.log");
+                                                    // exit(EXIT_FAILURE);
+                                                }
+                                            }
+
                                             break;
 
                                         case 3:
+                                            cout << "Exiting" << endl;
                                             break;
 
                                         default:
-                                            cout << "Invalid choice" << endl;
+                                            cout << "Invalid choice in CB menu" << endl;
                                             break;
                                         }
 
@@ -247,6 +283,7 @@ void Server::registerLoginUser(int newfd)
                                         }
                                         string brandSearchResult;
                                         bool isIOSBgen = true;
+
                                         switch (atoi(buf))
                                         {
                                         case 1:
@@ -304,9 +341,10 @@ void Server::registerLoginUser(int newfd)
                                             break;
 
                                         default:
-                                            cout << "Invalid Input" << endl;
+                                            cout << "Invalid Input in IOSB menu" << endl;
                                             break;
                                         }
+
                                         if (atoi(buf) == 3)
                                             break;
                                     }
@@ -316,7 +354,7 @@ void Server::registerLoginUser(int newfd)
                                     break;
 
                                 default:
-                                    cout << "Invalid Input" << endl;
+                                    cout << "Invalid Input in billing info" << endl;
                                     break;
                                 }
 
@@ -329,6 +367,7 @@ void Server::registerLoginUser(int newfd)
                             break;
 
                         default:
+                            cout << "Invalid Input in menu info" << endl;
                             break;
                         }
 
@@ -351,6 +390,10 @@ void Server::registerLoginUser(int newfd)
 
         case 3:
             exit(EXIT_SUCCESS);
+
+        default:
+            cout << "Invalid input in welcome menu" << endl;
+            break;
         }
     }
 }

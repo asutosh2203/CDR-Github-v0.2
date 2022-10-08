@@ -9,6 +9,11 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include <user.h>
+#include <interoperator.h>
+#include <customer.h>
+#include <utils.h>
+
 #define MAX_BUFF 4096
 
 using namespace std;
