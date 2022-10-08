@@ -172,35 +172,7 @@ bool Customer::mapToFile()
     for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
     {
       Customer cstrData = cstr->second;
-      
-      // CB << "Customers ID: " << cstrData.getMSISDN() << "(" << cstrData.getBrandName() << ")" << endl
-      //    << "\t"
-      //    << "* Service within the mobile Customer *" << endl
-      //    << "\t"
-      //    << "Incoming voice call duration:" << cstrData.getInCallDurationI() << endl
-      //    << "\t"
-      //    << "Outgoing voice call duration:" << cstrData.getOutCallDurationI() << endl
-      //    << "\t"
-      //    << "Incoming SMS messages:" << cstrData.getInMsgI() << endl
-      //    << "\t"
-      //    << "Outgoing SMS messages:" << cstrData.getOutMsgI() << endl
-      //    << "\t"
-      //    << "* Service outside the mobile Customer *" << endl
-      //    << "\t"
-      //    << "Incoming voice call duration:" << cstrData.getInCallDurationO() << endl
-      //    << "\t"
-      //    << "Outgoing voice call duration:" << cstrData.getOutCallDurationO() << endl
-      //    << "\t"
-      //    << "Incoming SMS messages:" << cstrData.getInMsgO() << endl
-      //    << "\t"
-      //    << "Outgoing SMS messages:" << cstrData.getOutMsgO() << endl
-      //    << "\t"
-      //    << "* Internet use *" << endl
-      //    << "\t"
-      //    << "MB downloaded:" << cstrData.getDownloadData() << " | MB uploaded:" << cstrData.getUploadData() << endl
-      //    << endl;
-
-         CB << cstrToString(cstrData);
+      CB << cstrToString(cstrData);
     }
 
     CB.close();
@@ -214,11 +186,9 @@ bool Customer::mapToFile()
   return true;
 }
 
-
 // Searching MSISDN and printing data
 string Customer::searchMSISDN(long brandMSISDN)
 {
-  int flag = 0;
   string result;
 
   map<long, Customer>::iterator cstr;
@@ -270,6 +240,12 @@ string Customer::cstrToString(Customer &cstrData)
      << endl;
 
   return ss.str();
+}
+
+void Customer::processAndCreateFile()
+{
+    processCDR();
+    mapToFile();
 }
 
 Customer::~Customer()

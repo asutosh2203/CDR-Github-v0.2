@@ -8,6 +8,10 @@
 #include <cstring>
 #include <errno.h>
 #include <unistd.h>
+#include <pthread.h>
+
+#include <bits/stdc++.h>
+#include <sys/time.h>
 
 #include <user.h>
 #include <interoperator.h>
@@ -39,6 +43,7 @@ public:
         void acceptClient();
         void registerLoginUser(int);
         bool userExists(char *);
+        void processCallData(Operator &, Customer &);
         void log(string);
         void closeServer();
         struct sockaddr_in getClientAddr() { return client_addr; }

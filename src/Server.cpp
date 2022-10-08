@@ -30,6 +30,7 @@ void Server::bind_listen()
     if (bind(serverSockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
     {
         ut.log("Fatal log: bind() error", "logs/ServerData.log");
+        perror("bind() error: ");
         exit(EXIT_FAILURE);
     }
     cout << "[+] Server bind to port" << endl;
@@ -74,7 +75,7 @@ void Server::registerLoginUser(int newfd)
         '\0',
     };
 
-    int flag = 0, checkInvalidInput = 0;
+    int flag = 0;
 
     fstream fs;
     string line;
@@ -105,7 +106,11 @@ void Server::registerLoginUser(int newfd)
             }
             // Stores registered users in a file
 
-            username = strtok(user_data, "|");
+            char user[MAX_BUFF];
+
+            strcpy(user, user_data);
+
+            username = strtok(user, "|");
 
             if (userExists(username))
             {
@@ -177,12 +182,15 @@ void Server::registerLoginUser(int newfd)
 
                         Operator op;
                         Customer cust;
-                        bool isProcessed;
+                        bool isProcessed = true;
                         switch (atoi(buf))
                         {
                         case 1:
-                            isProcessed = op.processCDR();
-                            op.mapToFile();
+                            // isProcessed = op.processCDR();
+                            // op.mapToFile();
+
+                            processCallData(op, cust);
+
                             isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
                             break;
 
@@ -415,6 +423,18 @@ bool Server::userExists(char *username)
     }
 
     return false;
+}
+
+void Server::processCallData(Operator &op, Customer &cust)
+{
+    thread t1(&Operator::processAndCreateFile, &op);
+    thread t2(&Customer::processAndCreateFile, &cust);
+
+    if (t1.joinable())
+        t1.join();
+
+    if (t2.joinable())
+        t2.join();
 }
 
 void Server::closeServer()

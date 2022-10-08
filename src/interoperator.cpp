@@ -163,24 +163,7 @@ bool Operator::mapToFile()
         for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
         {
             Operator oprData = opr->second;
-            IOSB << "Operator Brand: " << oprData.getBrandName() << "(" << oprData.getMMC() << ")" << endl
-                 << "\t"
-                 << "Incoming Call Duration: " << oprData.getInCallDuration() << endl
-                 << "\t"
-                 << "Outgoing Call Duration: " << oprData.getOutCallDuration() << endl
-                 << "\t"
-                 << "Incoming Messages: " << oprData.getInMsg() << endl
-                 << "\t"
-                 << "Outgoing Messages: " << oprData.getOutMsg() << endl
-                 << "\t"
-                 << "GPRS usage: " << endl
-                 << "\t"
-                 << "\t"
-                 << "Downloaded Data: " << oprData.getDownloadData() << " MB" << endl
-                 << "\t"
-                 << "\t"
-                 << "Uploaded Data: " << oprData.getUploadData() << " MB" << endl
-                 << endl;
+            IOSB << oprToString(oprData);
         }
         IOSB.close();
     }
@@ -237,6 +220,12 @@ string Operator::oprToString(Operator &oprData)
        << endl;
 
     return ss.str();
+}
+
+void Operator::processAndCreateFile()
+{
+    processCDR();
+    mapToFile();
 }
 
 Operator::~Operator()

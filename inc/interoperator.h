@@ -36,7 +36,10 @@ public:
 
     bool processCDR(); // processing and storing call data records into STL
     bool mapToFile();  // printing data from map into file
-    ~Operator();       // destructor
+
+    void processAndCreateFile();
+
+    ~Operator(); // destructor
 
 private:
     string brandName; // specific brand name

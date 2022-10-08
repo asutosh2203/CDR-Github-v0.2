@@ -11,8 +11,8 @@ OBJ = ../obj
 
 all: $(BIN)/Client $(BIN)/Server
 
-$(BIN)/Server: $(OBJ)/ServerMain.o $(OBJ)/Server.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o
-	$(CC) $(LDFLAGS) $(BIN)/Server $(OBJ)/ServerMain.o $(OBJ)/Server.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o 
+$(BIN)/Server: $(OBJ)/ServerMain.o $(OBJ)/Server.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o $(OBJ)/customer.o
+	$(CC) $(LDFLAGS) $(BIN)/Server $(OBJ)/ServerMain.o $(OBJ)/Server.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o $(OBJ)/customer.o
 
 $(OBJ)/ServerMain.o: $(SRC)/ServerMain.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/ServerMain.cpp -I $(INC)
@@ -22,8 +22,8 @@ $(OBJ)/Server.o: $(SRC)/Server.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/Server.cpp -I $(INC)
 	mv *.o $(OBJ)/
 
-$(BIN)/Client: $(OBJ)/ClientMain.o $(OBJ)/client.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o 
-	$(CC) $(LDFLAGS) $(BIN)/Client $(OBJ)/ClientMain.o $(OBJ)/client.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o 
+$(BIN)/Client: $(OBJ)/ClientMain.o $(OBJ)/client.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o $(OBJ)/customer.o
+	$(CC) $(LDFLAGS) $(BIN)/Client $(OBJ)/ClientMain.o $(OBJ)/client.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o $(OBJ)/customer.o
 
 $(OBJ)/ClientMain.o: $(SRC)/ClientMain.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/ClientMain.cpp -I $(INC)
