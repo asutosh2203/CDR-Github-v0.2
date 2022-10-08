@@ -86,6 +86,8 @@ void Server::registerLoginUser(int newfd)
 
         cout << "Server side buff: " << buf << endl;
 
+        char *username;
+
         switch (atoi(buf))
         {
         // registeration
@@ -103,13 +105,26 @@ void Server::registerLoginUser(int newfd)
                 exit(EXIT_FAILURE);
             }
             // Stores registered users in a file
-            cout << "User data: " << user_data << endl;
-            d1->database(user_data);
 
-            if (send(newfd, "success", 8, 0) < 0)
+            username = strtok(user_data, "|");
+
+            if (userExists(username))
             {
-                ut.log("Fatal log: send() error", "logs/ServerData.log");
-                exit(EXIT_FAILURE);
+                if (send(newfd, "exists", strlen("exists"), 0) < 0)
+                {
+                    ut.log("Fatal log: send() error", "logs/ServerData.log");
+                    exit(EXIT_FAILURE);
+                }
+            }
+            else
+            {
+                d1->database(user_data);
+
+                if (send(newfd, "success", strlen("success"), 0) < 0)
+                {
+                    ut.log("Fatal log: send() error", "logs/ServerData.log");
+                    exit(EXIT_FAILURE);
+                }
             }
             break;
         // login
@@ -338,6 +353,25 @@ void Server::registerLoginUser(int newfd)
             exit(EXIT_SUCCESS);
         }
     }
+}
+
+bool Server::userExists(char *username)
+{
+    fstream userDB;
+    string line;
+
+    userDB.open("data/registered.dat");
+
+    if (userDB)
+    {
+        while (getline(userDB, line))
+        {
+            if (strcmp(username, strtok((char *)line.c_str(), "|")) == 0)
+                return true;
+        }
+    }
+
+    return false;
 }
 
 void Server::closeServer()

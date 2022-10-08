@@ -144,6 +144,7 @@ bool Operator::processCDR()
     else
     {
         perror("data.cdr File error: ");
+        utl.log("data.cdr could not be opened", "logs/Interoperator.txt");
         return false;
     }
 
@@ -194,7 +195,6 @@ bool Operator::mapToFile()
 
 string Operator::searchBrandName(string brand)
 {
-    int flag = 0;
     string result;
     map<long, Operator>::iterator opr;
     for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
@@ -203,7 +203,6 @@ string Operator::searchBrandName(string brand)
         if (utl.toLowerCase(oprData.getBrandName()) == utl.toLowerCase(brand))
         {
             result = oprToString(oprData);
-            flag = 1;
             return result;
         }
     }

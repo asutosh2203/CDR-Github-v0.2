@@ -33,6 +33,7 @@ public:
         void bind_listen();
         void acceptClient();
         void registerLoginUser(int);
+        bool userExists(char *);
         void log(string);
         void closeServer();
         struct sockaddr_in getClientAddr() { return client_addr; }

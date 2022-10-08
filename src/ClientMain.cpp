@@ -42,12 +42,18 @@ int main(int argc, char *argv[])
                 cout << endl;
                 cout << "Registration successful" << endl;
             }
+            else if (strcmp(buf, "exists") == 0)
+            {
+                cout << endl;
+                cout << "Username already exists.\nCreate a new username or login with your existing account." << endl;
+            }
             else
             {
                 cout << endl;
                 cout << "Registration unsuccessful" << endl;
             }
             break;
+
         // login
         case 2:
             send(clientFD, "2", 2, 0);
@@ -217,7 +223,6 @@ int main(int argc, char *argv[])
                                                 }
 
                                                 cout << buf << endl;
-                                                
                                             }
                                             break;
 

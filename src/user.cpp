@@ -69,11 +69,9 @@ void User::registerDetails()
         cout << "!!!!!!!!!!INVALID USERNAME!!!!!!!!!!" << endl
              << "Username must contains only {A-Z, a-z, 0-9, '.', '_'}and length must range from [6-20]." << endl;
         cout << "Enter User name: ";
-        // cin.ignore();
+        
         getline(cin, user);
     }
-
-    cout << "Username: " << user << endl;
 
     strcpy(username, user.c_str());
 
