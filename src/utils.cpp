@@ -1,0 +1,28 @@
+#include <utils.h>
+
+// this function creates a logfile which stores all the log messages at runtime along with the time stamp
+void Utils::log(const char *logs, const char *filename)
+{
+    fstream logfile;
+    logfile.open(filename, ios::app);
+
+    time_t ltime = time(NULL);
+
+    struct tm res;
+    char TIMESTAMP[32];
+
+    localtime_r(&ltime, &res);
+    asctime_r(&res, TIMESTAMP);
+
+    logfile << TIMESTAMP << " - " << logs << endl;
+
+    logfile.close();
+}
+
+string Utils::toLowerCase(string str)
+{
+    for_each(str.begin(), str.end(), [](char &c)
+             { c = tolower(c); });
+
+    return str;
+}
