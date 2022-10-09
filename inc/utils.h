@@ -3,9 +3,21 @@
 #include <algorithm>
 using namespace std;
 
+// Log type macros
+#define FATAL "Fatal log"
+#define INFO "Info log"
+#define WARN "Warning log"
+#define DEBUG "Debug log" 
+
+#define C_LOGFILE "logs/ClientData.log"
+#define S_LOGFILE "logs/ServerData.log"
+
 class Utils
 {
 public:
-    void log(const char *, const char *);
+        //      type,       msg,        filename
+    void log(const char *, const char *, const char *);
     string toLowerCase(string);
+
 };
+

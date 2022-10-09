@@ -61,12 +61,12 @@ public:
         long getMSISDN();
         string getBrandName();
 
-        void processAndCreateFile();
+        bool processAndCreateFile();
 
         string searchMSISDN(long); // For searching unique MSISDN
         string cstrToString(Customer &);
 
-        void processCDR(); // processing and storing call data records into STL
+        bool processCDR(); // processing and storing call data records into STL
         bool mapToFile();  // printing data from map into file
         ~Customer();
 };

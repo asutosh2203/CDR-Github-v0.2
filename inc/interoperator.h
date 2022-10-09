@@ -37,7 +37,7 @@ public:
     bool processCDR(); // processing and storing call data records into STL
     bool mapToFile();  // printing data from map into file
 
-    void processAndCreateFile();
+    bool processAndCreateFile();
 
     ~Operator(); // destructor
 

@@ -144,7 +144,7 @@ bool Operator::processCDR()
     else
     {
         perror("data.cdr File error: ");
-        utl.log("data.cdr could not be opened", "logs/Interoperator.txt");
+        utl.log(FATAL, "data.cdr could not be opened", S_LOGFILE);
         return false;
     }
 
@@ -169,7 +169,7 @@ bool Operator::mapToFile()
     }
     else
     {
-        utl.log("IOSB.txt could not be opened", "logs/Interoperator.txt");
+        utl.log(FATAL, "IOSB.txt could not be opened", S_LOGFILE);
         return false;
     }
 
@@ -222,10 +222,17 @@ string Operator::oprToString(Operator &oprData)
     return ss.str();
 }
 
-void Operator::processAndCreateFile()
+bool Operator::processAndCreateFile()
 {
-    processCDR();
-    mapToFile();
+    bool process = processCDR();
+    bool toFile = mapToFile();
+
+    if (process == true && toFile == true)
+    {
+        return true;
+    }
+    
+    return false;
 }
 
 Operator::~Operator()

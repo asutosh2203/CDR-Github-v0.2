@@ -1,4 +1,7 @@
 #include <client.h>
+#include <utils.h>
+
+Utils clientUtil;
 
 // default constructor
 Client::Client()
@@ -16,12 +19,12 @@ Client::Client(int port, char *ipAddr)
 
 void showMenu(int menuType)
 {
-    sleep(2);
-    system("clear");
-    // main menu
+    // sleep(2);
+    // system("clear");
+    //  main menu
     if (menuType == 0)
     {
-        cout << "Do you want to register or login?" << endl;
+        cout << "\nDo you want to register or login?" << endl;
         cout << "\t1. Register" << endl;
         cout << "\t2. Login" << endl;
         cout << "\t3. Exit" << endl;
@@ -92,24 +95,83 @@ void Client::clientConnect()
     cout << "[+]Client connect to the server" << endl;
 }
 
-// read and write function with the server
-void Client::clientreadwrite(char *str)
+int Client::writeToFile(int clientFD, char *filename)
 {
-    char buffer[MAX_BUFF] = {
-        '\0',
-    };
-    // read(sockfd, buffer, MAX_BUFF);
-    recv(sockfd, buffer, MAX_BUFF, 0);
+    // FILE *fp;
+    char buff[MAX_BUFF] = {'\0'};
+    int res = 0;
 
-    cout << buffer << endl;
-    memset(buffer, 0, sizeof(buffer));
+    ofstream file;
+    file.open(filename);
 
-    strcpy(buffer, (const char *)str);
+    if (file.is_open())
+    {
+        // infinite loop to recevie data from server and store it in a file on client side
+        while (true)
+        {
+            memset(buff, 0, MAX_BUFF);
+            
+            // log and return when recv() fail
+            if (recv(clientFD, buff, sizeof(buff), 0)<0)
+            {
+                clientUtil.log("Fatal log: ", "recv() error", "logs/ServerData.log");
+                return 0;
+            }
+            // Return 1 when EOF
+            if (strcmp(buff, "EOF") == 0)
+            {
+                return 1;
+            }
 
-    // write(sockfd, buffer, strlen(buffer));
-    send(sockfd, buffer, strlen(buffer), 0);
-    cout << "Data : \'" << buffer << "\' sent to server" << endl;
-    close(sockfd);
+            // writing in file
+            file << buff << endl;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+    // closing filestream object
+    file.close();
+
+    return 1;
+    // fp = fopen(filename, "w");
+
+    // if (fp == NULL)
+    // {
+    //     perror("file open error: ");
+    // }
+    // else
+    // {
+    //     while (1)
+    //     {
+    //         if (recv(clientFD, buff, MAX_BUFF, 0) < 0)
+    //         {
+    //             clientUtil.log("Fatal log: recv() error", "logs/ClientData.log");
+    //             break;
+    //         }
+
+    //         cout << "Recv in writetoFile: " << buff << endl;
+
+    //         // fprintf(fp, "%s", buff);
+    //         fs << buff;
+
+    //         memset(buff, 0, MAX_BUFF);
+    //     }
+}
+bool isChoiceValid(char c)
+{
+    cout<<c<<endl;
+    cout<<(int)c<<endl;
+    if (c == 49 || c == 50 || c == 51)
+        return true;
+
+    return false;
+}
+void clientErrExit()
+{
+    cout << "Could not connect to server. Try again!" << endl;
+    exit(EXIT_FAILURE);
 }
 
 // default deconstructor

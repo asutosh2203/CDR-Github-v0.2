@@ -46,7 +46,7 @@ long Customer::getInMsgO() { return inMsgO; }
 long Customer::getOutMsgO() { return outMsgO; }
 
 // Processing the CDR data and writing in the CB.txt file
-void Customer::processCDR()
+bool Customer::processCDR()
 {
   fstream fs;
   fs.open("data/data.cdr", ios::in);
@@ -156,7 +156,10 @@ void Customer::processCDR()
   {
     perror("data.cdr File error: ");
     exit(EXIT_FAILURE);
+    return false;
   }
+
+  return true;
 }
 
 bool Customer::mapToFile()
@@ -242,10 +245,15 @@ string Customer::cstrToString(Customer &cstrData)
   return ss.str();
 }
 
-void Customer::processAndCreateFile()
+bool Customer::processAndCreateFile()
 {
-    processCDR();
-    mapToFile();
+  bool process = processCDR();
+  bool toFile = mapToFile();
+
+  if (process && toFile)
+    return true;
+
+  return false;
 }
 
 Customer::~Customer()

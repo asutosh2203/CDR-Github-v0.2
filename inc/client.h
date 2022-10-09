@@ -9,8 +9,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <signal.h>
 #include <cstring>
-#include <string>  // std::string
+#include <string> // std::string
 #include <stdlib.h>
 
 using namespace std;
@@ -33,9 +34,10 @@ public:
     void createSocket();
     void clientConnect();
     int getClientSockfd() { return sockfd; }
-    void clientreadwrite(char *);
 
+    int writeToFile(int, char *);
     ~Client();
 };
-
+bool isChoiceValid(char);
+void clientErrExit();
 void showMenu(int menuType);

@@ -41,9 +41,10 @@ public:
         void createSocket();
         void bind_listen();
         void acceptClient();
-        void registerLoginUser(int);
+        void initClient(int);
         bool userExists(char *);
         void processCallData(Operator &, Customer &);
+        int sendFile(int, char *);
         void log(string);
         void closeServer();
         struct sockaddr_in getClientAddr() { return client_addr; }

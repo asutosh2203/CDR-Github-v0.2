@@ -1,7 +1,7 @@
 #include <utils.h>
 
 // this function creates a logfile which stores all the log messages at runtime along with the time stamp
-void Utils::log(const char *logs, const char *filename)
+void Utils::log(const char *type, const char *msg, const char *filename)
 {
     fstream logfile;
     logfile.open(filename, ios::app);
@@ -14,8 +14,9 @@ void Utils::log(const char *logs, const char *filename)
     localtime_r(&ltime, &res);
     asctime_r(&res, TIMESTAMP);
 
-    logfile << TIMESTAMP << " - " << logs << endl;
-
+    // Writing log in file with formatting
+    logfile << endl << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl ;
+    
     logfile.close();
 }
 
