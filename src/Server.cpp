@@ -243,15 +243,61 @@ void Server::initClient(int newfd)
 
                                             break;
                                         case 2:
-                                            if (isCBgen)
+                                            if (cust.processAndCreateFile())
                                             {
-                                                cust.processCDR();
-                                                cust.mapToFile();
-                                                cout << "Putting all Customer bills into CB.txt" << endl;
-                                                if (send(newfd, "generated", strlen("generated"), 0))
+
+                                                // sending file to client side
+                                                if (send(newfd, "sending", strlen("sending"), 0))
                                                 {
                                                     ut.log(FATAL, "send() error", S_LOGFILE);
-                                                    //
+                                                }
+
+                                                memset(&buf, 0, MAX_BUFF);
+
+                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                                {
+                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
+                                                }
+
+                                                if (strcmp(buf, "yes") == 0)
+                                                {
+
+                                                    if (sendFile(newfd, (char *)"data/CB.txt") == 1)
+                                                    {
+                                                        ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
+                                                    }
+                                                    else
+                                                    {
+                                                        ut.log(FATAL, "File not accessible.", S_LOGFILE);
+                                                    }
+                                                }
+
+                                                cout << "CHECKING ACK SECTION" << endl;
+
+                                                // Receiving acknowledgement from client
+                                                memset(&buf, 0, MAX_BUFF);
+                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                                {
+                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
+                                                    break;
+                                                }
+                                                // Logging ack in logs
+
+                                                if (strcmp(buf, "SUCCESS") == 0)
+                                                {
+                                                    // cout << "Anknowledgment received: " << buf << endl;
+                                                    ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
+                                                }
+                                                else
+                                                {
+                                                    ut.log(INFO, "Client does not received the file", S_LOGFILE);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (send(newfd, "error", strlen("error"), 0))
+                                                {
+                                                    ut.log(FATAL, "send() error", S_LOGFILE);
                                                 }
                                             }
 

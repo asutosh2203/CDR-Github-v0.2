@@ -224,3 +224,18 @@ Sun Oct  9 21:02:28 2022
 
 ~Mon Oct 10 22:01:00 2022
  	 Info log: User left
+
+~Tue Oct 11 02:11:20 2022
+ 	 Fatal log: send() error
+
+~Tue Oct 11 02:11:25 2022
+ 	 Info log: File Downloaded Successfully
+
+~Tue Oct 11 02:14:31 2022
+ 	 Info log: User left
+
+~Tue Oct 11 02:15:11 2022
+ 	 Info log: File Downloaded Successfully
+
+~Tue Oct 11 02:16:35 2022
+ 	 Info log: User left

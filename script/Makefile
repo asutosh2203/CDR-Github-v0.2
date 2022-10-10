@@ -3,10 +3,10 @@ CC = g++
 CPPFLAGS = -c -g -Wall
 LDFLAGS = -o
 
-INC = ../inc
-SRC = ../src
-BIN = ../bin
-OBJ = ../obj
+INC = ./inc
+SRC = ./src
+BIN = ./bin
+OBJ = ./obj
 
 
 all: $(BIN)/Client $(BIN)/Server

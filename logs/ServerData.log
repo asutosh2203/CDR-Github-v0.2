@@ -768,3 +768,27 @@ Sun Oct  9 21:02:28 2022
 
 ~Mon Oct 10 22:00:54 2022
  	 Info log: Client Received the file successfully
+
+~Tue Oct 11 02:11:07 2022
+ 	 Info log: Server accepts the client
+
+~Tue Oct 11 02:11:20 2022
+ 	 Fatal log: send() error
+
+~Tue Oct 11 02:11:25 2022
+ 	 Info log: File sent succesffuly.
+
+~Tue Oct 11 02:11:25 2022
+ 	 Info log: Client Received the file successfully
+
+~Tue Oct 11 02:14:51 2022
+ 	 Info log: Server accepts the client
+
+~Tue Oct 11 02:15:06 2022
+ 	 Fatal log: send() error
+
+~Tue Oct 11 02:15:11 2022
+ 	 Info log: File sent succesffuly.
+
+~Tue Oct 11 02:15:11 2022
+ 	 Info log: Client Received the file successfully

@@ -211,9 +211,8 @@ int main(int argc, char *argv[])
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
                                                     exit(EXIT_FAILURE);
                                                 }
-                                                // for generating CB.txt
-                                                memset(&buf, 0, MAX_BUFF);
 
+                                                memset(&buf, 0, MAX_BUFF);
                                                 if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
                                                 {
                                                     cout << "Could not connect to server" << endl;
@@ -221,14 +220,55 @@ int main(int argc, char *argv[])
                                                     exit(EXIT_FAILURE);
                                                 }
 
-                                                if (strcmp(buf, "generated") == 0)
+                                                if (strcmp(buf, "sending") == 0)
                                                 {
-                                                    cout << "Generated CB.txt file." << endl;
+
+                                                    if (send(clientFD, "yes", strlen("yes"), 0) < 0)
+                                                    {
+                                                        ut.log(FATAL, "send() error", C_LOGFILE);
+                                                        // exit(EXIT_FAILURE);
+                                                    }
+
+                                                    // downloading file
+                                                    int isSuccess = newClient.writeToFile(clientFD, (char *)CB_DOWNLOAD);
+                                                    // cout<<"END OF WRITETOFILE"<<endl;
+                                                    if (isSuccess == 1)
+                                                    {
+                                                        // send to server
+                                                        if (send(clientFD, "SUCCESS", strlen("SUCCESS"), 0) < 0)
+                                                        {
+                                                            ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+                                                            clientErrExit();
+                                                        }
+                                                        else
+                                                        {
+                                                            // log to file
+                                                            cout << "File downloaded Successfully in " << CB_DOWNLOAD << endl;
+                                                            ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        // send to server
+                                                        if (send(clientFD, "FAILED", strlen("FAILED"), 0) < 0)
+                                                        {
+                                                            ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+                                                            clientErrExit();
+                                                        }
+                                                        else
+                                                        { // log to file
+                                                            cout << "Required file could not be generated, please try again." << endl;
+                                                            ut.log(INFO, "File Downloading failed", C_LOGFILE);
+                                                        }
+                                                    }
                                                 }
                                                 else
                                                 {
-                                                    cout << "Required files could not be generated, please try again." << endl;
+                                                    // if error receive
+
+                                                    cout << "CDR Processing Failed.  Try again!" << endl;
                                                 }
+
                                                 break;
 
                                             case 3:
@@ -376,12 +416,7 @@ int main(int argc, char *argv[])
                                                 else
                                                 {
                                                     // if error receive
-                                                    if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-                                                    {
-                                                        cout << "Could not connect to server. Try again!" << endl;
-                                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-                                                        exit(EXIT_FAILURE);
-                                                    }
+
                                                     cout << "CDR Processing Failed.  Try again!" << endl;
                                                 }
 
