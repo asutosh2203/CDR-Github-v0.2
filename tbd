@@ -1,6 +1,7 @@
 Functionalities
+-> Debugging the menu
 -> Press any key to continue in client side menu
--> Signal handling in client and server
+-> Promise future in threads
 
 Try
 -> Register using user objects
