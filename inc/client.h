@@ -14,6 +14,9 @@
 #include <string> // std::string
 #include <stdlib.h>
 
+#define IOSB_DOWNLOAD "data/downloads/IOSB.txt"
+#define CB_DOWNLOAD "data/downloads/CB.txt"
+
 using namespace std;
 #define MAX_BUFF 4096
 typedef struct sockaddr_in SA_IN;

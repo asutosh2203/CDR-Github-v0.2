@@ -1,0 +1,48 @@
+=========== OPERATOR DATA BASE ===========
+
+Operator Brand: Cellcom(42500)
+	Incoming Call Duration: 844736
+	Outgoing Call Duration: 874157
+	Incoming Messages: 4000
+	Outgoing Messages: 3990
+	GPRS usage: 
+		Downloaded Data: 408486 MB
+		Uploaded Data: 416108 MB
+
+Operator Brand: Partner(42501)
+	Incoming Call Duration: 883043
+	Outgoing Call Duration: 851048
+	Incoming Messages: 3940
+	Outgoing Messages: 4017
+	GPRS usage: 
+		Downloaded Data: 439487 MB
+		Uploaded Data: 428699 MB
+
+Operator Brand: Jio(42502)
+	Incoming Call Duration: 876475
+	Outgoing Call Duration: 879242
+	Incoming Messages: 3907
+	Outgoing Messages: 4088
+	GPRS usage: 
+		Downloaded Data: 445752 MB
+		Uploaded Data: 418127 MB
+
+Operator Brand: Airtel(42503)
+	Incoming Call Duration: 853500
+	Outgoing Call Duration: 882069
+	Incoming Messages: 3990
+	Outgoing Messages: 3986
+	GPRS usage: 
+		Downloaded Data: 429235 MB
+		Uploaded Data: 432627 MB
+
+Operator Brand: 012(42504)
+	Incoming Call Duration: 862576
+	Outgoing Call Duration: 855646
+	Incoming Messages: 3905
+	Outgoing Messages: 3998
+	GPRS usage: 
+		Downloaded Data: 435195 MB
+		Uploaded Data: 422003 MB
+
+

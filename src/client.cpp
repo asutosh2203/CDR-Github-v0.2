@@ -106,15 +106,21 @@ int Client::writeToFile(int clientFD, char *filename)
 
     if (file.is_open())
     {
+        if (send(clientFD, "openSuccess", strlen("openSuccess"), 0) < 0)
+        {
+            clientUtil.log(FATAL, "send() error", C_LOGFILE);
+            return 0;
+        }
+
         // infinite loop to recevie data from server and store it in a file on client side
         while (true)
         {
             memset(buff, 0, MAX_BUFF);
-            
+
             // log and return when recv() fail
-            if (recv(clientFD, buff, sizeof(buff), 0)<0)
+            if (recv(clientFD, buff, MAX_BUFF, 0) < 0)
             {
-                clientUtil.log("Fatal log: ", "recv() error", "logs/ServerData.log");
+                clientUtil.log(FATAL, "recv() error", C_LOGFILE);
                 return 0;
             }
             // Return 1 when EOF
@@ -123,54 +129,43 @@ int Client::writeToFile(int clientFD, char *filename)
                 return 1;
             }
 
+            if (strcmp(buff, "openErr") == 0)
+            {
+                return 0;
+            }
+
             // writing in file
             file << buff << endl;
         }
     }
     else
     {
+        if (send(clientFD, "openErr", strlen("openErr"), 0) < 0)
+        {
+            clientUtil.log(FATAL, "send() error", C_LOGFILE);
+            return 0;
+        }
         return 0;
     }
+
     // closing filestream object
     file.close();
 
     return 1;
-    // fp = fopen(filename, "w");
-
-    // if (fp == NULL)
-    // {
-    //     perror("file open error: ");
-    // }
-    // else
-    // {
-    //     while (1)
-    //     {
-    //         if (recv(clientFD, buff, MAX_BUFF, 0) < 0)
-    //         {
-    //             clientUtil.log("Fatal log: recv() error", "logs/ClientData.log");
-    //             break;
-    //         }
-
-    //         cout << "Recv in writetoFile: " << buff << endl;
-
-    //         // fprintf(fp, "%s", buff);
-    //         fs << buff;
-
-    //         memset(buff, 0, MAX_BUFF);
-    //     }
 }
+
 bool isChoiceValid(char c)
 {
-    cout<<c<<endl;
-    cout<<(int)c<<endl;
     if (c == 49 || c == 50 || c == 51)
         return true;
 
     return false;
 }
+
 void clientErrExit()
 {
     cout << "Could not connect to server. Try again!" << endl;
+    perror("Client error: ");
     exit(EXIT_FAILURE);
 }
 

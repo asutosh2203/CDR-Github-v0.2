@@ -432,3 +432,339 @@ Sun Oct  9 21:02:28 2022
 
 ~Mon Oct 10 01:57:30 2022
  	 Info log: Server accepts the client
+
+~Mon Oct 10 20:46:03 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 20:46:45 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 20:47:34 2022
+ 	 Info log: Client does not received the file
+
+~Mon Oct 10 20:48:09 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 20:49:02 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 20:49:02 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 20:49:02 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:22:19 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:22:28 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:22:28 2022
+ 	 Fatal log: Could not send file.
+
+~Mon Oct 10 21:22:28 2022
+ 	 Fatal log: File not accessible.
+
+~Mon Oct 10 21:23:07 2022
+ 	 Info log: Client does not received the file
+
+~Mon Oct 10 21:25:00 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:25:13 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:25:13 2022
+ 	 Fatal log: Could not send file.
+
+~Mon Oct 10 21:25:13 2022
+ 	 Fatal log: File not accessible.
+
+~Mon Oct 10 21:26:03 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:26:15 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:27:28 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:27:48 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:27:48 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:27:48 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:29:57 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:19 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:20 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:20 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:21 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:21 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:22 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:23 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:23 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:24 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:25 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:26 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:26 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:27 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:28 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:28 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:29 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:29 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:30 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:31 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:31 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:32 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:30:33 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:31:21 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:31:46 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:32:07 2022
+ 	 Info log: Client does not received the file
+
+~Mon Oct 10 21:33:19 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:34:06 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:36:22 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:36:29 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:36:47 2022
+ 	 Fatal log: bind() error
+
+~Mon Oct 10 21:37:10 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:37:24 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:37:24 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:37:24 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:38:14 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:38:14 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:38:14 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:38:30 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:39:00 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:40:59 2022
+ 	 Info log: Client does not received the file
+
+~Mon Oct 10 21:42:20 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:42:47 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:42:47 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:42:47 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:42:59 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:43:03 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:43:03 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:43:03 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:43:10 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:43:10 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:43:10 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:43:31 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:43:31 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:43:31 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:43:45 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:43:45 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 21:43:45 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 21:45:27 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:45:39 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 21:45:39 2022
+ 	 Fatal log: Could not send file.
+
+~Mon Oct 10 21:45:39 2022
+ 	 Fatal log: File not accessible.
+
+~Mon Oct 10 21:49:21 2022
+ 	 Info log: Client does not received the file
+
+~Mon Oct 10 21:59:09 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 21:59:58 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 22:00:09 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:09 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:09 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:22 2022
+ 	 Info log: Server accepts the client
+
+~Mon Oct 10 22:00:40 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:40 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:40 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:44 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:44 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:44 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:45 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:45 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:45 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:45 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:45 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:45 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:46 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:46 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:46 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:47 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:47 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:47 2022
+ 	 Info log: Client Received the file successfully
+
+~Mon Oct 10 22:00:54 2022
+ 	 Fatal log: send() error
+
+~Mon Oct 10 22:00:54 2022
+ 	 Info log: File sent succesffuly.
+
+~Mon Oct 10 22:00:54 2022
+ 	 Info log: Client Received the file successfully

@@ -9,7 +9,7 @@ Client newClient;
 // signal handling
 void signalHandler(int sig)
 {
-    if ( sig == SIGINT || sig == SIGTSTP )
+    if (sig == SIGINT || sig == SIGTSTP)
     {
         cout << "Program Terminated." << endl;
     }
@@ -341,7 +341,7 @@ int main(int argc, char *argv[])
                                                     }
 
                                                     // downloading file
-                                                    int isSuccess = newClient.writeToFile(clientFD, (char *)"data/client/IOSB.txt");
+                                                    int isSuccess = newClient.writeToFile(clientFD, (char *)IOSB_DOWNLOAD);
                                                     // cout<<"END OF WRITETOFILE"<<endl;
                                                     if (isSuccess == 1)
                                                     {
@@ -354,7 +354,7 @@ int main(int argc, char *argv[])
                                                         else
                                                         {
                                                             // log to file
-                                                            cout << "File downloaded Successfully in data/client/IOSB.txt" << endl;
+                                                            cout << "File downloaded Successfully in " << IOSB_DOWNLOAD << endl;
                                                             ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
                                                         }
                                                     }
