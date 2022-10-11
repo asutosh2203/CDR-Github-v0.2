@@ -177,8 +177,7 @@ int main(int argc, char *argv[])
                                             if (strcmp(buf, "searchmsisdn") == 0)
                                             {
 
-                                                cout << "Enter MSISDN to be searched: "
-                                                     << endl;
+                                                cout << "Enter MSISDN to be searched: ";
                                                 cin >> MSISDN;
 
                                                 string sdn = to_string(MSISDN);
@@ -203,6 +202,10 @@ int main(int argc, char *argv[])
 
                                                 cout << buf << endl;
                                             }
+
+                                            cout << "Press ENTER to continue";
+                                            cin.ignore();
+                                            getchar();
 
                                             // for searching by MSISDN
                                             break;
@@ -331,8 +334,7 @@ int main(int argc, char *argv[])
 
                                             if (strcmp(buf, "searchbrand") == 0)
                                             {
-                                                cout << "Enter brand name to be searched: "
-                                                     << endl;
+                                                cout << "Enter brand name to be searched: ";
                                                 cin >> brandName;
 
                                                 // sending brand name to be searched
@@ -355,6 +357,7 @@ int main(int argc, char *argv[])
                                             }
                                             cout << "Press ENTER to continue";
                                             cin.ignore();
+                                            getchar();
                                             break;
 
                                         case 2:
@@ -501,8 +504,5 @@ int main(int argc, char *argv[])
             cout << "You've exited sucessfully!" << endl;
             exit(EXIT_SUCCESS);
         }
-
-        getchar();
-        // }
     }
 }

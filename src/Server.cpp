@@ -93,7 +93,7 @@ void Server::initClient(int newfd)
         {
         // Resgistration
         case 1:
-            if (send(newfd, "register", 9, 0) < 0)
+            if (send(newfd, "register", strlen("register"), 0) < 0)
             {
                 ut.log(FATAL, "send() error", S_LOGFILE);
             }
@@ -570,7 +570,7 @@ int Server::sendFile(int newfd, char *filename)
     ifstream file;
     file.open(filename);
 
-       if (file.is_open() && (strcmp(bufr, "openSuccess") == 0))
+    if (file.is_open() && (strcmp(bufr, "openSuccess") == 0))
     {
         while (!file.eof())
         {

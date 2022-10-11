@@ -47,5 +47,3 @@ bool isChoiceValid(char);
 void clientErrExit();
 void showMenu(int menuType);
 int getUserChoice();
-
-void registration(int);

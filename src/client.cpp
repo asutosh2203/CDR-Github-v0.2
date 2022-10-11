@@ -207,6 +207,3 @@ Client::~Client()
 {
 }
 
-void registration(int clientFD){
-
-}
