@@ -11,9 +11,13 @@ void signalHandler(int sig)
 {
     if (sig == SIGINT || sig == SIGTSTP)
     {
-        cout << "Program Terminated." << endl;
+        cout << endl
+             << "Program Terminated."
+             << endl;
     }
+
     ut.log(INFO, "User left", C_LOGFILE);
+
     close(newClient.getClientSockfd());
     exit(EXIT_SUCCESS);
 }
@@ -40,9 +44,18 @@ int main(int argc, char *argv[])
     {
         showMenu(0);
         // cin.ignore();
+
+        // char c;
+        // while ((c = getchar()) != 10 && c != EOF)
+        // {
+
         char c = getchar();
+
+        // cout << c << endl;
+
         if (isChoiceValid(c) == true)
         {
+
             switch (c)
             {
             // Registration
@@ -294,7 +307,6 @@ int main(int argc, char *argv[])
                                         break;
 
                                     case 2:
-                                        // interoperator billing menu
                                         if (send(clientFD, "2", 2, 0) < 0)
                                         {
                                             cout << "Could not connect to server" << endl;
@@ -307,6 +319,7 @@ int main(int argc, char *argv[])
                                             showMenu(-1);
                                             cin >> choice;
                                             char brandName[MAX_BUFF] = {'\0'};
+                                            cout << "choice 322 line: " << choice << endl;
                                             switch (choice)
                                             {
                                             case 1:
@@ -356,13 +369,14 @@ int main(int argc, char *argv[])
                                                 break;
 
                                             case 2:
+                                                cout << "Case 2 before send" << endl;
                                                 if (send(clientFD, "2", 2, 0) < 0)
                                                 {
                                                     cout << "Could not connect to server" << endl;
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
                                                     exit(EXIT_FAILURE);
                                                 }
-
+                                                cout << "Case 2 after send" << endl;
                                                 memset(&buf, 0, MAX_BUFF);
                                                 if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
                                                 {
@@ -503,5 +517,7 @@ int main(int argc, char *argv[])
         {
             cout << "Invalid Choice!!!!!!!";
         }
+        getchar();
+        // }
     }
 }

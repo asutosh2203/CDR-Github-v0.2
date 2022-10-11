@@ -99,7 +99,6 @@ int Client::writeToFile(int clientFD, char *filename)
 {
     // FILE *fp;
     char buff[MAX_BUFF] = {'\0'};
-    int res = 0;
 
     ofstream file;
     file.open(filename);
@@ -108,7 +107,7 @@ int Client::writeToFile(int clientFD, char *filename)
     {
         if (send(clientFD, "openSuccess", strlen("openSuccess"), 0) < 0)
         {
-            clientUtil.log(FATAL, "send() error", C_LOGFILE);
+            clientUtil.log(FATAL, "openSuccess send() error", C_LOGFILE);
             return 0;
         }
 
@@ -143,7 +142,6 @@ int Client::writeToFile(int clientFD, char *filename)
         if (send(clientFD, "openErr", strlen("openErr"), 0) < 0)
         {
             clientUtil.log(FATAL, "send() error", C_LOGFILE);
-            return 0;
         }
         return 0;
     }

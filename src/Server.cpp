@@ -55,10 +55,12 @@ void Server::acceptClient()
         cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
         ut.log(INFO, "Server accepts the client", S_LOGFILE);
 
-        if (fork() == 0)
-        {
-            initClient(clientSockfd);
-        }
+        // if (fork() == 0)
+        // {
+        //     initClient(clientSockfd);
+        // }
+
+        initClient(clientSockfd);
 
         close(clientSockfd);
     }
@@ -170,13 +172,15 @@ void Server::initClient(int newfd)
                             //
                         }
 
+                        cout << "line 173 buf" << buf << endl;
+
                         Operator op;
                         Customer cust;
                         bool isProcessed = true;
                         choice = atoi(buf);
                         switch (choice)
                         {
-                        case 1:
+                        case 1: // Process CDR
                             // isProcessed = op.processCDR();
                             // op.mapToFile();
 
@@ -185,7 +189,7 @@ void Server::initClient(int newfd)
                             isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
                             break;
 
-                        case 2:
+                        case 2: // Billing info
                             while (1)
                             {
                                 memset(&buf, 0, MAX_BUFF);
@@ -199,7 +203,7 @@ void Server::initClient(int newfd)
                                 choice = atoi(buf);
                                 switch (choice)
                                 {
-                                case 1:
+                                case 1: // Customer billing
                                     while (1)
                                     {
                                         memset(&buf, 0, MAX_BUFF);
@@ -243,7 +247,7 @@ void Server::initClient(int newfd)
 
                                             break;
                                         case 2:
-                                            if (cust.processAndCreateFile())
+                                            if (cust.processCDR() && cust.mapToFile())
                                             {
 
                                                 // sending file to client side
@@ -259,7 +263,10 @@ void Server::initClient(int newfd)
                                                     ut.log(FATAL, "recv() error", S_LOGFILE);
                                                 }
 
-                                                if (strcmp(buf, "yes") == 0)
+                                                string buffer = buf;
+                                                buffer = buffer.substr(0, 3);
+
+                                                if (strcmp(buffer.c_str(), "yes") == 0)
                                                 {
 
                                                     if (sendFile(newfd, (char *)"data/CB.txt") == 1)
@@ -313,25 +320,33 @@ void Server::initClient(int newfd)
                                         }
 
                                         if (choice == 3 || buf[0] == '\0')
+                                        {
+                                            choice = 0;
                                             break;
+                                        }
                                     }
                                     break;
 
-                                case 2:
+                                case 2: // interoperator billing
                                     while (1)
                                     {
-                                        // Idhar aa ja rha tha
+
                                         cout << "IB MENU START: " << endl;
 
                                         memset(&buf, 0, MAX_BUFF);
+
                                         // receiving option from interoperator billing menu
                                         if (recv(newfd, buf, MAX_BUFF, 0) < 0)
                                         {
                                             ut.log(FATAL, "recv() error", S_LOGFILE);
                                             //
                                         }
+
                                         string brandSearchResult;
                                         choice = atoi(buf);
+
+                                        cout << "choice 339 line: " << buf << endl;
+
                                         switch (choice)
                                         {
                                         case 1:
@@ -350,7 +365,7 @@ void Server::initClient(int newfd)
                                                 //
                                             }
 
-                                            cout << "Brand name received: " << buf << endl;
+                                            cout << "Brand name to be searched: " << buf << endl;
                                             op.processCDR();
                                             brandSearchResult = op.searchBrandName(buf);
 
@@ -365,9 +380,9 @@ void Server::initClient(int newfd)
 
                                             // function for sending IOSB.txt to client
 
-                                            if (op.processAndCreateFile())
+                                            if (op.processCDR() && op.mapToFile())
                                             {
-
+                                                cout << "at line 373" << endl;
                                                 // sending file to client side
                                                 if (send(newfd, "sending", strlen("sending"), 0))
                                                 {
@@ -381,9 +396,18 @@ void Server::initClient(int newfd)
                                                     ut.log(FATAL, "recv() error", S_LOGFILE);
                                                 }
 
-                                                if (strcmp(buf, "yes") == 0)
-                                                {
+                                                cout << buf << endl; // --> yesopensuccess
 
+                                                string buffer = buf;
+                                                buffer = buffer.substr(0, 3);
+
+                                                cout << buffer << endl; // --> yes
+
+                                                cout << strcmp(buffer.c_str(), "yes") << endl; // --> 0
+
+                                                if (strcmp(buffer.c_str(), "yes") == 0)
+                                                {
+                                                    cout << "in if containing sendfile" << endl;
                                                     if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
                                                     {
                                                         ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
@@ -441,7 +465,7 @@ void Server::initClient(int newfd)
                                         }
                                     }
 
-                                case 3:
+                                case 3: // go back
                                     cout << "Exiting..." << endl;
                                     break;
 
@@ -458,7 +482,7 @@ void Server::initClient(int newfd)
                             }
                             break;
 
-                        case 3:
+                        case 3: // Logout
                             break;
 
                         default:
@@ -530,36 +554,40 @@ void Server::processCallData(Operator &op, Customer &cust)
 
 int Server::sendFile(int newfd, char *filename)
 {
-    char buf[MAX_BUFF] = {'\0'};
 
-    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+    cout << "sendfile called" << endl;
+    char bufr[MAX_BUFF] = {'\0'};
+
+    if (recv(newfd, bufr, MAX_BUFF, 0) < 0)
     {
         ut.log("Fatal log: ", "recv() error", "logs/ServerData.log");
         return 0;
     }
 
-    // cout << "buf in sendfile: " << buf << endl;
+    cout << "bufr in sendfile: " << bufr << endl;
 
     string line;
     ifstream file;
     file.open(filename);
 
-    if (file.is_open() && (strcmp(buf, "openSuccess") == 0))
+       if (file.is_open() && (strcmp(bufr, "openSuccess") == 0))
     {
         while (!file.eof())
         {
             getline(file, line);
-            strcpy(buf, line.c_str());
-            if (send(newfd, buf, sizeof(buf), 0) < 0)
+            strcpy(bufr, line.c_str());
+            if (send(newfd, bufr, sizeof(bufr), 0) < 0)
             {
-                ut.log(FATAL, "send() error", S_LOGFILE);
+                ut.log(FATAL, "bufr send() error", S_LOGFILE);
                 return 0;
             }
+
+            memset(bufr, 0, MAX_BUFF);
         }
         // Sending EOF msg to client
         if (send(newfd, "EOF", strlen("EOF"), 0) < 0)
         {
-            ut.log(FATAL, "send() error", S_LOGFILE);
+            ut.log(FATAL, "EOF send() error", S_LOGFILE);
             return 0;
         }
 
