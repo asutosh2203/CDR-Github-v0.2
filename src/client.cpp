@@ -152,12 +152,47 @@ int Client::writeToFile(int clientFD, char *filename)
     return 1;
 }
 
-bool isChoiceValid(char c)
+bool isChoiceValid(int c)
 {
-    if (c == 49 || c == 50 || c == 51)
+    // cout << c << endl;
+
+    if (c == 1 || c == 2 || c == 3)
         return true;
 
     return false;
+}
+
+int getUserChoice()
+{
+    int choice;
+
+    while (1)
+    {
+        cin >> choice;
+
+        if (cin.fail())
+        {
+            // get rid of failure state
+            cin.clear();
+
+            // discard 'bad' character(s)
+            cin.ignore(INT64_MAX, '\n');
+        }
+
+        if (isChoiceValid(choice))
+        {
+            break;
+        }
+        else
+        {
+            cout << "Invalid Choice. Please choose option: ";
+        }
+        // cin.ignore();
+    }
+
+    // clearing cin buffer
+    // cin.clear();
+    return choice;
 }
 
 void clientErrExit()
@@ -170,4 +205,8 @@ void clientErrExit()
 // default deconstructor
 Client::~Client()
 {
+}
+
+void registration(int clientFD){
+
 }

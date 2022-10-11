@@ -55,12 +55,12 @@ void Server::acceptClient()
         cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
         ut.log(INFO, "Server accepts the client", S_LOGFILE);
 
-        // if (fork() == 0)
-        // {
-        //     initClient(clientSockfd);
-        // }
+        if (fork() == 0)
+        {
+            initClient(clientSockfd);
+        }
 
-        initClient(clientSockfd);
+        // initClient(clientSockfd);
 
         close(clientSockfd);
     }
