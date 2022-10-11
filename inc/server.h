@@ -42,7 +42,7 @@ public:
         void bind_listen();
         void acceptClient();
         void initClient(int);
-        bool userExists(char *);
+        int userExists(User &);
         void processCallData(Operator &, Customer &);
         int sendFile(int, char *);
         void log(string);

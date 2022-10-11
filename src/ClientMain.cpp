@@ -56,11 +56,13 @@ int main(int argc, char *argv[])
             if (strcmp(buf, "register") == 0)
             {
                 newUser.registerDetails();
-                string str = newUser.toString();
-                send(clientFD, str.c_str(), str.length(), 0);
+                // string str = newUser.toString();
+                // send(clientFD, str.c_str(), str.length(), 0);
+                send(clientFD, &newUser, sizeof(User), 0);
             }
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
+            cout<<"BUFFER : "<<buf<<endl;
             if (strcmp(buf, "success") == 0)
             {
                 cout << endl;

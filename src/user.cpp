@@ -69,7 +69,7 @@ void User::registerDetails()
         cout << "!!!!!!!!!!INVALID USERNAME!!!!!!!!!!" << endl
              << "Username must contains only {A-Z, a-z, 0-9, '.', '_'}and length must range from [6-20]." << endl;
         cout << "Enter User name: ";
-        
+
         getline(cin, user);
     }
 
@@ -88,44 +88,31 @@ void User::registerDetails()
 }
 
 // This function is used to store the registered users data into a file
-void User::database(char *data)
+void User::toDatabase(User& newUser)
 {
-
-    fstream file;
+    fstream userDB;
 
     // file.write((const char*)this, sizeof(this));
-    
-    file.open("data/registered.dat", ios::in | ios::app);
-    if (!file)
+
+    userDB.open("data/registered.dat",ios::out| ios::app);
+    if (userDB)
+    {
+        userDB.write(reinterpret_cast<char *>(&newUser), sizeof(newUser));
+    }
+
+    else
     {
         perror("file()");
-        log("File cannot be opened");
-        exit(EXIT_FAILURE);
+        //log("File cannot be opened");
     }
-    file << data << endl;
-    file.close();
+
+    userDB.close();
 }
 
 string User::toString()
 {
     ostringstream ss;
     ss.clear();
-    ss << this->getUID() << "|" << this->getPassword();
+    ss << this->getUsername() << "|" << this->getPassword();
     return ss.str();
-}
-
-// this function creates a logfile which stores all the log messages at runtime along with the time stamp
-void User::log(string logs)
-{
-    FILE *logfile;
-    char filename[100] = "logs/UserData.log";
-    time_t ltime = time(NULL);
-    struct tm res;
-    char TIMESTAMP[32];
-    char *msg = const_cast<char *>(logs.c_str());
-    localtime_r(&ltime, &res);
-    asctime_r(&res, TIMESTAMP);
-    logfile = fopen(filename, "a+");
-    fprintf(logfile, "\n~~%s\t%s\n-------------\n", TIMESTAMP, msg);
-    fclose(logfile);
 }

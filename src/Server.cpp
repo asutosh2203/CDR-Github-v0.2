@@ -69,9 +69,11 @@ void Server::acceptClient()
 void Server::initClient(int newfd)
 {
     User *d1 = new User;
+    User user;
     char user_data[MAX_BUFF] = {
         '\0',
     };
+
     char buf[MAX_BUFF] = {
         '\0',
     };
@@ -89,6 +91,7 @@ void Server::initClient(int newfd)
         recv(newfd, buf, MAX_BUFF, 0);
         // connvert buffer value to int
         int choice = atoi(buf);
+        int isExists = -1;
         switch (choice)
         {
         // Resgistration
@@ -98,29 +101,36 @@ void Server::initClient(int newfd)
                 ut.log(FATAL, "send() error", S_LOGFILE);
             }
             // Receieving user UserID and Password in user_data
-            memset(&user_data, 0, MAX_BUFF);
-            if (recv(newfd, &user_data, sizeof(user_data), 0) < 0)
+            memset(&user, 0, MAX_BUFF);
+            if (recv(newfd, &user, sizeof(User), 0) < 0)
             {
                 ut.log(FATAL, "recv() error", S_LOGFILE);
             }
-
+            user.getdetails();
             // Stores registered users in a file
-            char user[MAX_BUFF];
-            strcpy(user, user_data);
-            username = strtok(user, "|");
-
-            if (userExists(username))
+            // char user[MAX_BUFF];
+            // strcpy(user, user_data);
+            // username = strtok(user, "|");
+            isExists = userExists(user);
+            if (isExists == 1)
             {
                 if (send(newfd, "exists", strlen("exists"), 0) < 0)
                 {
                     ut.log(FATAL, "send() error", S_LOGFILE);
                 }
             }
-            else
+            else if (isExists == 0)
             {
-                d1->database(user_data);
+                user.toDatabase(user);
 
                 if (send(newfd, "success", strlen("success"), 0) < 0)
+                {
+                    ut.log(FATAL, "send() error", S_LOGFILE);
+                }
+            }
+            else
+            {
+                if (send(newfd, "failed", strlen("failed"), 0) < 0)
                 {
                     ut.log(FATAL, "send() error", S_LOGFILE);
                 }
@@ -520,24 +530,33 @@ void Server::initClient(int newfd)
             break;
     }
 }
-
-bool Server::userExists(char *username)
+// return -1 on database error, 1 on user exists, 0 on user not exists
+int Server::userExists(User &newUser)
 {
+    User user;
     fstream userDB;
-    string line;
 
-    userDB.open("data/registered.dat");
+    userDB.open("data/registered.dat", ios::out | ios::in);
 
     if (userDB)
     {
-        while (getline(userDB, line))
+        while (!userDB.eof())
         {
-            if (strcmp(username, strtok((char *)line.c_str(), "|")) == 0)
-                return true;
+
+            userDB.read((char *)&user, sizeof(user));
+
+            if (strcmp(newUser.getUsername(), user.getUsername()) == 0)
+            {
+                return 1;
+            }
         }
     }
+    else
+    {
+        return -1;
+    }
 
-    return false;
+    return 0;
 }
 
 void Server::processCallData(Operator &op, Customer &cust)
