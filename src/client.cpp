@@ -1,6 +1,5 @@
 #include <client.h>
 
-
 Utils clientUtil;
 
 // default constructor
@@ -86,14 +85,13 @@ void Client::createSocket()
 // connects client to the server
 void Client::clientConnect()
 {
-    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr))< 0)
+    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
     {
         perror("connect() error: ");
         exit(EXIT_FAILURE);
     }
     clientUtil.log(INFO, "Connection Established", C_LOGFILE);
-    cout<<"\t\t\t\t WELCOME \n";
-            
+    cout << "\t\t\t\t WELCOME \n";
 }
 
 int Client::writeToFile(int clientFD, char *filename)
@@ -106,7 +104,6 @@ int Client::writeToFile(int clientFD, char *filename)
 
     if (file.is_open())
     {
-      
 
         // infinite loop to recevie data from server and store it in a file on client side
         while (true)
@@ -145,16 +142,6 @@ int Client::writeToFile(int clientFD, char *filename)
     return 1;
 }
 
-bool isChoiceValid(int c)
-{
-    // cout << c << endl;
-
-    if (c == 1 || c == 2 || c == 3)
-        return true;
-
-    return false;
-}
-
 int getUserChoice()
 {
     int choice;
@@ -172,7 +159,7 @@ int getUserChoice()
             cin.ignore(INT64_MAX, '\n');
         }
 
-        if (isChoiceValid(choice))
+        if (choice == 1 || choice == 2 || choice == 3)
         {
             break;
         }
@@ -200,6 +187,54 @@ void pressEnter()
     cout << "Press ENTER to continue";
     cin.ignore();
     getchar();
+}
+
+// validate user input
+// 0 - validate MSISDN, 1 - validate Brand name
+bool validateInput(string str, int inputType)
+{
+    int l = str.length();
+
+    // validate MSISDN
+    if (inputType == 0)
+    {
+        if (l != 7)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < l; i++)
+        {
+            char s = str.at(i);
+
+            if (s == ' ')
+            {
+                return false;
+            }
+
+            if (s < 48 || s > 57)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // validate Brand name
+    if (inputType == 1)
+    {
+        for (int i = 0; i < l; i++)
+        {
+            char s = str.at(i);
+            if (s == 10)
+            {
+                return false;
+            }
+        }
+    }
+
+    return false;
 }
 
 // default deconstructor

@@ -15,8 +15,9 @@ void Utils::log(const char *type, const char *msg, const char *filename)
     asctime_r(&res, TIMESTAMP);
 
     // Writing log in file with formatting
-    logfile << endl << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl ;
-    
+    logfile << endl
+            << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl;
+
     logfile.close();
 }
 

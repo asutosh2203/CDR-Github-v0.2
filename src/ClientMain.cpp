@@ -44,15 +44,13 @@ int main(int argc, char *argv[])
         switch (choice)
         {
         // Registration
-        case 1: // ASCII value of 1
+        case 1:
             send(clientFD, "1", 2, 0);
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
             if (strcmp(buf, "register") == 0)
             {
                 newUser.setDetails();
-                // string str = newUser.toString();
-                // send(clientFD, str.c_str(), str.length(), 0);
                 send(clientFD, &newUser, sizeof(User), 0);
             }
             memset(&buf, 0, MAX_BUFF);
@@ -75,11 +73,11 @@ int main(int argc, char *argv[])
                 cout << "Registration unsuccessful" << endl;
                 send(clientFD, "failure", strlen("failure"), 0);
             }
-            pressEnter();
+            sleep(2);
             break;
 
         // login
-        case 2: // ASCII value of 2
+        case 2:
             send(clientFD, "2", 2, 0);
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
@@ -122,7 +120,7 @@ int main(int argc, char *argv[])
                                 ut.log(INFO, "Cannot process CDR file", C_LOGFILE);
                                 cout << "CDR file cannot be processed." << endl;
                             }
-                            pressEnter();
+                            sleep(2);
                             break;
                         case 2: // Billing Info
                             if (send(clientFD, "2", 2, 0) < 0)
@@ -153,7 +151,7 @@ int main(int argc, char *argv[])
 
                                         choice = getUserChoice();
 
-                                        long MSISDN = 0;
+                                        string MSISDN;
 
                                         switch (choice)
                                         {
@@ -178,12 +176,18 @@ int main(int argc, char *argv[])
                                             {
 
                                                 cout << "Enter MSISDN to be searched: ";
-                                                cin >> MSISDN;
+                                                cin.ignore();
+                                                getline(cin, MSISDN);
 
-                                                string sdn = to_string(MSISDN);
+                                                while (!validateInput(MSISDN, 0))
+                                                {
+                                                    cout << "Invalid MSISDN." << endl;
+                                                    cout << "Enter MSISDN to be searched: ";
+                                                    getline(cin, MSISDN);
+                                                }
 
                                                 // sending msisdn to be searched
-                                                if (send(clientFD, sdn.c_str(), MAX_BUFF, 0) < 0)
+                                                if (send(clientFD, MSISDN.c_str(), MAX_BUFF, 0) < 0)
                                                 {
                                                     cout << "Could not connect to server" << endl;
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
@@ -273,7 +277,7 @@ int main(int argc, char *argv[])
                                                 // if error receive
                                                 cout << "CDR Processing Failed. Try again!" << endl;
                                             }
-                                            pressEnter();
+                                            sleep(2);
                                             break;
 
                                         case 3:
@@ -311,7 +315,7 @@ int main(int argc, char *argv[])
                                         // shows interop billing menu
                                         showMenu(-1);
                                         choice = getUserChoice();
-                                        char brandName[MAX_BUFF] = {'\0'};
+                                        string brandName;
                                         switch (choice)
                                         {
                                         case 1:
@@ -334,10 +338,19 @@ int main(int argc, char *argv[])
                                             if (strcmp(buf, "searchbrand") == 0)
                                             {
                                                 cout << "Enter brand name to be searched: ";
-                                                cin >> brandName;
+                                                cin.ignore();
+                                                getline(cin, brandName);
+
+                                                while (!validateInput(brandName, 1))
+                                                {
+                                                    cout << "Inavlid Brand name"
+                                                         << endl
+                                                         << "Enter brand name to be searched: ";
+                                                    getline(cin, brandName);
+                                                }
 
                                                 // sending brand name to be searched
-                                                if (send(clientFD, brandName, MAX_BUFF, 0) < 0)
+                                                if (send(clientFD, brandName.c_str(), brandName.length(), 0) < 0)
                                                 {
                                                     cout << "Could not connect to server" << endl;
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
@@ -421,9 +434,9 @@ int main(int argc, char *argv[])
                                             else
                                             {
                                                 // if error receive
-                                                cout << "CDR Processing Failed.  Try again!" << endl;
+                                                cout << "CDR Processing Failed. Try again!" << endl;
                                             }
-                                            pressEnter();
+                                            sleep(1);
                                             break;
 
                                         case 3:
@@ -484,12 +497,12 @@ int main(int argc, char *argv[])
                                 exit(EXIT_FAILURE);
                             }
                             cout << "Logged out successfully!" << endl;
-                            pressEnter();
+                            sleep(2);
                             break;
 
                         default:
                             cout << "Invalid Input" << endl;
-                            sleep(2);
+                            sleep(1);
                             break;
                         }
 

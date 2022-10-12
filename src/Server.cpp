@@ -55,12 +55,12 @@ void Server::acceptClient()
         cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
         ut.log(INFO, "Server accepts the client", S_LOGFILE);
 
-        // if (fork() == 0)
-        // {
-        //     initClient(clientSockfd);
-        // }
+        if (fork() == 0)
+        {
+            initClient(clientSockfd);
+        }
 
-        initClient(clientSockfd);
+        // initClient(clientSockfd);
 
         close(clientSockfd);
     }
@@ -229,7 +229,9 @@ void Server::initClient(int newfd)
                                             //
                                         }
 
-                                        cout << "MSISDN received: " << buf << endl;
+                                        if (buf[0] == '\0')
+                                            break;
+
                                         cust.processCDR();
                                         msisdnSearchResult = cust.searchMSISDN(stol(buf));
 
@@ -256,8 +258,6 @@ void Server::initClient(int newfd)
                                                 ut.log(FATAL, "recv() error", S_LOGFILE);
                                             }
 
-                                            cout << "Yes buff: " << buf << endl;
-
                                             if (strcmp(buf, "yes") == 0)
                                             {
 
@@ -282,7 +282,6 @@ void Server::initClient(int newfd)
 
                                             if (strcmp(buf, "SUCCESS") == 0)
                                             {
-                                                // cout << "Anknowledgment received: " << buf << endl;
                                                 ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
                                             }
                                             else
@@ -301,11 +300,9 @@ void Server::initClient(int newfd)
                                         break;
 
                                     case 3:
-                                        cout << "Exiting" << endl;
                                         break;
 
                                     default:
-                                        cout << "Invalid choice in CB menu" << endl;
                                         break;
                                     }
 
@@ -349,7 +346,6 @@ void Server::initClient(int newfd)
                                             //
                                         }
 
-                                        cout << "Brand name to be searched: " << buf << endl;
                                         op.processCDR();
                                         brandSearchResult = op.searchBrandName(buf);
 
@@ -364,7 +360,6 @@ void Server::initClient(int newfd)
                                         // function for sending IOSB.txt to client
                                         if (op.processCDR() && op.mapToFile())
                                         {
-                                            cout << "Proceed " << endl;
                                             // sending file to client side
                                             if (send(newfd, "sending", strlen("sending"), 0) < 0)
                                             {
@@ -377,8 +372,6 @@ void Server::initClient(int newfd)
                                             {
                                                 ut.log(FATAL, "recv() error", S_LOGFILE);
                                             }
-
-                                            cout << "IOSB yes buff: " << buf << endl;
 
                                             if (strcmp(buf, "yes") == 0)
                                             {
@@ -403,7 +396,6 @@ void Server::initClient(int newfd)
 
                                             if (strcmp(buf, "SUCCESS") == 0)
                                             {
-                                                // cout << "Anknowledgment received: " << buf << endl;
                                                 ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
                                             }
                                             else
@@ -422,11 +414,9 @@ void Server::initClient(int newfd)
                                         break;
 
                                     case 3:
-                                        cout << "Exiting..." << endl;
                                         break;
 
                                     default:
-                                        cout << "Invalid Input in IOSB menu" << endl;
                                         break;
                                     }
 
@@ -438,11 +428,9 @@ void Server::initClient(int newfd)
                                 }
                                 break;
                             case 3: // go back
-                                cout << "Exiting..." << endl;
                                 break;
 
                             default:
-                                cout << "Invalid Input in billing info" << endl;
                                 break;
                             }
 
@@ -458,7 +446,6 @@ void Server::initClient(int newfd)
                         break;
 
                     default:
-                        cout << "Invalid Input in Main menu" << endl;
                         break;
                     }
                     if (choice == 3 || buf[0] == '\0')
@@ -488,7 +475,6 @@ void Server::initClient(int newfd)
             break;
 
         default:
-            cout << "Invalid input in welcome menu" << endl;
             break;
         }
 
@@ -584,8 +570,6 @@ bool Server::processCallData(Operator &op, Customer &cust)
 int Server::sendFile(int newfd, char *filename)
 {
     char bufr[MAX_BUFF] = {'\0'};
-
-  
 
     string line;
     ifstream file;

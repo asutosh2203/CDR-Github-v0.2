@@ -7,7 +7,7 @@ using namespace std;
 #define FATAL "Fatal log"
 #define INFO "Info log"
 #define WARN "Warning log"
-#define DEBUG "Debug log" 
+#define DEBUG "Debug log"
 
 #define C_LOGFILE "logs/ClientData.log"
 #define S_LOGFILE "logs/ServerData.log"
@@ -15,9 +15,9 @@ using namespace std;
 class Utils
 {
 public:
-        //      type,       msg,        filename
+    //      type,       msg,        filename
     void log(const char *, const char *, const char *);
+
+    // converts a string to lowercase
     string toLowerCase(string);
-
 };
-
