@@ -42,10 +42,16 @@ public:
         void bind_listen();
         void acceptClient();
         void initClient(int);
+
         int userExists(User &);
+        int verifyLoginCreds(User &);
+
         void processCallData(Operator &, Customer &);
+
         int sendFile(int, char *);
+
         void log(string);
+
         void closeServer();
         struct sockaddr_in getClientAddr() { return client_addr; }
         socklen_t getClientAddrLen() { return len; }

@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
             }
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
-            cout<<"BUFFER : "<<buf<<endl;
+            cout << "BUFFER : " << buf << endl;
             if (strcmp(buf, "success") == 0)
             {
                 cout << endl;
@@ -87,9 +87,10 @@ int main(int argc, char *argv[])
             recv(clientFD, buf, sizeof(buf), 0);
             if (strcmp(buf, "login") == 0)
             {
-                newUser.setdetails();
-                string str1 = newUser.toString();
-                send(clientFD, str1.c_str(), str1.length(), 0);
+                memset(&newUser, 0, sizeof(User));
+                newUser.setDetails();
+                // string str1 = newUser.toString();
+                send(clientFD, &newUser, sizeof(User), 0);
                 memset(&buf, 0, MAX_BUFF);
                 recv(clientFD, buf, sizeof(buf), 0);
                 if (strcmp(buf, "loggedIn") == 0)
@@ -495,9 +496,16 @@ int main(int argc, char *argv[])
                         }
                     }
                 }
-                if (strcmp(buf, "failure") == 0)
+                else if (strcmp(buf, "failure") == 0)
                 {
-                    cout << "\nLogin Unsuccessful" << endl;
+                    cout << "\nLogin Unsuccessful" << endl
+                         << "Wrong username and password. Try again." << endl;
+                }
+                else
+                {
+                    cout << "\nCannot verify user at the moment"
+                         << endl
+                         << "Please try again later" << endl;
                 }
             }
             break;

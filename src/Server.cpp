@@ -68,11 +68,7 @@ void Server::acceptClient()
 
 void Server::initClient(int newfd)
 {
-    User *d1 = new User;
     User user;
-    char user_data[MAX_BUFF] = {
-        '\0',
-    };
 
     char buf[MAX_BUFF] = {
         '\0',
@@ -80,13 +76,11 @@ void Server::initClient(int newfd)
 
     int flag = 0;
 
-    fstream fs;
+    // fstream fs;
     string line;
     // MAIN MENU:
     while (1)
     {
-        char *username;
-
         // receiving choice for main menu from clien side
         recv(newfd, buf, MAX_BUFF, 0);
         // connvert buffer value to int
@@ -100,17 +94,15 @@ void Server::initClient(int newfd)
             {
                 ut.log(FATAL, "send() error", S_LOGFILE);
             }
-            // Receieving user UserID and Password in user_data
+
+            // Receieving user UserID and Password in user object
             memset(&user, 0, MAX_BUFF);
+            
             if (recv(newfd, &user, sizeof(User), 0) < 0)
             {
                 ut.log(FATAL, "recv() error", S_LOGFILE);
             }
-            user.getdetails();
-            // Stores registered users in a file
-            // char user[MAX_BUFF];
-            // strcpy(user, user_data);
-            // username = strtok(user, "|");
+           
             isExists = userExists(user);
             if (isExists == 1)
             {
@@ -142,394 +134,366 @@ void Server::initClient(int newfd)
             {
                 ut.log(FATAL, "send() error", S_LOGFILE);
             }
-            memset(user_data, 0, sizeof(user_data));
+
+            memset(&user, 0, sizeof(User));
             // Receives the login credentials
-            if (recv(newfd, &user_data, sizeof(user_data), 0) < 0)
+            if (recv(newfd, &user, sizeof(User), 0) < 0)
             {
                 ut.log(FATAL, "recv() error", S_LOGFILE);
             }
 
             // Verify if the login credentials matches the registered credentials
-            fs.open("data/registered.dat");
+            flag = verifyLoginCreds(user);
 
-            if (fs.is_open())
+            if (flag == 1)
             {
-                while (!fs.eof())
+                if (send(newfd, "loggedIn", strlen("loggedIn"), 0) < 0)
                 {
-                    getline(fs, line);
-                    if ((strcmp(user_data, line.c_str()) == 0))
+                    ut.log(FATAL, "send() error", S_LOGFILE);
+                }
+
+                while (1)
+                {
+                    // resetting the buffer after login successful
+                    memset(&buf, 0, MAX_BUFF);
+
+                    // receiving option from main menu
+                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
                     {
-                        flag = 1;
+                        ut.log(FATAL, "recv() error", S_LOGFILE);
+                        //
+                    }
+
+                    Operator op;
+                    Customer cust;
+                    bool isProcessed = true;
+                    choice = atoi(buf);
+                    switch (choice)
+                    {
+                    case 1: // Process CDR
+                        // isProcessed = op.processCDR();
+                        // op.mapToFile();
+
+                        processCallData(op, cust);
+
+                        isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
+                        break;
+
+                    case 2: // Billing info
+                        while (1)
+                        {
+                            memset(&buf, 0, MAX_BUFF);
+
+                            // receiving option from billing info menu
+                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                            {
+                                ut.log(FATAL, "recv() error", S_LOGFILE);
+                                //
+                            }
+                            choice = atoi(buf);
+                            switch (choice)
+                            {
+                            case 1: // Customer billing
+                                while (1)
+                                {
+                                    memset(&buf, 0, MAX_BUFF);
+
+                                    // receiving option from customer billing menu
+                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                    {
+                                        ut.log(FATAL, "recv() error", S_LOGFILE);
+                                        //
+                                    }
+                                    string msisdnSearchResult;
+
+                                    choice = atoi(buf);
+                                    switch (choice)
+                                    {
+                                    case 1:
+                                        if (send(newfd, "searchmsisdn", strlen("searchmsisdn"), 0) < 0)
+                                        {
+                                            ut.log(FATAL, "send() error", S_LOGFILE);
+                                            //
+                                        }
+
+                                        memset(&buf, 0, MAX_BUFF);
+
+                                        // receiving MSISDN to be searched
+                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                        {
+                                            ut.log(FATAL, "recv() error", S_LOGFILE);
+                                            //
+                                        }
+
+                                        cout << "MSISDN received: " << buf << endl;
+                                        cust.processCDR();
+                                        msisdnSearchResult = cust.searchMSISDN(stol(buf));
+
+                                        if (send(newfd, msisdnSearchResult.c_str(), msisdnSearchResult.length(), 0) < 0)
+                                        {
+                                            ut.log(FATAL, "send() error", S_LOGFILE);
+                                        }
+
+                                        break;
+                                    case 2:
+                                        if (cust.processCDR() && cust.mapToFile())
+                                        {
+
+                                            // sending file to client side
+                                            if (send(newfd, "sending", strlen("sending"), 0))
+                                            {
+                                                ut.log(FATAL, "send() error", S_LOGFILE);
+                                            }
+
+                                            memset(&buf, 0, MAX_BUFF);
+
+                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+                                            }
+
+                                            if (strcmp(buf, "yes") == 0)
+                                            {
+
+                                                if (sendFile(newfd, (char *)"data/CB.txt") == 1)
+                                                {
+                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
+                                                }
+                                                else
+                                                {
+                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
+                                                }
+                                            }
+
+                                            // Receiving acknowledgement from client
+                                            memset(&buf, 0, MAX_BUFF);
+                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+                                                break;
+                                            }
+                                            // Logging ack in logs
+
+                                            if (strcmp(buf, "SUCCESS") == 0)
+                                            {
+                                                // cout << "Anknowledgment received: " << buf << endl;
+                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
+                                            }
+                                            else
+                                            {
+                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (send(newfd, "error", strlen("error"), 0))
+                                            {
+                                                ut.log(FATAL, "send() error", S_LOGFILE);
+                                            }
+                                        }
+
+                                        break;
+
+                                    case 3:
+                                        cout << "Exiting" << endl;
+                                        break;
+
+                                    default:
+                                        cout << "Invalid choice in CB menu" << endl;
+                                        break;
+                                    }
+
+                                    if (choice == 3 || buf[0] == '\0')
+                                    {
+                                        choice = 0;
+                                        break;
+                                    }
+                                }
+                                break;
+
+                            case 2: // interoperator billing
+                                while (1)
+                                {
+
+                                    cout << "IB MENU START: " << endl;
+
+                                    memset(&buf, 0, MAX_BUFF);
+
+                                    // receiving option from interoperator billing menu
+                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                    {
+                                        ut.log(FATAL, "recv() error", S_LOGFILE);
+                                    }
+
+                                    string brandSearchResult;
+                                    choice = atoi(buf);
+
+                                    switch (choice)
+                                    {
+                                    case 1:
+                                        if (send(newfd, "searchbrand", strlen("searchbrand"), 0) < 0)
+                                        {
+                                            ut.log(FATAL, "send() error", S_LOGFILE);
+                                            //
+                                        }
+
+                                        memset(&buf, 0, MAX_BUFF);
+
+                                        // receiving brand name to be searched
+                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                        {
+                                            ut.log(FATAL, "recv() error", S_LOGFILE);
+                                            //
+                                        }
+
+                                        cout << "Brand name to be searched: " << buf << endl;
+                                        op.processCDR();
+                                        brandSearchResult = op.searchBrandName(buf);
+
+                                        if (send(newfd, brandSearchResult.c_str(), brandSearchResult.length(), 0) < 0)
+                                        {
+                                            ut.log(FATAL, "send() error", S_LOGFILE);
+                                        }
+
+                                        break;
+
+                                    case 2:
+
+                                        // function for sending IOSB.txt to client
+
+                                        if (op.processCDR() && op.mapToFile())
+                                        {
+                                            // sending file to client side
+                                            if (send(newfd, "sending", strlen("sending"), 0))
+                                            {
+                                                ut.log(FATAL, "send() error", S_LOGFILE);
+                                            }
+
+                                            memset(&buf, 0, MAX_BUFF);
+
+                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+                                            }
+
+                                            if (strcmp(buf, "yes") == 0)
+                                            {
+                                                cout << "in if containing sendfile" << endl;
+                                                if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
+                                                {
+                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
+                                                }
+                                                else
+                                                {
+                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
+                                                }
+                                            }
+
+                                            // Receiving acknowledgement from client
+                                            memset(&buf, 0, MAX_BUFF);
+                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+                                            {
+                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+                                                break;
+                                            }
+                                            // Logging ack in logs
+
+                                            if (strcmp(buf, "SUCCESS") == 0)
+                                            {
+                                                // cout << "Anknowledgment received: " << buf << endl;
+                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
+                                            }
+                                            else
+                                            {
+                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (send(newfd, "error", strlen("error"), 0))
+                                            {
+                                                ut.log(FATAL, "send() error", S_LOGFILE);
+                                            }
+                                        }
+
+                                        break;
+
+                                    case 3:
+                                        cout << "Exiting..." << endl;
+                                        break;
+
+                                    default:
+                                        cout << "Invalid Input in IOSB menu" << endl;
+                                        break;
+                                    }
+
+                                    if (choice == 3 || buf[0] == '\0')
+                                    {
+                                        choice = 0;
+                                        break;
+                                    }
+                                }
+
+                            case 3: // go back
+                                cout << "Exiting..." << endl;
+                                break;
+
+                            default:
+                                cout << "Invalid Input in billing info" << endl;
+                                break;
+                            }
+
+                            if (choice == 3 || buf[0] == '\0')
+                            {
+                                choice = 0;
+                                break;
+                            }
+                        }
+                        break;
+
+                    case 3: // Logout
+                        break;
+
+                    default:
+                        cout << "Invalid Input in Main menu" << endl;
+                        break;
+                    }
+                    if (choice == 3 || buf[0] == '\0')
+                    {
+                        choice = 0;
                         break;
                     }
                 }
-                if (flag == 1)
-                {
-                    if (send(newfd, "loggedIn", strlen("loggedIn"), 0) < 0)
-                    {
-                        ut.log(FATAL, "send() error", S_LOGFILE);
-                    }
-
-                    while (1)
-                    {
-                        // resetting the buffer after login successful
-                        memset(&buf, 0, MAX_BUFF);
-
-                        // receiving option from main menu
-                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                        {
-                            ut.log(FATAL, "recv() error", S_LOGFILE);
-                            //
-                        }
-
-                        cout << "line 173 buf" << buf << endl;
-
-                        Operator op;
-                        Customer cust;
-                        bool isProcessed = true;
-                        choice = atoi(buf);
-                        switch (choice)
-                        {
-                        case 1: // Process CDR
-                            // isProcessed = op.processCDR();
-                            // op.mapToFile();
-
-                            processCallData(op, cust);
-
-                            isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
-                            break;
-
-                        case 2: // Billing info
-                            while (1)
-                            {
-                                memset(&buf, 0, MAX_BUFF);
-
-                                // receiving option from billing info menu
-                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                {
-                                    ut.log(FATAL, "recv() error", S_LOGFILE);
-                                    //
-                                }
-                                choice = atoi(buf);
-                                switch (choice)
-                                {
-                                case 1: // Customer billing
-                                    while (1)
-                                    {
-                                        memset(&buf, 0, MAX_BUFF);
-
-                                        // receiving option from customer billing menu
-                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                        {
-                                            ut.log(FATAL, "recv() error", S_LOGFILE);
-                                            //
-                                        }
-                                        string msisdnSearchResult;
-                                        bool isCBgen = true;
-
-                                        choice = atoi(buf);
-                                        switch (choice)
-                                        {
-                                        case 1:
-                                            if (send(newfd, "searchmsisdn", strlen("searchmsisdn"), 0) < 0)
-                                            {
-                                                ut.log(FATAL, "send() error", S_LOGFILE);
-                                                //
-                                            }
-
-                                            memset(&buf, 0, MAX_BUFF);
-
-                                            // receiving MSISDN to be searched
-                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                            {
-                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                //
-                                            }
-
-                                            cout << "MSISDN received: " << buf << endl;
-                                            cust.processCDR();
-                                            msisdnSearchResult = cust.searchMSISDN(stol(buf));
-
-                                            if (send(newfd, msisdnSearchResult.c_str(), msisdnSearchResult.length(), 0) < 0)
-                                            {
-                                                ut.log(FATAL, "send() error", S_LOGFILE);
-                                            }
-
-                                            break;
-                                        case 2:
-                                            if (cust.processCDR() && cust.mapToFile())
-                                            {
-
-                                                // sending file to client side
-                                                if (send(newfd, "sending", strlen("sending"), 0))
-                                                {
-                                                    ut.log(FATAL, "send() error", S_LOGFILE);
-                                                }
-
-                                                memset(&buf, 0, MAX_BUFF);
-
-                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                                {
-                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                }
-
-                                                string buffer = buf;
-                                                buffer = buffer.substr(0, 3);
-
-                                                if (strcmp(buffer.c_str(), "yes") == 0)
-                                                {
-
-                                                    if (sendFile(newfd, (char *)"data/CB.txt") == 1)
-                                                    {
-                                                        ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
-                                                    }
-                                                    else
-                                                    {
-                                                        ut.log(FATAL, "File not accessible.", S_LOGFILE);
-                                                    }
-                                                }
-
-                                                cout << "CHECKING ACK SECTION" << endl;
-
-                                                // Receiving acknowledgement from client
-                                                memset(&buf, 0, MAX_BUFF);
-                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                                {
-                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                    break;
-                                                }
-                                                // Logging ack in logs
-
-                                                if (strcmp(buf, "SUCCESS") == 0)
-                                                {
-                                                    // cout << "Anknowledgment received: " << buf << endl;
-                                                    ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
-                                                }
-                                                else
-                                                {
-                                                    ut.log(INFO, "Client does not received the file", S_LOGFILE);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (send(newfd, "error", strlen("error"), 0))
-                                                {
-                                                    ut.log(FATAL, "send() error", S_LOGFILE);
-                                                }
-                                            }
-
-                                            break;
-
-                                        case 3:
-                                            cout << "Exiting" << endl;
-                                            break;
-
-                                        default:
-                                            cout << "Invalid choice in CB menu" << endl;
-                                            break;
-                                        }
-
-                                        if (choice == 3 || buf[0] == '\0')
-                                        {
-                                            choice = 0;
-                                            break;
-                                        }
-                                    }
-                                    break;
-
-                                case 2: // interoperator billing
-                                    while (1)
-                                    {
-
-                                        cout << "IB MENU START: " << endl;
-
-                                        memset(&buf, 0, MAX_BUFF);
-
-                                        // receiving option from interoperator billing menu
-                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                        {
-                                            ut.log(FATAL, "recv() error", S_LOGFILE);
-                                            //
-                                        }
-
-                                        string brandSearchResult;
-                                        choice = atoi(buf);
-
-                                        cout << "choice 339 line: " << buf << endl;
-
-                                        switch (choice)
-                                        {
-                                        case 1:
-                                            if (send(newfd, "searchbrand", strlen("searchbrand"), 0) < 0)
-                                            {
-                                                ut.log(FATAL, "send() error", S_LOGFILE);
-                                                //
-                                            }
-
-                                            memset(&buf, 0, MAX_BUFF);
-
-                                            // receiving brand name to be searched
-                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                            {
-                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                //
-                                            }
-
-                                            cout << "Brand name to be searched: " << buf << endl;
-                                            op.processCDR();
-                                            brandSearchResult = op.searchBrandName(buf);
-
-                                            if (send(newfd, brandSearchResult.c_str(), brandSearchResult.length(), 0) < 0)
-                                            {
-                                                ut.log(FATAL, "send() error", S_LOGFILE);
-                                            }
-
-                                            break;
-
-                                        case 2:
-
-                                            // function for sending IOSB.txt to client
-
-                                            if (op.processCDR() && op.mapToFile())
-                                            {
-                                                cout << "at line 373" << endl;
-                                                // sending file to client side
-                                                if (send(newfd, "sending", strlen("sending"), 0))
-                                                {
-                                                    ut.log(FATAL, "send() error", S_LOGFILE);
-                                                }
-
-                                                memset(&buf, 0, MAX_BUFF);
-
-                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                                {
-                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                }
-
-                                                cout << buf << endl; // --> yesopensuccess
-
-                                                string buffer = buf;
-                                                buffer = buffer.substr(0, 3);
-
-                                                cout << buffer << endl; // --> yes
-
-                                                cout << strcmp(buffer.c_str(), "yes") << endl; // --> 0
-
-                                                if (strcmp(buffer.c_str(), "yes") == 0)
-                                                {
-                                                    cout << "in if containing sendfile" << endl;
-                                                    if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
-                                                    {
-                                                        ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
-                                                    }
-                                                    else
-                                                    {
-                                                        ut.log(FATAL, "File not accessible.", S_LOGFILE);
-                                                    }
-                                                }
-
-                                                cout << "CHECKING ACK SECTION" << endl;
-
-                                                // Receiving acknowledgement from client
-                                                memset(&buf, 0, MAX_BUFF);
-                                                if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-                                                {
-                                                    ut.log(FATAL, "recv() error", S_LOGFILE);
-                                                    break;
-                                                }
-                                                // Logging ack in logs
-
-                                                if (strcmp(buf, "SUCCESS") == 0)
-                                                {
-                                                    // cout << "Anknowledgment received: " << buf << endl;
-                                                    ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
-                                                }
-                                                else
-                                                {
-                                                    ut.log(INFO, "Client does not received the file", S_LOGFILE);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (send(newfd, "error", strlen("error"), 0))
-                                                {
-                                                    ut.log(FATAL, "send() error", S_LOGFILE);
-                                                }
-                                            }
-
-                                            break;
-
-                                        case 3:
-                                            cout << "Exiting..." << endl;
-                                            break;
-
-                                        default:
-                                            cout << "Invalid Input in IOSB menu" << endl;
-                                            break;
-                                        }
-
-                                        if (choice == 3 || buf[0] == '\0')
-                                        {
-                                            choice = 0;
-                                            break;
-                                        }
-                                    }
-
-                                case 3: // go back
-                                    cout << "Exiting..." << endl;
-                                    break;
-
-                                default:
-                                    cout << "Invalid Input in billing info" << endl;
-                                    break;
-                                }
-
-                                if (choice == 3 || buf[0] == '\0')
-                                {
-                                    choice = 0;
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case 3: // Logout
-                            break;
-
-                        default:
-                            cout << "Invalid Input in Main menu" << endl;
-                            break;
-                        }
-                        if (choice == 3 || buf[0] == '\0')
-                        {
-                            choice = 0;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    if (send(newfd, "failure", 8, 0) < 0)
-                    {
-                        ut.log(FATAL, "send() error", S_LOGFILE);
-                    }
-                }
-                // line = "";
-                fs.close();
-                break;
-
-            case 3:
-                exit(EXIT_SUCCESS);
-
-            default:
-                cout << "Invalid input in welcome menu" << endl;
-                break;
             }
+            else if (flag == 0)
+            {
+                if (send(newfd, "failure", 8, 0) < 0)
+                {
+                    ut.log(FATAL, "send() error", S_LOGFILE);
+                }
+            }
+            else
+            {
+                if (send(newfd, "DBerror", 8, 0) < 0)
+                {
+                    ut.log(FATAL, "send() error", S_LOGFILE);
+                }
+            }
+            break;
+
+        case 3:
+            exit(EXIT_SUCCESS);
+
+        default:
+            cout << "Invalid input in welcome menu" << endl;
+            break;
         }
 
         if (buf[0] == '\0')
             break;
     }
 }
+
 // return -1 on database error, 1 on user exists, 0 on user not exists
 int Server::userExists(User &newUser)
 {
@@ -559,6 +523,35 @@ int Server::userExists(User &newUser)
     return 0;
 }
 
+// return 1 on successful login, 0 on unsuccessful and -1 on DB error
+int Server::verifyLoginCreds(User &newUser)
+{
+    User user;
+    fstream userDB;
+
+    userDB.open("data/registered.dat", ios::out | ios::in);
+
+    if (userDB)
+    {
+        while (!userDB.eof())
+        {
+
+            userDB.read((char *)&user, sizeof(user));
+
+            if ((strcmp(newUser.getUsername(), user.getUsername()) == 0) && (strcmp(newUser.getPassword(), user.getPassword()) == 0))
+            {
+                return 1;
+            }
+        }
+    }
+    else
+    {
+        return -1;
+    }
+
+    return 0;
+}
+
 void Server::processCallData(Operator &op, Customer &cust)
 {
     thread t1(&Operator::processAndCreateFile, &op);
@@ -573,8 +566,6 @@ void Server::processCallData(Operator &op, Customer &cust)
 
 int Server::sendFile(int newfd, char *filename)
 {
-
-    cout << "sendfile called" << endl;
     char bufr[MAX_BUFF] = {'\0'};
 
     if (recv(newfd, bufr, MAX_BUFF, 0) < 0)
@@ -582,8 +573,6 @@ int Server::sendFile(int newfd, char *filename)
         ut.log("Fatal log: ", "recv() error", "logs/ServerData.log");
         return 0;
     }
-
-    cout << "bufr in sendfile: " << bufr << endl;
 
     string line;
     ifstream file;
@@ -609,8 +598,6 @@ int Server::sendFile(int newfd, char *filename)
             ut.log(FATAL, "EOF send() error", S_LOGFILE);
             return 0;
         }
-
-        cout << "end of while" << endl;
     }
     else
     {

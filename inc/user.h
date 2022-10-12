@@ -18,7 +18,7 @@ private:
 
 public:
 
-    void setdetails();
+    void setDetails();
     void registerDetails();
     bool validateUsername(string);
     bool validatePassword(char *);
@@ -27,7 +27,7 @@ public:
     void setPassword(char *s) { strcpy(password, s); }
     char *getUsername() { return username; }
     char *getPassword() { return password; }
-    void getdetails() { cout << "Username:" <<username << '\n'
+    void getDetails() { cout << "Username:" <<username << '\n'
                              << "Password: "<<password << endl; }
     string toString();
     void log(string);

@@ -2,7 +2,7 @@
 
 /*This function is used to get the user ID and Password
  from the client for registration and login*/
-void User::setdetails()
+void User::setDetails()
 {
     cout << "Enter User name: ";
     cin >> username;
