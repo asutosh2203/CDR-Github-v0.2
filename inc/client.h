@@ -15,6 +15,9 @@
 #include <string> // std::string
 #include <stdlib.h>
 
+#include <user.h>
+#include <utils.h>
+
 #define IOSB_DOWNLOAD "data/downloads/IOSB.txt"
 #define CB_DOWNLOAD "data/downloads/CB.txt"
 
@@ -26,7 +29,6 @@ class Client
 {
 private:
     int sockfd;
-    int ret;
     int port;
     char ipAddr[20];
     struct sockaddr_in serverAddr;

@@ -50,7 +50,6 @@ $(OBJ)/utils.o: $(SRC)/utils.cpp
 	mv *.o $(OBJ)/
 
 clean:
-	rm -f a.out Server Client
 	rm -f $(BIN)/Server $(BIN)/Client
 	rm -f $(OBJ)/*.o
 	@echo "Cleaning Done!"

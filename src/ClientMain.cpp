@@ -1,7 +1,4 @@
 #include <client.h>
-#include <user.h>
-#include <interoperator.h>
-#include <utils.h>
 
 Utils ut;
 Client newClient;
@@ -29,8 +26,6 @@ int main(int argc, char *argv[])
     signal(SIGINT, signalHandler);
     signal(SIGTSTP, signalHandler);
 
-    Operator op;
-
     newClient.createSocket();
     newClient.clientConnect();
 
@@ -50,8 +45,8 @@ int main(int argc, char *argv[])
         {
         // Registration
         case 1: // ASCII value of 1
-            memset(&buf, 0, MAX_BUFF);
             send(clientFD, "1", 2, 0);
+            memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
             if (strcmp(buf, "register") == 0)
             {
@@ -108,14 +103,14 @@ int main(int argc, char *argv[])
                         choice = getUserChoice();
                         switch (choice)
                         {
-                        case 1:
+                        case 1: // Process CDR
                             if (send(clientFD, "1", 2, 0) < 0)
                             {
                                 cout << "Could not connect to server" << endl;
                                 ut.log(FATAL, "send() error", C_LOGFILE);
                                 exit(EXIT_FAILURE);
                             }
-                            op.processCDR();
+                            //op.processCDR();
                             memset(&buf, 0, MAX_BUFF);
                             recv(clientFD, buf, sizeof(buf), 0);
                             if (strcmp(buf, "processed") == 0)
@@ -129,7 +124,7 @@ int main(int argc, char *argv[])
                             }
                             pressEnter();
                             break;
-                        case 2:
+                        case 2: // Billing Info
                             if (send(clientFD, "2", 2, 0) < 0)
                             {
                                 cout << "Could not connect to server" << endl;
@@ -139,16 +134,12 @@ int main(int argc, char *argv[])
                             while (1)
                             {
                                 showMenu(2);
-                                /*
-                                cout << "====== BILLING INFO MENU ======" << endl;
-                                cout << "\t1. Customer Billing" << endl;
-                                cout << "\t2. Interoperator Billing" << endl;
-                                cout << "\t3. Exit" << endl;
-                                */
+                                //cout << "====== BILLING INFO MENU ======" << endl;
+                                
                                 choice = getUserChoice();
                                 switch (choice)
                                 {
-                                case 1:
+                                case 1: //Customer Billing
                                     if (send(clientFD, "1", 2, 0) < 0)
                                     {
                                         cout << "Could not connect to server" << endl;
@@ -319,7 +310,6 @@ int main(int argc, char *argv[])
                                         showMenu(-1);
                                         choice = getUserChoice();
                                         char brandName[MAX_BUFF] = {'\0'};
-                                        cout << "choice 322 line: " << choice << endl;
                                         switch (choice)
                                         {
                                         case 1:
@@ -363,9 +353,9 @@ int main(int argc, char *argv[])
                                                 cout << buf << endl;
                                             }
                                             pressEnter();
-                                            break;
-
-                                        case 2:
+                                            break; //Brand Search end
+                                            
+                                        case 2: //Download IOSB.txt
 
                                             if (send(clientFD, "2", 2, 0) < 0)
                                             {
@@ -385,7 +375,7 @@ int main(int argc, char *argv[])
                                             if (strcmp(buf, "sending") == 0)
                                             {
 
-                                                if (send(clientFD, "yes", strlen("yes"), 0))
+                                                if (send(clientFD, "yes", strlen("yes"), 0)<0)
                                                 {
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
                                                     // exit(EXIT_FAILURE);
@@ -442,7 +432,10 @@ int main(int argc, char *argv[])
                                             }
                                             cout << "Going back..." << endl;
                                             sleep(2);
+                                            break;
+
                                         default:
+                                            cout<<"Invalid Input"<<endl;
                                             break;
                                         }
 
@@ -478,6 +471,7 @@ int main(int argc, char *argv[])
                                 }
                             }
                             break;
+
                         case 3:
                             if (send(clientFD, "3", 2, 0) < 0)
                             {
@@ -488,6 +482,7 @@ int main(int argc, char *argv[])
                             cout << "Logged out successfully!" << endl;
                             pressEnter();
                             break;
+
                         default:
                             cout << "Invalid Input" << endl;
                             sleep(2);

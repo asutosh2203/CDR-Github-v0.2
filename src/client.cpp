@@ -1,5 +1,5 @@
 #include <client.h>
-#include <utils.h>
+
 
 Utils clientUtil;
 
@@ -86,13 +86,14 @@ void Client::createSocket()
 // connects client to the server
 void Client::clientConnect()
 {
-    ret = connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr));
-    if (ret < 0)
+    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr))< 0)
     {
         perror("connect() error: ");
         exit(EXIT_FAILURE);
     }
-    cout << "[+]Client connect to the server" << endl;
+    clientUtil.log(INFO, "Connection Established", C_LOGFILE);
+    cout<<"\t\t\t\t WELCOME \n";
+            
 }
 
 int Client::writeToFile(int clientFD, char *filename)

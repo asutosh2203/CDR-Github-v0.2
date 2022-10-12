@@ -82,6 +82,7 @@ void Server::initClient(int newfd)
     while (1)
     {
         // receiving choice for main menu from clien side
+        memset(&buf, 0, MAX_BUFF);
         recv(newfd, buf, MAX_BUFF, 0);
 
         // connvert buffer value to int
@@ -243,7 +244,7 @@ void Server::initClient(int newfd)
                                         {
 
                                             // sending file to client side
-                                            if (send(newfd, "sending", strlen("sending"), 0))
+                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
                                             {
                                                 ut.log(FATAL, "send() error", S_LOGFILE);
                                             }
@@ -362,8 +363,9 @@ void Server::initClient(int newfd)
                                         // function for sending IOSB.txt to client
                                         if (op.processCDR() && op.mapToFile())
                                         {
+                                            cout << "Procced " << endl;
                                             // sending file to client side
-                                            if (send(newfd, "sending", strlen("sending"), 0))
+                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
                                             {
                                                 ut.log(FATAL, "send() error", S_LOGFILE);
                                             }
@@ -374,7 +376,6 @@ void Server::initClient(int newfd)
                                             {
                                                 ut.log(FATAL, "recv() error", S_LOGFILE);
                                             }
-
                                             if (strcmp(buf, "yes") == 0)
                                             {
                                                 if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
@@ -431,7 +432,7 @@ void Server::initClient(int newfd)
                                         break;
                                     }
                                 }
-
+                                break;
                             case 3: // go back
                                 cout << "Exiting..." << endl;
                                 break;
