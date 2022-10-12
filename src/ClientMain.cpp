@@ -62,22 +62,25 @@ int main(int argc, char *argv[])
             }
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
-            cout << "BUFFER : " << buf << endl;
             if (strcmp(buf, "success") == 0)
             {
                 cout << endl;
                 cout << "Registration successful" << endl;
+                send(clientFD, "success", strlen("success"), 0);
             }
             else if (strcmp(buf, "exists") == 0)
             {
                 cout << endl;
                 cout << "Username already exists.\nCreate a new username or login with your existing account." << endl;
+                send(clientFD, "failure", strlen("failure"), 0);
             }
             else
             {
                 cout << endl;
                 cout << "Registration unsuccessful" << endl;
+                send(clientFD, "failure", strlen("failure"), 0);
             }
+            pressEnter();
             break;
 
         // login
@@ -85,6 +88,7 @@ int main(int argc, char *argv[])
             send(clientFD, "2", 2, 0);
             memset(&buf, 0, MAX_BUFF);
             recv(clientFD, buf, sizeof(buf), 0);
+
             if (strcmp(buf, "login") == 0)
             {
                 memset(&newUser, 0, sizeof(User));
@@ -99,6 +103,7 @@ int main(int argc, char *argv[])
 
                     while (1)
                     {
+                        sleep(2);
                         showMenu(1);
                         choice = getUserChoice();
                         switch (choice)
@@ -119,9 +124,10 @@ int main(int argc, char *argv[])
                             }
                             else
                             {
-                                ut.log(FATAL, "Cannot process CDR file", C_LOGFILE);
+                                ut.log(INFO, "Cannot process CDR file", C_LOGFILE);
                                 cout << "CDR file cannot be processed." << endl;
                             }
+                            pressEnter();
                             break;
                         case 2:
                             if (send(clientFD, "2", 2, 0) < 0)
@@ -156,7 +162,7 @@ int main(int argc, char *argv[])
 
                                         choice = getUserChoice();
 
-                                        int MSISDN = 0;
+                                        long MSISDN = 0;
 
                                         switch (choice)
                                         {
@@ -206,9 +212,7 @@ int main(int argc, char *argv[])
                                                 cout << buf << endl;
                                             }
 
-                                            cout << "Press ENTER to continue";
-                                            cin.ignore();
-                                            getchar();
+                                            pressEnter();
 
                                             // for searching by MSISDN
                                             break;
@@ -274,10 +278,9 @@ int main(int argc, char *argv[])
                                             else
                                             {
                                                 // if error receive
-
                                                 cout << "CDR Processing Failed.  Try again!" << endl;
                                             }
-
+                                            pressEnter();
                                             break;
 
                                         case 3:
@@ -288,6 +291,7 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
                                             cout << "Going back..." << endl;
+                                            sleep(2);
                                             break;
 
                                         default:
@@ -358,20 +362,18 @@ int main(int argc, char *argv[])
 
                                                 cout << buf << endl;
                                             }
-                                            cout << "Press ENTER to continue";
-                                            cin.ignore();
-                                            getchar();
+                                            pressEnter();
                                             break;
 
                                         case 2:
-                                            cout << "Case 2 before send" << endl;
+
                                             if (send(clientFD, "2", 2, 0) < 0)
                                             {
                                                 cout << "Could not connect to server" << endl;
                                                 ut.log(FATAL, "send() error", C_LOGFILE);
                                                 exit(EXIT_FAILURE);
                                             }
-                                            cout << "Case 2 after send" << endl;
+
                                             memset(&buf, 0, MAX_BUFF);
                                             if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
                                             {
@@ -425,10 +427,9 @@ int main(int argc, char *argv[])
                                             else
                                             {
                                                 // if error receive
-
                                                 cout << "CDR Processing Failed.  Try again!" << endl;
                                             }
-
+                                            pressEnter();
                                             break;
 
                                         case 3:
@@ -440,7 +441,7 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
                                             cout << "Going back..." << endl;
-
+                                            sleep(2);
                                         default:
                                             break;
                                         }
@@ -461,10 +462,12 @@ int main(int argc, char *argv[])
                                         exit(EXIT_FAILURE);
                                     }
                                     cout << "Going back..." << endl;
+                                    sleep(2);
                                     break;
 
                                 default:
                                     cout << "Invalid Input" << endl;
+                                    sleep(2);
                                     break;
                                 }
 
@@ -483,9 +486,11 @@ int main(int argc, char *argv[])
                                 exit(EXIT_FAILURE);
                             }
                             cout << "Logged out successfully!" << endl;
+                            pressEnter();
                             break;
                         default:
                             cout << "Invalid Input" << endl;
+                            sleep(2);
                             break;
                         }
 
@@ -498,20 +503,28 @@ int main(int argc, char *argv[])
                 }
                 else if (strcmp(buf, "failure") == 0)
                 {
+                    // wrong credentials
                     cout << "\nLogin Unsuccessful" << endl
                          << "Wrong username and password. Try again." << endl;
                 }
                 else
                 {
+                    // for handling db error
                     cout << "\nCannot verify user at the moment"
                          << endl
                          << "Please try again later" << endl;
                 }
             }
+            else
+            {
+                cout << "Cannot login right now, try again later" << endl;
+            }
+            sleep(2);
             break;
         case 3: // ASCII value of 3
             send(clientFD, "3", 2, 0);
             cout << "You've exited sucessfully!" << endl;
+            sleep(2);
             exit(EXIT_SUCCESS);
         }
     }

@@ -55,12 +55,12 @@ void Server::acceptClient()
         cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
         ut.log(INFO, "Server accepts the client", S_LOGFILE);
 
-        if (fork() == 0)
-        {
-            initClient(clientSockfd);
-        }
+        // if (fork() == 0)
+        // {
+        //     initClient(clientSockfd);
+        // }
 
-        // initClient(clientSockfd);
+        initClient(clientSockfd);
 
         close(clientSockfd);
     }
@@ -83,6 +83,7 @@ void Server::initClient(int newfd)
     {
         // receiving choice for main menu from clien side
         recv(newfd, buf, MAX_BUFF, 0);
+
         // connvert buffer value to int
         int choice = atoi(buf);
         int isExists = -1;
@@ -127,6 +128,8 @@ void Server::initClient(int newfd)
                     ut.log(FATAL, "send() error", S_LOGFILE);
                 }
             }
+            memset(buf, 0, MAX_BUFF);
+            recv(newfd, buf, MAX_BUFF, 0);
             break;
         // login
         case 2:
@@ -160,7 +163,9 @@ void Server::initClient(int newfd)
                     // receiving option from main menu
                     if (recv(newfd, buf, MAX_BUFF, 0) < 0)
                     {
-                        ut.log(FATAL, "recv() error", S_LOGFILE);
+
+                        if (flag == 1)
+                            ut.log(FATAL, "recv() error", S_LOGFILE);
                         //
                     }
 
@@ -312,9 +317,6 @@ void Server::initClient(int newfd)
                             case 2: // interoperator billing
                                 while (1)
                                 {
-
-                                    cout << "IB MENU START: " << endl;
-
                                     memset(&buf, 0, MAX_BUFF);
 
                                     // receiving option from interoperator billing menu
@@ -358,7 +360,6 @@ void Server::initClient(int newfd)
                                     case 2:
 
                                         // function for sending IOSB.txt to client
-
                                         if (op.processCDR() && op.mapToFile())
                                         {
                                             // sending file to client side
@@ -376,7 +377,6 @@ void Server::initClient(int newfd)
 
                                             if (strcmp(buf, "yes") == 0)
                                             {
-                                                cout << "in if containing sendfile" << endl;
                                                 if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
                                                 {
                                                     ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
@@ -480,7 +480,7 @@ void Server::initClient(int newfd)
             break;
 
         case 3:
-            exit(EXIT_SUCCESS);
+            break;
 
         default:
             cout << "Invalid input in welcome menu" << endl;

@@ -50,7 +50,7 @@ bool User::validatePassword(char *pass)
     bool isValid = 0;
 
     // check storedPass
-    if (strlen(pass) > 6 && strlen(pass) <= 20)
+    if (strlen(pass) >= 6 && strlen(pass) <= 20)
         // set isValid
         isValid = 1;
 
@@ -66,7 +66,7 @@ void User::registerDetails()
 
     while (!validateUsername(user))
     {
-        cout << "!!!!!!!!!!INVALID USERNAME!!!!!!!!!!" << endl
+        cout << "INVALID USERNAME!" << endl
              << "Username must contains only {A-Z, a-z, 0-9, '.', '_'}and length must range from [6-20]." << endl;
         cout << "Enter User name: ";
 
@@ -79,7 +79,7 @@ void User::registerDetails()
 
     while (!validatePassword(storedPass))
     {
-        cout << "!!!!!!!!!!INVALID PASSWORD!!!!!!!!!!" << endl
+        cout << "INVALID PASSWORD!" << endl
              << "Password length must range from [6-20]." << endl;
         storedPass = getpass("Enter Password: ");
     }
@@ -88,13 +88,13 @@ void User::registerDetails()
 }
 
 // This function is used to store the registered users data into a file
-void User::toDatabase(User& newUser)
+void User::toDatabase(User &newUser)
 {
     fstream userDB;
 
     // file.write((const char*)this, sizeof(this));
 
-    userDB.open("data/registered.dat",ios::out| ios::app);
+    userDB.open("data/registered.dat", ios::out | ios::app);
     if (userDB)
     {
         userDB.write(reinterpret_cast<char *>(&newUser), sizeof(newUser));
@@ -103,7 +103,7 @@ void User::toDatabase(User& newUser)
     else
     {
         perror("file()");
-        //log("File cannot be opened");
+        // log("File cannot be opened");
     }
 
     userDB.close();

@@ -19,7 +19,7 @@ $(OBJ)/ServerMain.o: $(SRC)/ServerMain.cpp
 	mv *.o $(OBJ)/
 
 $(OBJ)/Server.o: $(SRC)/Server.cpp
-	$(CC) $(CPPFLAGS) $(SRC)/Server.cpp -I $(INC)
+	$(CC) $(CPPFLAGS) $(SRC)/Server.cpp -I $(INC) -lpthread
 	mv *.o $(OBJ)/
 
 $(BIN)/Client: $(OBJ)/ClientMain.o $(OBJ)/client.o $(OBJ)/user.o $(OBJ)/interoperator.o $(OBJ)/utils.o $(OBJ)/customer.o

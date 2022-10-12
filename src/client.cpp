@@ -19,8 +19,8 @@ Client::Client(int port, char *ipAddr)
 
 void showMenu(int menuType)
 {
-    // sleep(2);
-    // system("clear");
+    system("clear");
+
     //  main menu
     if (menuType == 0)
     {
@@ -202,8 +202,14 @@ void clientErrExit()
     exit(EXIT_FAILURE);
 }
 
+void pressEnter()
+{
+    cout << "Press ENTER to continue";
+    cin.ignore();
+    getchar();
+}
+
 // default deconstructor
 Client::~Client()
 {
 }
-
