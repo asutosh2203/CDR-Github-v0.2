@@ -1,15 +1,17 @@
 #include <user.h>
 
-/*This function is used to get the user ID and Password
- from the client for registration and login*/
-void User::setDetails()
-{
-    cout << "Enter User name: ";
-    cin >> username;
+// /*This function is used to get the user ID and Password
+//  from the client for registration and login*/
+// void User::setDetails()
+// {
+//     cout << "Enter User name: ";
+//     cin >> username;
 
-    char *storedPass = getpass("Enter Password: ");
-    setPassword(storedPass);
-}
+//     // asutosh 2203 
+
+//     char *storedPass = getpass("Enter Password: ");
+//     setPassword(storedPass);
+// }
 
 bool User::validateUsername(string user)
 {
@@ -57,7 +59,7 @@ bool User::validatePassword(char *pass)
     return isValid;
 }
 
-void User::registerDetails()
+void User::setDetails()
 {
     string user;
     cout << "Enter User name: ";
@@ -67,7 +69,7 @@ void User::registerDetails()
     while (!validateUsername(user))
     {
         cout << "INVALID USERNAME!" << endl
-             << "Username must contains only {A-Z, a-z, 0-9, '.', '_'}and length must range from [6-20]." << endl;
+             << "Username must contains only {A-Z, a-z, 0-9, '.', '_'} and length must range from [6-20]." << endl;
         cout << "Enter User name: ";
 
         getline(cin, user);

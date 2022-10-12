@@ -19,7 +19,7 @@ private:
 public:
 
     void setDetails();
-    void registerDetails();
+    // void registerDetails();
     bool validateUsername(string);
     bool validatePassword(char *);
     void toDatabase(User &);

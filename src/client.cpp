@@ -106,11 +106,7 @@ int Client::writeToFile(int clientFD, char *filename)
 
     if (file.is_open())
     {
-        if (send(clientFD, "openSuccess", strlen("openSuccess"), 0) < 0)
-        {
-            clientUtil.log(FATAL, "openSuccess send() error", C_LOGFILE);
-            return 0;
-        }
+      
 
         // infinite loop to recevie data from server and store it in a file on client side
         while (true)
@@ -140,10 +136,6 @@ int Client::writeToFile(int clientFD, char *filename)
     }
     else
     {
-        if (send(clientFD, "openErr", strlen("openErr"), 0) < 0)
-        {
-            clientUtil.log(FATAL, "send() error", C_LOGFILE);
-        }
         return 0;
     }
 

@@ -256,6 +256,8 @@ void Server::initClient(int newfd)
                                                 ut.log(FATAL, "recv() error", S_LOGFILE);
                                             }
 
+                                            cout << "Yes buff: " << buf << endl;
+
                                             if (strcmp(buf, "yes") == 0)
                                             {
 
@@ -359,11 +361,10 @@ void Server::initClient(int newfd)
                                         break;
 
                                     case 2:
-
                                         // function for sending IOSB.txt to client
                                         if (op.processCDR() && op.mapToFile())
                                         {
-                                            cout << "Procced " << endl;
+                                            cout << "Proceed " << endl;
                                             // sending file to client side
                                             if (send(newfd, "sending", strlen("sending"), 0) < 0)
                                             {
@@ -376,6 +377,9 @@ void Server::initClient(int newfd)
                                             {
                                                 ut.log(FATAL, "recv() error", S_LOGFILE);
                                             }
+
+                                            cout << "IOSB yes buff: " << buf << endl;
+
                                             if (strcmp(buf, "yes") == 0)
                                             {
                                                 if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
@@ -581,17 +585,13 @@ int Server::sendFile(int newfd, char *filename)
 {
     char bufr[MAX_BUFF] = {'\0'};
 
-    if (recv(newfd, bufr, MAX_BUFF, 0) < 0)
-    {
-        ut.log("Fatal log: ", "recv() error", "logs/ServerData.log");
-        return 0;
-    }
+  
 
     string line;
     ifstream file;
     file.open(filename);
 
-    if (file.is_open() && (strcmp(bufr, "openSuccess") == 0))
+    if (file.is_open())
     {
         while (!file.eof())
         {
@@ -614,8 +614,11 @@ int Server::sendFile(int newfd, char *filename)
     }
     else
     {
-        ut.log(FATAL, "Could not send file.", S_LOGFILE);
-        return 0;
+        if (send(newfd, "openErr", strlen("openErr"), 0) < 0)
+        {
+            ut.log(FATAL, "Could not send file.", S_LOGFILE);
+            return 0;
+        }
     }
     file.close();
     return 1;

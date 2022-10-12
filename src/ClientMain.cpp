@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             recv(clientFD, buf, sizeof(buf), 0);
             if (strcmp(buf, "register") == 0)
             {
-                newUser.registerDetails();
+                newUser.setDetails();
                 // string str = newUser.toString();
                 // send(clientFD, str.c_str(), str.length(), 0);
                 send(clientFD, &newUser, sizeof(User), 0);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
                                 ut.log(FATAL, "send() error", C_LOGFILE);
                                 exit(EXIT_FAILURE);
                             }
-                            //op.processCDR();
+                            // op.processCDR();
                             memset(&buf, 0, MAX_BUFF);
                             recv(clientFD, buf, sizeof(buf), 0);
                             if (strcmp(buf, "processed") == 0)
@@ -134,12 +134,12 @@ int main(int argc, char *argv[])
                             while (1)
                             {
                                 showMenu(2);
-                                //cout << "====== BILLING INFO MENU ======" << endl;
-                                
+                                // cout << "====== BILLING INFO MENU ======" << endl;
+
                                 choice = getUserChoice();
                                 switch (choice)
                                 {
-                                case 1: //Customer Billing
+                                case 1: // Customer Billing
                                     if (send(clientFD, "1", 2, 0) < 0)
                                     {
                                         cout << "Could not connect to server" << endl;
@@ -224,6 +224,8 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
 
+                                            cout << "Sending buff: " << buf << endl;
+
                                             if (strcmp(buf, "sending") == 0)
                                             {
 
@@ -269,7 +271,7 @@ int main(int argc, char *argv[])
                                             else
                                             {
                                                 // if error receive
-                                                cout << "CDR Processing Failed.  Try again!" << endl;
+                                                cout << "CDR Processing Failed. Try again!" << endl;
                                             }
                                             pressEnter();
                                             break;
@@ -353,9 +355,9 @@ int main(int argc, char *argv[])
                                                 cout << buf << endl;
                                             }
                                             pressEnter();
-                                            break; //Brand Search end
-                                            
-                                        case 2: //Download IOSB.txt
+                                            break; // Brand Search end
+
+                                        case 2: // Download IOSB.txt
 
                                             if (send(clientFD, "2", 2, 0) < 0)
                                             {
@@ -372,10 +374,12 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
 
+                                            cout << "IOSB sending buff: " << buf << endl;
+
                                             if (strcmp(buf, "sending") == 0)
                                             {
 
-                                                if (send(clientFD, "yes", strlen("yes"), 0)<0)
+                                                if (send(clientFD, "yes", strlen("yes"), 0) < 0)
                                                 {
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
                                                     // exit(EXIT_FAILURE);
@@ -435,7 +439,7 @@ int main(int argc, char *argv[])
                                             break;
 
                                         default:
-                                            cout<<"Invalid Input"<<endl;
+                                            cout << "Invalid Input" << endl;
                                             break;
                                         }
 
