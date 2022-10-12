@@ -222,16 +222,18 @@ string Operator::oprToString(Operator &oprData)
     return ss.str();
 }
 
-bool Operator::processAndCreateFile()
+bool Operator::processAndCreateFile(promise<bool> *isProcessed)
 {
     bool process = processCDR();
     bool toFile = mapToFile();
 
-    if (process == true && toFile == true)
+    if (process && toFile)
     {
+        isProcessed->set_value(true);
         return true;
     }
-    
+
+    isProcessed->set_value(false);
     return false;
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <string.h>
 #include <bits/stdc++.h>
+#include <future>
 using namespace std;
 
 class Operator
@@ -37,7 +38,7 @@ public:
     bool processCDR(); // processing and storing call data records into STL
     bool mapToFile();  // printing data from map into file
 
-    bool processAndCreateFile();
+    bool processAndCreateFile(promise<bool> *);
 
     ~Operator(); // destructor
 

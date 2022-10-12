@@ -6,6 +6,7 @@
 #include <sstream>
 #include <cstring>
 #include <vector>
+#include <future>
 using namespace std;
 
 class Customer
@@ -61,7 +62,7 @@ public:
         long getMSISDN();
         string getBrandName();
 
-        bool processAndCreateFile();
+        bool processAndCreateFile(promise<bool> *);
 
         string searchMSISDN(long); // For searching unique MSISDN
         string cstrToString(Customer &);

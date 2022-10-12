@@ -245,14 +245,18 @@ string Customer::cstrToString(Customer &cstrData)
   return ss.str();
 }
 
-bool Customer::processAndCreateFile()
+bool Customer::processAndCreateFile(promise<bool> *isProcessed)
 {
   bool process = processCDR();
   bool toFile = mapToFile();
 
   if (process && toFile)
+  {
+    isProcessed->set_value(true);
     return true;
-
+  }
+  
+  isProcessed->set_value(false);
   return false;
 }
 

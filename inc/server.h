@@ -46,7 +46,7 @@ public:
         int userExists(User &);
         int verifyLoginCreds(User &);
 
-        void processCallData(Operator &, Customer &);
+        bool processCallData(Operator &, Customer &);
 
         int sendFile(int, char *);
 

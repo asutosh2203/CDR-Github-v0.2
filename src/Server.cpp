@@ -97,12 +97,12 @@ void Server::initClient(int newfd)
 
             // Receieving user UserID and Password in user object
             memset(&user, 0, MAX_BUFF);
-            
+
             if (recv(newfd, &user, sizeof(User), 0) < 0)
             {
                 ut.log(FATAL, "recv() error", S_LOGFILE);
             }
-           
+
             isExists = userExists(user);
             if (isExists == 1)
             {
@@ -166,15 +166,13 @@ void Server::initClient(int newfd)
 
                     Operator op;
                     Customer cust;
-                    bool isProcessed = true;
+                    bool isProcessed;
                     choice = atoi(buf);
                     switch (choice)
                     {
                     case 1: // Process CDR
-                        // isProcessed = op.processCDR();
-                        // op.mapToFile();
 
-                        processCallData(op, cust);
+                        isProcessed = processCallData(op, cust);
 
                         isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
                         break;
@@ -552,16 +550,30 @@ int Server::verifyLoginCreds(User &newUser)
     return 0;
 }
 
-void Server::processCallData(Operator &op, Customer &cust)
+bool Server::processCallData(Operator &op, Customer &cust)
 {
-    thread t1(&Operator::processAndCreateFile, &op);
-    thread t2(&Customer::processAndCreateFile, &cust);
+
+    promise<bool> opPromise;
+    promise<bool> custPromise;
+
+    thread t1(&Operator::processAndCreateFile, &op, &opPromise);
+    thread t2(&Customer::processAndCreateFile, &cust, &custPromise);
 
     if (t1.joinable())
         t1.join();
 
     if (t2.joinable())
         t2.join();
+
+    future<bool> opFuture = opPromise.get_future();
+    future<bool> custFuture = custPromise.get_future();
+
+    if (opFuture.get() && custFuture.get())
+    {
+        return true;
+    }
+
+    return false;
 }
 
 int Server::sendFile(int newfd, char *filename)
