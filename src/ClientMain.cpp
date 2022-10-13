@@ -9,7 +9,7 @@ void signalHandler(int sig)
     if (sig == SIGINT || sig == SIGTSTP)
     {
         cout << endl
-             << "Program Terminated."
+             << "Program Terminated by the user."
              << endl;
     }
 
@@ -228,8 +228,6 @@ int main(int argc, char *argv[])
                                                 exit(EXIT_FAILURE);
                                             }
 
-                                            cout << "Sending buff: " << buf << endl;
-
                                             if (strcmp(buf, "sending") == 0)
                                             {
 
@@ -239,9 +237,10 @@ int main(int argc, char *argv[])
                                                     // exit(EXIT_FAILURE);
                                                 }
 
+                                                cout << "Attempting to download CB.txt into " << CB_DOWNLOAD << "..." << endl;
                                                 // downloading file
                                                 int isSuccess = newClient.writeToFile(clientFD, (char *)CB_DOWNLOAD);
-                                                // cout<<"END OF WRITETOFILE"<<endl;
+
                                                 if (isSuccess == 1)
                                                 {
                                                     // send to server
@@ -250,12 +249,10 @@ int main(int argc, char *argv[])
                                                         ut.log(FATAL, "Could not connect to server", C_LOGFILE);
                                                         clientErrExit();
                                                     }
-                                                    else
-                                                    {
-                                                        // log to file
-                                                        cout << "File downloaded Successfully in " << CB_DOWNLOAD << endl;
-                                                        ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
-                                                    }
+
+                                                    // log to file
+                                                    cout << "File downloaded Successfully in " << CB_DOWNLOAD << endl;
+                                                    ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
                                                 }
                                                 else
                                                 {
@@ -265,11 +262,10 @@ int main(int argc, char *argv[])
                                                         ut.log(FATAL, "Could not connect to server", C_LOGFILE);
                                                         clientErrExit();
                                                     }
-                                                    else
-                                                    { // log to file
-                                                        cout << "Required file could not be generated, please try again." << endl;
-                                                        ut.log(INFO, "File Downloading failed", C_LOGFILE);
-                                                    }
+
+                                                    // log to file
+                                                    cout << "Required file could not be generated, please try again." << endl;
+                                                    ut.log(INFO, "File Downloading failed", C_LOGFILE);
                                                 }
                                             }
                                             else
@@ -277,7 +273,8 @@ int main(int argc, char *argv[])
                                                 // if error receive
                                                 cout << "CDR Processing Failed. Try again!" << endl;
                                             }
-                                            sleep(2);
+                                            cout << endl;
+                                            sleep(5);
                                             break;
 
                                         case 3:
@@ -395,12 +392,12 @@ int main(int argc, char *argv[])
                                                 if (send(clientFD, "yes", strlen("yes"), 0) < 0)
                                                 {
                                                     ut.log(FATAL, "send() error", C_LOGFILE);
-                                                    // exit(EXIT_FAILURE);
+                                                    clientErrExit();
                                                 }
 
+                                                cout << "Attempting to download IOSB.txt into " << IOSB_DOWNLOAD << "..." << endl;
                                                 // downloading file
                                                 int isSuccess = newClient.writeToFile(clientFD, (char *)IOSB_DOWNLOAD);
-                                                // cout<<"END OF WRITETOFILE"<<endl;
                                                 if (isSuccess == 1)
                                                 {
                                                     // send to server
@@ -409,12 +406,10 @@ int main(int argc, char *argv[])
                                                         ut.log(FATAL, "Could not connect to server", C_LOGFILE);
                                                         clientErrExit();
                                                     }
-                                                    else
-                                                    {
-                                                        // log to file
-                                                        cout << "File downloaded Successfully in " << IOSB_DOWNLOAD << endl;
-                                                        ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
-                                                    }
+
+                                                    // log to file
+                                                    cout << "File downloaded Successfully in " << IOSB_DOWNLOAD << endl;
+                                                    ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
                                                 }
                                                 else
                                                 {
@@ -424,11 +419,9 @@ int main(int argc, char *argv[])
                                                         ut.log(FATAL, "Could not connect to server", C_LOGFILE);
                                                         clientErrExit();
                                                     }
-                                                    else
-                                                    { // log to file
-                                                        cout << "Required file could not be generated, please try again." << endl;
-                                                        ut.log(INFO, "File Downloading failed", C_LOGFILE);
-                                                    }
+                                                    // log to file
+                                                    cout << "Required file could not be generated, please try again." << endl;
+                                                    ut.log(INFO, "File Downloading failed", C_LOGFILE);
                                                 }
                                             }
                                             else
@@ -436,7 +429,8 @@ int main(int argc, char *argv[])
                                                 // if error receive
                                                 cout << "CDR Processing Failed. Try again!" << endl;
                                             }
-                                            sleep(1);
+                                            cout << endl;
+                                            sleep(5);
                                             break;
 
                                         case 3:
@@ -497,7 +491,7 @@ int main(int argc, char *argv[])
                                 exit(EXIT_FAILURE);
                             }
                             cout << "Logged out successfully!" << endl;
-                            sleep(2);
+                            sleep(1);
                             break;
 
                         default:
@@ -531,12 +525,11 @@ int main(int argc, char *argv[])
             {
                 cout << "Cannot login right now, try again later" << endl;
             }
-            sleep(2);
+            sleep(1);
             break;
         case 3: // ASCII value of 3
             send(clientFD, "3", 2, 0);
             cout << "You've exited sucessfully!" << endl;
-            sleep(2);
             exit(EXIT_SUCCESS);
         }
     }

@@ -479,7 +479,10 @@ void Server::initClient(int newfd)
         }
 
         if (buf[0] == '\0')
+        {
+            cout << "[-]Client " << ntohs(client_addr.sin_port) << " left the server." << endl;
             break;
+        }
     }
 }
 

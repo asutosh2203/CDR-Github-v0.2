@@ -178,14 +178,14 @@ int getUserChoice()
 void clientErrExit()
 {
     cout << "Could not connect to server. Try again!" << endl;
-    perror("Client error: ");
+    perror("Client error ");
     exit(EXIT_FAILURE);
 }
 
 void pressEnter()
 {
     cout << "Press ENTER to continue";
-    cin.ignore();
+    // cin.ignore();
     getchar();
 }
 
@@ -232,6 +232,8 @@ bool validateInput(string str, int inputType)
                 return false;
             }
         }
+
+        return true;
     }
 
     return false;
