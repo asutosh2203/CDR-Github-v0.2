@@ -1,0 +1,31 @@
+        -:    0:Source:src/utils.cpp
+        -:    1:#include <utils.h>
+        -:    2:
+        -:    3:// this function creates a logfile which stores all the log messages at runtime along with the time stamp
+        3:    4:void Utils::log(const char *type, const char *msg, const char *filename)
+        -:    5:{
+        3:    6:    fstream logfile;
+        3:    7:    logfile.open(filename, ios::app);
+        -:    8:
+        3:    9:    time_t ltime = time(NULL);
+        -:   10:
+        -:   11:    struct tm res;
+        -:   12:    char TIMESTAMP[32];
+        -:   13:
+        3:   14:    localtime_r(&ltime, &res);
+        3:   15:    asctime_r(&res, TIMESTAMP);
+        -:   16:
+        -:   17:    // Writing log in file with formatting
+        3:   18:    logfile << endl
+        3:   19:            << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl;
+        -:   20:
+        3:   21:    logfile.close();
+        3:   22:}
+        -:   23:
+    #####:   24:string Utils::toLowerCase(string str)
+        -:   25:{
+    #####:   26:    for_each(str.begin(), str.end(), [](char &c)
+    #####:   27:             { c = tolower(c); });
+        -:   28:
+    #####:   29:    return str;
+        -:   30:}

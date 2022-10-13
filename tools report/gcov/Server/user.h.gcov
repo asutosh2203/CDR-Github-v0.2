@@ -1,0 +1,49 @@
+        -:    0:Source:inc/user.h
+        -:    1:#pragma once
+        -:    2:#include <iostream>
+        -:    3:#include <cstring>
+        -:    4:#include <string>
+        -:    5:#include <sstream>
+        -:    6:#include <stdlib.h>
+        -:    7:#include <ctype.h>
+        -:    8:#include <bits/stdc++.h>
+        -:    9:#include <ctype.h>
+        -:   10:
+        -:   11:using namespace std;
+        -:   12:
+        -:   13:class User
+        -:   14:{
+        -:   15:private:
+        -:   16:    char username[20] = {'\0'};
+        -:   17:    char password[20] = {'\0'};
+        -:   18:
+        -:   19:public:
+        -:   20:
+        -:   21:    void setDetails();
+        -:   22:    // void registerDetails();
+        -:   23:    bool validateUsername(string);
+        -:   24:    bool validatePassword(char *);
+        -:   25:    void toDatabase(User &);
+        -:   26:    void setUsername(char *s) { strcpy(username, s); }
+    #####:   27:    void setPassword(char *s) { strcpy(password, s); }
+      28*:   28:    char *getUsername() { return username; }
+------------------
+_ZN4User11getUsernameEv:
+       28:   28:    char *getUsername() { return username; }
+------------------
+_ZN4User11getUsernameEv:
+    #####:   28:    char *getUsername() { return username; }
+------------------
+       2*:   29:    char *getPassword() { return password; }
+------------------
+_ZN4User11getPasswordEv:
+        2:   29:    char *getPassword() { return password; }
+------------------
+_ZN4User11getPasswordEv:
+    #####:   29:    char *getPassword() { return password; }
+------------------
+        -:   30:    void getDetails() { cout << "Username:" <<username << '\n'
+        -:   31:                             << "Password: "<<password << endl; }
+        -:   32:    string toString();
+        -:   33:    void log(string);
+        -:   34:};

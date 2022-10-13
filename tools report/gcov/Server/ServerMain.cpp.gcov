@@ -1,0 +1,29 @@
+        -:    0:Source:src/ServerMain.cpp
+        -:    1:#include <server.h>
+        -:    2:
+        -:    3:Server s;
+        -:    4:Utils serverUtil;
+        -:    5:// signal handling
+        2:    6:void signalHandler(int sig)
+        -:    7:{
+       2*:    8:    if (sig == SIGINT || sig == SIGTSTP)
+        -:    9:    {
+        2:   10:        serverUtil.log(INFO, "Server Closed", S_LOGFILE);
+        2:   11:        s.closeServer();
+        -:   12:    }
+        -:   13:
+        2:   14:    exit(EXIT_SUCCESS);
+        -:   15:}
+        -:   16:
+        1:   17:int main()
+        -:   18:{
+        -:   19:    // Signal Handling
+        1:   20:    signal(SIGINT, signalHandler);
+        1:   21:    signal(SIGTSTP, signalHandler);
+        -:   22:
+        1:   23:    s.createSocket();
+        1:   24:    s.bind_listen();
+        1:   25:    s.acceptClient();
+        -:   26:
+    #####:   27:    return 0;
+        -:   28:}

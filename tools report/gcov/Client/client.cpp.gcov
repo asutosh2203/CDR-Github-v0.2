@@ -1,0 +1,246 @@
+        -:    0:Source:src/client.cpp
+        -:    1:#include <client.h>
+        -:    2:
+        -:    3:Utils clientUtil;
+        -:    4:
+        -:    5:// default constructor
+        1:    6:Client::Client()
+        -:    7:{
+        1:    8:    port = 8080;
+        1:    9:    strcpy(ipAddr, "127.0.0.1");
+        1:   10:}
+        -:   11:
+        -:   12:// parameterized constructore
+    #####:   13:Client::Client(int port, char *ipAddr)
+        -:   14:{
+    #####:   15:    this->port = port;
+    #####:   16:    strcpy(this->ipAddr, ipAddr);
+    #####:   17:}
+        -:   18:
+       15:   19:void showMenu(int menuType)
+        -:   20:{
+       15:   21:    system("clear");
+        -:   22:
+        -:   23:    //  main menu
+       15:   24:    if (menuType == 0)
+        -:   25:    {
+        3:   26:        cout << "\nDo you want to register or login?" << endl;
+        3:   27:        cout << "\t1. Register" << endl;
+        3:   28:        cout << "\t2. Login" << endl;
+        3:   29:        cout << "\t3. Exit" << endl;
+        -:   30:    }
+        -:   31:    // services menu
+       12:   32:    else if (menuType == 1)
+        -:   33:    {
+        3:   34:        cout << "====== SERVICES ======" << endl;
+        3:   35:        cout << "\t1. Process CDR" << endl;
+        3:   36:        cout << "\t2. Billing Info" << endl;
+        3:   37:        cout << "\t3. Logout" << endl;
+        -:   38:    }
+        -:   39:    // billing info menu
+        9:   40:    else if (menuType == 2)
+        -:   41:    {
+        3:   42:        cout << "====== BILLING INFO MENU ======" << endl;
+        3:   43:        cout << "\t1. Customer Billing" << endl;
+        3:   44:        cout << "\t2. Interoperator Billing" << endl;
+        3:   45:        cout << "\t3. Go Back" << endl;
+        -:   46:    }
+        -:   47:    // customer billing menu
+        6:   48:    else if (menuType == 3)
+        -:   49:    {
+        3:   50:        cout << "====== CUSTOMER BILLING MENU ======" << endl;
+        3:   51:        cout << "\t1. Search for MSISDN" << endl;
+        3:   52:        cout << "\t2. Get the all the content of the processed CDR for Customer Billing" << endl;
+        3:   53:        cout << "\t3. Go Back" << endl;
+        -:   54:    }
+        -:   55:    // interoperator billing menu
+        -:   56:    else
+        -:   57:    {
+        3:   58:        cout << "====== INTEROPERATOR BILLING MENU ======" << endl;
+        3:   59:        cout << "\t1. Search for Brand Name/Operator ID" << endl;
+        3:   60:        cout << "\t2. Get the all the content of the processed CDR for Interoperator Settlement Billing" << endl;
+        3:   61:        cout << "\t3. Go Back" << endl;
+        -:   62:    }
+       15:   63:    cout << "Choose your option: ";
+       15:   64:}
+        -:   65:
+        -:   66:// creates client socket
+        1:   67:void Client::createSocket()
+        -:   68:{
+        1:   69:    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+        -:   70:
+        1:   71:    if (sockfd < 0)
+        -:   72:    {
+    #####:   73:        perror("socket() error: ");
+    #####:   74:        exit(EXIT_FAILURE);
+        -:   75:    }
+        1:   76:    cout << "[+]Client socket created successfully" << endl;
+        -:   77:
+        1:   78:    bzero(&serverAddr, sizeof(SA_IN));
+        -:   79:
+        1:   80:    serverAddr.sin_family = AF_INET;
+        1:   81:    serverAddr.sin_port = htons(port);
+        1:   82:    serverAddr.sin_addr.s_addr = inet_addr((const char *)ipAddr);
+        1:   83:}
+        -:   84:
+        -:   85:// connects client to the server
+        1:   86:void Client::clientConnect()
+        -:   87:{
+        1:   88:    if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
+        -:   89:    {
+    #####:   90:        perror("connect() error: ");
+    #####:   91:        exit(EXIT_FAILURE);
+        -:   92:    }
+        1:   93:    clientUtil.log(INFO, "Connection Established", C_LOGFILE);
+        1:   94:    cout << "\t\t\t\t WELCOME \n";
+        1:   95:}
+        -:   96:
+        2:   97:int Client::writeToFile(int clientFD, char *filename)
+        -:   98:{
+        -:   99:    // FILE *fp;
+        2:  100:    char buff[MAX_BUFF] = {'\0'};
+        -:  101:
+        2:  102:    ofstream file;
+        2:  103:    file.open(filename);
+        -:  104:
+        2:  105:    if (file.is_open())
+        -:  106:    {
+        -:  107:
+        -:  108:        // infinite loop to recevie data from server and store it in a file on client side
+        -:  109:        while (true)
+        -:  110:        {
+  1077391:  111:            memset(buff, 0, MAX_BUFF);
+        -:  112:
+        -:  113:            // log and return when recv() fail
+  1077391:  114:            if (recv(clientFD, buff, MAX_BUFF, 0) < 0)
+        -:  115:            {
+    #####:  116:                clientUtil.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  117:                return 0;
+        -:  118:            }
+        -:  119:            // Return 1 when EOF
+  1077391:  120:            if (strcmp(buff, "EOF") == 0)
+        -:  121:            {
+        2:  122:                return 1;
+        -:  123:            }
+        -:  124:
+  1077389:  125:            if (strcmp(buff, "openErr") == 0)
+        -:  126:            {
+    #####:  127:                return 0;
+        -:  128:            }
+        -:  129:
+        -:  130:            // writing in file
+  1077389:  131:            file << buff << endl;
+        -:  132:        }
+        -:  133:    }
+        -:  134:    else
+        -:  135:    {
+    #####:  136:        return 0;
+        -:  137:    }
+        -:  138:
+        -:  139:    // closing filestream object
+        -:  140:    file.close();
+        -:  141:
+        -:  142:    return 1;
+        2:  143:}
+        -:  144:
+       16:  145:int getUserChoice()
+        -:  146:{
+        -:  147:    int choice;
+        -:  148:
+        -:  149:    while (1)
+        -:  150:    {
+       16:  151:        cin >> choice;
+        -:  152:
+       16:  153:        if (cin.fail())
+        -:  154:        {
+        -:  155:            // get rid of failure state
+        1:  156:            cin.clear();
+        -:  157:
+        -:  158:            // discard 'bad' character(s)
+        1:  159:            cin.ignore(INT64_MAX, '\n');
+        -:  160:        }
+        -:  161:
+       16:  162:        if (choice == 1 || choice == 2 || choice == 3)
+        -:  163:        {
+        -:  164:            break;
+        -:  165:        }
+        -:  166:        else
+        -:  167:        {
+        1:  168:            cout << "Invalid Choice. Please choose option: ";
+        -:  169:        }
+        -:  170:        // cin.ignore();
+        -:  171:    }
+        -:  172:
+        -:  173:    // clearing cin buffer
+        -:  174:    // cin.clear();
+       15:  175:    return choice;
+        -:  176:}
+        -:  177:
+    #####:  178:void clientErrExit()
+        -:  179:{
+    #####:  180:    cout << "Could not connect to server. Try again!" << endl;
+    #####:  181:    perror("Client error ");
+    #####:  182:    exit(EXIT_FAILURE);
+        -:  183:}
+        -:  184:
+        2:  185:void pressEnter()
+        -:  186:{
+        2:  187:    cout << "Press ENTER to continue";
+        -:  188:    // cin.ignore();
+        2:  189:    getchar();
+        2:  190:}
+        -:  191:
+        -:  192:// validate user input
+        -:  193:// 0 - validate MSISDN, 1 - validate Brand name
+        2:  194:bool validateInput(string str, int inputType)
+        -:  195:{
+        2:  196:    int l = str.length();
+        -:  197:
+        -:  198:    // validate MSISDN
+        2:  199:    if (inputType == 0)
+        -:  200:    {
+        1:  201:        if (l != 7)
+        -:  202:        {
+    #####:  203:            return false;
+        -:  204:        }
+        -:  205:
+        8:  206:        for (int i = 0; i < l; i++)
+        -:  207:        {
+        7:  208:            char s = str.at(i);
+        -:  209:
+        7:  210:            if (s == ' ')
+        -:  211:            {
+    #####:  212:                return false;
+        -:  213:            }
+        -:  214:
+        7:  215:            if (s < 48 || s > 57)
+        -:  216:            {
+    #####:  217:                return false;
+        -:  218:            }
+        -:  219:        }
+        -:  220:
+        1:  221:        return true;
+        -:  222:    }
+        -:  223:
+        -:  224:    // validate Brand name
+        1:  225:    if (inputType == 1)
+        -:  226:    {
+        4:  227:        for (int i = 0; i < l; i++)
+        -:  228:        {
+        3:  229:            char s = str.at(i);
+        3:  230:            if (s == 10)
+        -:  231:            {
+    #####:  232:                return false;
+        -:  233:            }
+        -:  234:        }
+        -:  235:
+        1:  236:        return true;
+        -:  237:    }
+        -:  238:
+    #####:  239:    return false;
+        -:  240:}
+        -:  241:
+        -:  242:// default deconstructor
+        1:  243:Client::~Client()
+        -:  244:{
+        1:  245:}

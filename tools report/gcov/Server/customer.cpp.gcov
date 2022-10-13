@@ -1,0 +1,267 @@
+        -:    0:Source:src/customer.cpp
+        -:    1:#include <customer.h>
+        -:    2:
+   153907:    3:Customer::Customer()
+        -:    4:{
+        -:    5:  // default constructor
+   153907:    6:}
+        -:    7:
+   240192:    8:Customer::Customer(long msIsdn, string brandName, long inCallI, long outCallI, long inCallO, long outCallO, long down, long up, long incMsgI, long outMsgI, long incMsgO, long outMsgO)
+        -:    9:{
+   240192:   10:  this->MSISDN = msIsdn;
+        -:   11:  // this->MMC = MMC;
+   240192:   12:  this->brandName = brandName;
+   240192:   13:  this->inCallDurationO = inCallO;
+   240192:   14:  this->outCallDurationO = outCallO;
+   240192:   15:  this->downData = down;
+   240192:   16:  this->upData = up;
+   240192:   17:  this->inMsgO = incMsgO;
+   240192:   18:  this->outMsgO = outMsgO;
+   240192:   19:  this->inMsgI = incMsgI;
+   240192:   20:  this->outMsgI = outMsgI;
+   240192:   21:  this->inCallDurationI = inCallI;
+   240192:   22:  this->outCallDurationI = outCallI;
+   240192:   23:}
+    #####:   24:void Customer::setOutCallDurationI(long outCallDurationI) { this->outCallDurationI = outCallDurationI; }
+    #####:   25:void Customer::setInCallDurationI(long inCallDurationI) { this->inCallDurationI = inCallDurationI; }
+    #####:   26:void Customer::setDownloadData(long downData) { this->downData = downData; }
+    #####:   27:void Customer::setUploadData(long upData) { this->upData = upData; }
+    #####:   28:void Customer::setInMsgI(long inMsgI) { this->inMsgI = inMsgI; }
+    #####:   29:void Customer::setOutMsgI(long outMsgI) { this->outMsgI = outMsgI; }
+    #####:   30:void Customer::setOutCallDurationO(long outCallDurationO) { this->outCallDurationO = outCallDurationO; }
+    #####:   31:void Customer::setInCallDurationO(long inCallDurationO) { this->inCallDurationO = inCallDurationO; }
+    #####:   32:void Customer::setInMsgO(long inMsgO) { this->inMsgO = inMsgO; }
+    #####:   33:void Customer::setOutMsgO(long outMsgO) { this->outMsgO = outMsgO; }
+        -:   34:// getters functions
+   153905:   35:long Customer::getInCallDurationI() { return inCallDurationI; }
+   153905:   36:long Customer::getOutCallDurationI() { return outCallDurationI; }
+   153905:   37:long Customer::getDownloadData() { return downData; }
+   153905:   38:long Customer::getUploadData() { return upData; }
+   153905:   39:long Customer::getInMsgI() { return inMsgI; }
+   153905:   40:long Customer::getOutMsgI() { return outMsgI; }
+   156882:   41:long Customer::getMSISDN() { return MSISDN; }
+   153905:   42:string Customer::getBrandName() { return brandName; }
+   153905:   43:long Customer::getInCallDurationO() { return inCallDurationO; }
+   153905:   44:long Customer::getOutCallDurationO() { return outCallDurationO; }
+   153905:   45:long Customer::getInMsgO() { return inMsgO; }
+   153905:   46:long Customer::getOutMsgO() { return outMsgO; }
+        -:   47:
+        -:   48:// Processing the CDR data and writing in the CB.txt file
+        3:   49:bool Customer::processCDR()
+        -:   50:{
+        3:   51:  fstream fs;
+        3:   52:  fs.open("data/data.cdr", ios::in);
+        3:   53:  string line;
+        3:   54:  string token;
+        3:   55:  vector<string> parameters;
+        3:   56:  if (fs)
+        -:   57:  {
+   300003:   58:    while (getline(fs, line))
+        -:   59:    {
+        -:   60:      // stringstream class check
+   300000:   61:      stringstream check(line);
+        -:   62:
+        -:   63:      // Tokenizing w.r.t. space '|'
+  3000000:   64:      while (getline(check, token, '|'))
+        -:   65:      {
+  2700000:   66:        parameters.push_back(token);
+        -:   67:      }
+        -:   68:
+        -:   69:      // parameters[3] --> call type.
+        -:   70:      // stol: converts the string as a argument in function call.
+   300000:   71:      long brandMSISDN = stol(parameters[0]);
+   300000:   72:      string brand = parameters[1];
+        -:   73:      // long brandMMC = stol(parameters[2]);     // parameters[2]=brand MMC
+        -:   74:
+   300000:   75:      long callDuration = stol(parameters[4]); // parameters[4]= (call duration)
+   300000:   76:      long dataDownload = stol(parameters[5]); // parameters[5]= (data download)
+   300000:   77:      long dataUpload = stol(parameters[6]);   // parameters[6]= (data upload)
+        -:   78:
+   300000:   79:      if (parameters[2] == parameters[8])
+        -:   80:      {
+    60123:   81:        if (parameters[3] == "MTC")
+        -:   82:        {
+    11841:   83:          Customer newCust(brandMSISDN, brand, callDuration, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    11841:   84:          CustomersMap[brandMSISDN] = newCust;
+    11841:   85:        }
+    48282:   86:        else if (parameters[3] == "MTO")
+        -:   87:        {
+    #####:   88:          Customer newCust(brandMSISDN, brand, 0, callDuration, 0, 0, 0, 0, 0, 0, 0, 0);
+    #####:   89:          CustomersMap[brandMSISDN] = newCust;
+    #####:   90:        }
+    48282:   91:        else if (parameters[3] == "SMS-MT")
+        -:   92:        {
+    11883:   93:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0);
+    11883:   94:          CustomersMap[brandMSISDN] = newCust;
+    11883:   95:        }
+    36399:   96:        else if (parameters[3] == "SMS-MO")
+        -:   97:        {
+    12006:   98:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0);
+    12006:   99:          CustomersMap[brandMSISDN] = newCust;
+    12006:  100:        }
+    24393:  101:        else if (parameters[3] == "GPRS")
+        -:  102:        {
+    12147:  103:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, dataDownload, dataUpload, 0, 0, 0, 0);
+    12147:  104:          CustomersMap[brandMSISDN] = newCust;
+    12147:  105:        }
+        -:  106:      }
+        -:  107:      else
+        -:  108:      {
+   239877:  109:        if (parameters[3] == "MTC")
+        -:  110:        {
+    48096:  111:          Customer newCust(brandMSISDN, brand, 0, 0, callDuration, 0, 0, 0, 0, 0, 0, 0);
+    48096:  112:          CustomersMap[brandMSISDN] = newCust;
+    48096:  113:        }
+   191781:  114:        else if (parameters[3] == "MTO")
+        -:  115:        {
+    #####:  116:          Customer newCust(brandMSISDN, brand, 0, 0, 0, callDuration, 0, 0, 0, 0, 0, 0);
+    #####:  117:          CustomersMap[brandMSISDN] = newCust;
+    #####:  118:        }
+   191781:  119:        else if (parameters[3] == "SMS-MT")
+        -:  120:        {
+    47343:  121:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0);
+    47343:  122:          CustomersMap[brandMSISDN] = newCust;
+    47343:  123:        }
+   144438:  124:        else if (parameters[3] == "SMS-MO")
+        -:  125:        {
+    48231:  126:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+    48231:  127:          CustomersMap[brandMSISDN] = newCust;
+    48231:  128:        }
+    96207:  129:        else if (parameters[3] == "GPRS")
+        -:  130:        {
+    48645:  131:          Customer newCust(brandMSISDN, brand, 0, 0, 0, 0, dataDownload, dataUpload, 0, 0, 0, 0);
+    48645:  132:          CustomersMap[brandMSISDN] = newCust;
+    48645:  133:        }
+        -:  134:      }
+   300000:  135:      parameters.clear();
+   300000:  136:    }
+        -:  137:    // closing data.cdr
+        3:  138:    fs.close();
+        -:  139:
+        -:  140:    // fstream file;
+        -:  141:    // file.open("data/CB.txt", ios::out);
+        -:  142:    // if (file)
+        -:  143:    // {
+        -:  144:    //   mapToFile(file);
+        -:  145:
+        -:  146:    //   // closing CB.txt
+        -:  147:    //   file.close();
+        -:  148:    // }
+        -:  149:    // else
+        -:  150:    // {
+        -:  151:    //   perror("CB.txt File error: ");
+        -:  152:    //   exit(EXIT_FAILURE);
+        -:  153:    // }
+        -:  154:  }
+        -:  155:  else
+        -:  156:  {
+    #####:  157:    perror("data.cdr File error: ");
+    #####:  158:    exit(EXIT_FAILURE);
+        -:  159:    return false;
+        -:  160:  }
+        -:  161:
+        3:  162:  return true;
+        3:  163:}
+        -:  164:
+        2:  165:bool Customer::mapToFile()
+        -:  166:{
+        -:  167:
+        2:  168:  fstream CB;
+        2:  169:  CB.open("data/CB.txt", ios::out);
+        -:  170:
+        2:  171:  if (CB)
+        -:  172:  {
+        2:  173:    CB << "# Customers Data Base:\n\n";
+        2:  174:    map<long, Customer>::iterator cstr;
+   153906:  175:    for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
+        -:  176:    {
+   153904:  177:      Customer cstrData = cstr->second;
+   153904:  178:      CB << cstrToString(cstrData);
+   153904:  179:    }
+        -:  180:
+        2:  181:    CB.close();
+        -:  182:  }
+        -:  183:  else
+        -:  184:  {
+        -:  185:    // utl.log("IOSB.txt could not be opened", "logs/Interoperator.txt");
+    #####:  186:    return false;
+        -:  187:  }
+        -:  188:
+        2:  189:  return true;
+        2:  190:}
+        -:  191:
+        -:  192:// Searching MSISDN and printing data
+        1:  193:string Customer::searchMSISDN(long brandMSISDN)
+        -:  194:{
+        1:  195:  string result;
+        -:  196:
+        1:  197:  map<long, Customer>::iterator cstr;
+     2977:  198:  for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
+        -:  199:  {
+     2977:  200:    Customer cstrData = cstr->second;
+     2977:  201:    if (cstrData.getMSISDN() == brandMSISDN)
+        -:  202:    {
+        1:  203:      result = cstrToString(cstrData);
+        1:  204:      return result;
+        -:  205:    }
+     2977:  206:  }
+        -:  207:
+        -:  208:  // checking if MSISDN is invalid
+    #####:  209:  string notFound = "MSISDN doesn't exist.";
+    #####:  210:  return notFound;
+       1*:  211:}
+        -:  212:
+   153905:  213:string Customer::cstrToString(Customer &cstrData)
+        -:  214:{
+   153905:  215:  ostringstream ss;
+   153905:  216:  ss.clear();
+        -:  217:
+   307810:  218:  ss << "Customers ID: " << cstrData.getMSISDN() << "(" << cstrData.getBrandName() << ")" << endl
+        -:  219:     << "\t"
+   153905:  220:     << "* Service within the mobile Customer *" << endl
+        -:  221:     << "\t"
+   153905:  222:     << "Incoming voice call duration:" << cstrData.getInCallDurationI() << endl
+        -:  223:     << "\t"
+   153905:  224:     << "Outgoing voice call duration:" << cstrData.getOutCallDurationI() << endl
+        -:  225:     << "\t"
+   153905:  226:     << "Incoming SMS messages:" << cstrData.getInMsgI() << endl
+        -:  227:     << "\t"
+   153905:  228:     << "Outgoing SMS messages:" << cstrData.getOutMsgI() << endl
+        -:  229:     << "\t"
+   153905:  230:     << "* Service outside the mobile Customer *" << endl
+        -:  231:     << "\t"
+   153905:  232:     << "Incoming voice call duration:" << cstrData.getInCallDurationO() << endl
+        -:  233:     << "\t"
+   153905:  234:     << "Outgoing voice call duration:" << cstrData.getOutCallDurationO() << endl
+        -:  235:     << "\t"
+   153905:  236:     << "Incoming SMS messages:" << cstrData.getInMsgO() << endl
+        -:  237:     << "\t"
+   153905:  238:     << "Outgoing SMS messages:" << cstrData.getOutMsgO() << endl
+        -:  239:     << "\t"
+   153905:  240:     << "* Internet use *" << endl
+        -:  241:     << "\t"
+   153905:  242:     << "MB downloaded:" << cstrData.getDownloadData() << " | MB uploaded:" << cstrData.getUploadData() << endl
+   153905:  243:     << endl;
+        -:  244:
+   307810:  245:  return ss.str();
+   153905:  246:}
+        -:  247:
+        1:  248:bool Customer::processAndCreateFile(promise<bool> *isProcessed)
+        -:  249:{
+        1:  250:  bool process = processCDR();
+        1:  251:  bool toFile = mapToFile();
+        -:  252:
+        1:  253:  if (process && toFile)
+        -:  254:  {
+        1:  255:    isProcessed->set_value(true);
+        1:  256:    return true;
+        -:  257:  }
+        -:  258:  
+    #####:  259:  isProcessed->set_value(false);
+    #####:  260:  return false;
+        -:  261:}
+        -:  262:
+   550980:  263:Customer::~Customer()
+        -:  264:{
+        -:  265:  // default constructor
+   550980:  266:}
