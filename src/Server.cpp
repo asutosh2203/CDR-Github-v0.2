@@ -98,7 +98,8 @@ void Server::initClient(int newfd)
             }
 
             // Receieving user UserID and Password in user object
-            memset(&user, 0, MAX_BUFF);
+            // memset(&user, 0, MAX_BUFF);
+            // bzero(&user, sizeof(User));
 
             if (recv(newfd, &user, sizeof(User), 0) < 0)
             {
@@ -139,7 +140,7 @@ void Server::initClient(int newfd)
                 ut.log(FATAL, "send() error", S_LOGFILE);
             }
 
-            memset(&user, 0, sizeof(User));
+            // memset(&user, 0, sizeof(User));
             // Receives the login credentials
             if (recv(newfd, &user, sizeof(User), 0) < 0)
             {

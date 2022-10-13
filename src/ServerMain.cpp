@@ -7,13 +7,9 @@ void signalHandler(int sig)
 {
     if (sig == SIGINT || sig == SIGTSTP)
     {
-        cout << endl
-             << "⚠️  Server Shut Down! ⚠️"
-             << endl;
+        serverUtil.log(INFO, "Server Closed", S_LOGFILE);
+        s.closeServer();
     }
-
-    serverUtil.log(INFO, "Server Closed", C_LOGFILE);
-    s.closeServer();
 
     exit(EXIT_SUCCESS);
 }

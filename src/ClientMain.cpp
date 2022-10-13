@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 
             if (strcmp(buf, "login") == 0)
             {
-                memset(&newUser, 0, sizeof(User));
+                // memset(&newUser, 0, sizeof(User));
                 newUser.setDetails();
                 // string str1 = newUser.toString();
                 send(clientFD, &newUser, sizeof(User), 0);
@@ -274,7 +274,7 @@ int main(int argc, char *argv[])
                                                 cout << "CDR Processing Failed. Try again!" << endl;
                                             }
                                             cout << endl;
-                                            sleep(5);
+                                            sleep(3);
                                             break;
 
                                         case 3:
@@ -430,7 +430,7 @@ int main(int argc, char *argv[])
                                                 cout << "CDR Processing Failed. Try again!" << endl;
                                             }
                                             cout << endl;
-                                            sleep(5);
+                                            sleep(3);
                                             break;
 
                                         case 3:
