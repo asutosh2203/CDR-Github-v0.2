@@ -1,6 +1,11 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 using namespace std;
 
 // Log type macros

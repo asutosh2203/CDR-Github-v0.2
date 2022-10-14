@@ -11,12 +11,7 @@
 using namespace std;
 
 class User
-{
-private:
-    char username[20] = {'\0'};
-    char password[20] = {'\0'};
-
-public:
+{public:
 
     void setDetails();
     // void registerDetails();
@@ -31,4 +26,9 @@ public:
                              << "Password: "<<password << endl; }
     string toString();
     void log(string);
+private:
+    char username[20] = {'\0'};
+    char password[20] = {'\0'};
+
+
 };

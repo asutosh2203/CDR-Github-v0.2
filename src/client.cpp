@@ -1,4 +1,6 @@
 #include <client.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 Utils clientUtil;
 
@@ -49,15 +51,15 @@ void showMenu(int menuType)
     {
         cout << "====== CUSTOMER BILLING MENU ======" << endl;
         cout << "\t1. Search for MSISDN" << endl;
-        cout << "\t2. Get the all the content of the processed CDR for Customer Billing" << endl;
+        cout << "\t2. Download Customer Billing Data" << endl;
         cout << "\t3. Go Back" << endl;
     }
     // interoperator billing menu
     else
     {
         cout << "====== INTEROPERATOR BILLING MENU ======" << endl;
-        cout << "\t1. Search for Brand Name/Operator ID" << endl;
-        cout << "\t2. Get the all the content of the processed CDR for Interoperator Settlement Billing" << endl;
+        cout << "\t1. Search for Brand Name" << endl;
+        cout << "\t2. Download Interoperator Billing Data" << endl;
         cout << "\t3. Go Back" << endl;
     }
     cout << "Choose your option: ";
@@ -96,6 +98,11 @@ void Client::clientConnect()
 
 int Client::writeToFile(int clientFD, char *filename)
 {
+    // creating data/downloads
+    mkdir("data", 0777);
+    int dataFD = open("data", O_DIRECTORY);
+    mkdirat(dataFD, "downloads", 0777);
+
     // FILE *fp;
     char buff[MAX_BUFF] = {'\0'};
 

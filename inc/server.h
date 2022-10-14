@@ -23,14 +23,6 @@
 using namespace std;
 class Server
 {
-private:
-        int serverSockfd, clientSockfd;
-        int port;
-        string ipAddr;
-        struct sockaddr_in server_addr;
-        struct sockaddr_in client_addr;
-        socklen_t len;
-
 public:
         Server();
         Server(int port, string ipAddr)
@@ -55,4 +47,12 @@ public:
         void closeServer();
         struct sockaddr_in getClientAddr() { return client_addr; }
         socklen_t getClientAddrLen() { return len; }
+
+private:
+        int serverSockfd, clientSockfd;
+        int port;
+        string ipAddr;
+        struct sockaddr_in server_addr;
+        struct sockaddr_in client_addr;
+        socklen_t len;
 };

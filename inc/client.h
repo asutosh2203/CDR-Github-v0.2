@@ -12,8 +12,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <cstring>
-#include <string> // std::string
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <user.h>
 #include <utils.h>

@@ -118,7 +118,9 @@ int main(int argc, char *argv[])
                             else
                             {
                                 ut.log(INFO, "Cannot process CDR file", C_LOGFILE);
-                                cout << "CDR file cannot be processed." << endl;
+                                cout << "CDR file cannot be processed." << endl
+                                     << "CDR doesn't exist or is inaccessible." << endl
+                                     << "Try Again." << endl;
                             }
                             sleep(2);
                             break;
@@ -383,8 +385,6 @@ int main(int argc, char *argv[])
                                                 ut.log(FATAL, "recv() error", C_LOGFILE);
                                                 exit(EXIT_FAILURE);
                                             }
-
-                                            cout << "IOSB sending buff: " << buf << endl;
 
                                             if (strcmp(buf, "sending") == 0)
                                             {

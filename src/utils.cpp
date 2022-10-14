@@ -1,8 +1,12 @@
 #include <utils.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 // this function creates a logfile which stores all the log messages at runtime along with the time stamp
 void Utils::log(const char *type, const char *msg, const char *filename)
 {
+    mkdir("logs", 0777);
+
     fstream logfile;
     logfile.open(filename, ios::app);
 
