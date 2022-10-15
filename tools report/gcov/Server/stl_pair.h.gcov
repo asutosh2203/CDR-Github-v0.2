@@ -312,14 +312,7 @@
         -:  311:#endif
         -:  312:
         -:  313:#if __cplusplus >= 201103L
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
-_ZNSt4pairIKl8CustomerEC2ERKS2_:
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
-_ZNSt4pairIKl8OperatorEC2ERKS2_:
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
+        -:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
         -:  315:      constexpr pair(pair&&) = default;		///< Move constructor
         -:  316:
         -:  317:      // DR 811.
@@ -350,12 +343,12 @@ _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_Lb1EEEOT_RKS1_:
         -:  333:	       enable_if<_PCCP::template
         -:  334:			   _CopyMovePair<true, _T1, _U2>(),
         -:  335:                         bool>::type=true>
-   76870*:  336:       constexpr pair(const _T1& __x, _U2&& __y)
-   76870*:  337:       : first(__x), second(std::forward<_U2>(__y)) { }
+   38435*:  336:       constexpr pair(const _T1& __x, _U2&& __y)
+   38435*:  337:       : first(__x), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_Lb1EEERKS1_OT_:
-    76870:  336:       constexpr pair(const _T1& __x, _U2&& __y)
-    76870:  337:       : first(__x), second(std::forward<_U2>(__y)) { }
+    38435:  336:       constexpr pair(const _T1& __x, _U2&& __y)
+    38435:  337:       : first(__x), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_Lb1EEERKS1_OT_:
     #####:  336:       constexpr pair(const _T1& __x, _U2&& __y)
@@ -375,20 +368,20 @@ _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_Lb1EEERKS1_OT_:
         -:  349:			  && _PCCP::template
         -:  350:			   _ImplicitlyMoveConvertiblePair<_U1, _U2>(),
         -:  351:                         bool>::type=true>
-   77044*:  352:	constexpr pair(_U1&& __x, _U2&& __y)
-   77044*:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
+   38522*:  352:	constexpr pair(_U1&& __x, _U2&& __y)
+   38522*:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRPSt13_Rb_tree_nodeIS_IKl8CustomerEERS1_Lb1EEEOT_OT0_:
-        2:  352:	constexpr pair(_U1&& __x, _U2&& __y)
-        2:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
+        1:  352:	constexpr pair(_U1&& __x, _U2&& __y)
+        1:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_S4_Lb1EEEOT_OT0_:
-    77040:  352:	constexpr pair(_U1&& __x, _U2&& __y)
-    77040:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
+    38520:  352:	constexpr pair(_U1&& __x, _U2&& __y)
+    38520:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRPSt13_Rb_tree_nodeIS_IKl8OperatorEERS1_Lb1EEEOT_OT0_:
-        2:  352:	constexpr pair(_U1&& __x, _U2&& __y)
-        2:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
+        1:  352:	constexpr pair(_U1&& __x, _U2&& __y)
+        1:  353:	: first(std::forward<_U1>(__x)), second(std::forward<_U2>(__y)) { }
 ------------------
 _ZNSt4pairIPSt18_Rb_tree_node_baseS1_EC2IRS1_S4_Lb1EEEOT_OT0_:
     #####:  352:	constexpr pair(_U1&& __x, _U2&& __y)

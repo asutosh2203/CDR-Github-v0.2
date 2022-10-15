@@ -1,121 +1,139 @@
         -:    0:Source:src/user.cpp
         -:    1:#include <user.h>
         -:    2:
-        -:    3:// /*This function is used to get the user ID and Password
-        -:    4://  from the client for registration and login*/
-        -:    5:// void User::setDetails()
-        -:    6:// {
-        -:    7://     cout << "Enter User name: ";
-        -:    8://     cin >> username;
-        -:    9:
-        -:   10://     // asutosh 2203 
-        -:   11:
-        -:   12://     char *storedPass = getpass("Enter Password: ");
-        -:   13://     setPassword(storedPass);
-        -:   14:// }
-        -:   15:
-    #####:   16:bool User::validateUsername(string user)
-        -:   17:{
-    #####:   18:    int special = 0, l = user.length();
-        -:   19:    // check length is 0 or more than 30
-    #####:   20:    if (l < 6 || l > 20)
-    #####:   21:        return 0;
-        -:   22:
-    #####:   23:    for (int i = 0; i < l; i++)
-        -:   24:    {
-    #####:   25:        char s = user.at(i);
-        -:   26:
-        -:   27:        // no spaces allowed
-    #####:   28:        if (s == ' ')
-    #####:   29:            return 0;
-        -:   30:
-        -:   31:        // characters other than alphabets and numbers
-    #####:   32:        if (isalnum(s))
-    #####:   33:            continue;
-        -:   34:        else
-        -:   35:        {
-        -:   36:            // periods and underscore allowed but only one
-    #####:   37:            if (s == '_' || s == '.')
-        -:   38:            {
-    #####:   39:                special++;
-    #####:   40:                if (special > 1)
-    #####:   41:                    return 0;
-        -:   42:            }
-        -:   43:            else
-    #####:   44:                return 0;
-        -:   45:        }
-        -:   46:    }
-    #####:   47:    return 1;
-        -:   48:}
-        -:   49:
-    #####:   50:bool User::validatePassword(char *pass)
-        -:   51:{
-    #####:   52:    bool isValid = 0;
-        -:   53:
-        -:   54:    // check storedPass
-    #####:   55:    if (strlen(pass) >= 6 && strlen(pass) <= 20)
-        -:   56:        // set isValid
-    #####:   57:        isValid = 1;
-        -:   58:
-    #####:   59:    return isValid;
-        -:   60:}
-        -:   61:
-    #####:   62:void User::setDetails()
-        -:   63:{
-    #####:   64:    string user;
-    #####:   65:    cout << "Enter User name: ";
-    #####:   66:    cin.ignore();
-    #####:   67:    getline(cin, user);
+        -:    3:/*
+        -:    4: *  FUNCTION NAME	: validateUsername
+        -:    5: *
+        -:    6: *  DESCRIPTION		: It validates the username provided during register or login
+        -:    7: *
+        -:    8: *  PARAMETERS		: string user
+        -:    9: *
+        -:   10: *  RETURN 		: bool
+        -:   11: *
+        -:   12: */
+    #####:   13:bool User::validateUsername(string user)
+        -:   14:{
+    #####:   15:    int special = 0, l = user.length();
+        -:   16:    // check length is 0 or more than 30
+    #####:   17:    if (l < 6 || l > 20)
+    #####:   18:        return 0;
+        -:   19:
+    #####:   20:    for (int i = 0; i < l; i++)
+        -:   21:    {
+    #####:   22:        char s = user.at(i);
+        -:   23:
+        -:   24:        // no spaces allowed
+    #####:   25:        if (s == ' ')
+    #####:   26:            return 0;
+        -:   27:
+        -:   28:        // characters other than alphabets and numbers
+    #####:   29:        if (isalnum(s))
+    #####:   30:            continue;
+        -:   31:        else
+        -:   32:        {
+        -:   33:            // periods and underscore allowed but only one
+    #####:   34:            if (s == '_' || s == '.')
+        -:   35:            {
+    #####:   36:                special++;
+    #####:   37:                if (special > 1)
+    #####:   38:                    return 0;
+        -:   39:            }
+        -:   40:            else
+    #####:   41:                return 0;
+        -:   42:        }
+        -:   43:    }
+    #####:   44:    return 1;
+        -:   45:} // end of validateUsername
+        -:   46:
+        -:   47:/*
+        -:   48: *  FUNCTION NAME	: validatePassword
+        -:   49: *
+        -:   50: *  DESCRIPTION		: It validates the password provided during register or login
+        -:   51: *
+        -:   52: *  PARAMETERS		: char *pass
+        -:   53: *
+        -:   54: *  RETURN 		: bool
+        -:   55: *
+        -:   56: */
+    #####:   57:bool User::validatePassword(char *pass)
+        -:   58:{
+    #####:   59:    bool isValid = false;
+        -:   60:
+        -:   61:    // check storedPass
+    #####:   62:    if (strlen(pass) >= 6 && strlen(pass) <= 20)
+        -:   63:        // set isValid
+    #####:   64:        isValid = true;
+        -:   65:
+    #####:   66:    return isValid;
+        -:   67:}
         -:   68:
-    #####:   69:    while (!validateUsername(user))
-        -:   70:    {
-    #####:   71:        cout << "INVALID USERNAME!" << endl
-    #####:   72:             << "Username must contains only {A-Z, a-z, 0-9, '.', '_'} and length must range from [6-20]." << endl;
-    #####:   73:        cout << "Enter User name: ";
-        -:   74:
-    #####:   75:        getline(cin, user);
-        -:   76:    }
-        -:   77:
-    #####:   78:    strcpy(username, user.c_str());
-        -:   79:
-    #####:   80:    char *storedPass = getpass("Enter Password: ");
-        -:   81:
-    #####:   82:    while (!validatePassword(storedPass))
-        -:   83:    {
-    #####:   84:        cout << "INVALID PASSWORD!" << endl
-    #####:   85:             << "Password length must range from [6-20]." << endl;
-    #####:   86:        storedPass = getpass("Enter Password: ");
-        -:   87:    }
-        -:   88:
-    #####:   89:    setPassword(storedPass);
-    #####:   90:}
+        -:   69:/*
+        -:   70: *  FUNCTION NAME	: setDetails
+        -:   71: *
+        -:   72: *  DESCRIPTION		: It sets the username and password of the current user.
+        -:   73: *
+        -:   74: *  PARAMETERS		: None
+        -:   75: *
+        -:   76: *  RETURN 		    : void
+        -:   77: *
+        -:   78: */
+    #####:   79:void User::setDetails()
+        -:   80:{
+    #####:   81:    string user;
+    #####:   82:    cout << "Enter User name: ";
+    #####:   83:    cin.ignore();
+    #####:   84:    getline(cin, user);
+        -:   85:
+    #####:   86:    while (!validateUsername(user))
+        -:   87:    {
+    #####:   88:        cout << "INVALID USERNAME!" << endl
+    #####:   89:             << "Username must contains only {A-Z, a-z, 0-9, '.', '_'} and length must range from [6-20]." << endl;
+    #####:   90:        cout << "Enter User name: ";
         -:   91:
-        -:   92:// This function is used to store the registered users data into a file
-        1:   93:void User::toDatabase(User &newUser)
-        -:   94:{
-        1:   95:    fstream userDB;
+    #####:   92:        getline(cin, user);
+        -:   93:    }
+        -:   94:
+    #####:   95:    setUsername(user.c_str());
         -:   96:
-        -:   97:    // file.write((const char*)this, sizeof(this));
+    #####:   97:    char *storedPass = getpass("Enter Password: ");
         -:   98:
-        1:   99:    userDB.open("data/registered.dat", ios::out | ios::app);
-        1:  100:    if (userDB)
-        -:  101:    {
-        1:  102:        userDB.write(reinterpret_cast<char *>(&newUser), sizeof(newUser));
-        -:  103:    }
-        -:  104:
-        -:  105:    else
-        -:  106:    {
-    #####:  107:        perror("file()");
-        -:  108:        // log("File cannot be opened");
-        -:  109:    }
-        -:  110:
-        1:  111:    userDB.close();
-        1:  112:}
-        -:  113:
-    #####:  114:string User::toString()
-        -:  115:{
-    #####:  116:    ostringstream ss;
-    #####:  117:    ss.clear();
-    #####:  118:    ss << this->getUsername() << "|" << this->getPassword();
-    #####:  119:    return ss.str();
-    #####:  120:}
+    #####:   99:    while (!validatePassword(storedPass))
+        -:  100:    {
+    #####:  101:        cout << "INVALID PASSWORD!" << endl
+    #####:  102:             << "Password length must range from [6-20]." << endl;
+    #####:  103:        storedPass = getpass("Enter Password: ");
+        -:  104:    }
+        -:  105:
+    #####:  106:    setPassword((const char *)storedPass);
+    #####:  107:}
+        -:  108:
+        -:  109:/*
+        -:  110: *  FUNCTION NAME	: toDatabase
+        -:  111: *
+        -:  112: *  DESCRIPTION		: It take an object of User type as parameter and stores it in users database.
+        -:  113: *
+        -:  114: *  PARAMETERS		: User &newUser
+        -:  115: *
+        -:  116: *  RETURN 		: void
+        -:  117: *
+        -:  118: */
+        1:  119:void User::toDatabase(User &newUser)
+        -:  120:{
+        1:  121:    fstream userDB;
+        -:  122:
+        -:  123:    // file.write((const char*)this, sizeof(this));
+        -:  124:
+        1:  125:    userDB.open(USER_DB, ios::out | ios::app);
+        1:  126:    if (userDB)
+        -:  127:    {
+        1:  128:        userDB.write(reinterpret_cast<char *>(&newUser), sizeof(newUser));
+        -:  129:    }
+        -:  130:
+        -:  131:    else
+        -:  132:    {
+    #####:  133:        perror("file()");
+        -:  134:        // log("File cannot be opened");
+        -:  135:    }
+        -:  136:
+        1:  137:    userDB.close();
+        1:  138:}

@@ -1,12 +1,24 @@
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <server.h>
 
 Utils ut;
 
 Server::Server()
 {
-    port = 8080;
+    // default constructor
 }
-// Creation of server socket using socket() system call.
+
+/*
+ *  FUNCTION NAME   : createSocket
+ *
+ *  DESCRIPTION     : It creates server socket and sets IP address and port number also.
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		    : void
+ *
+ */
 void Server::createSocket()
 {
     serverSockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -18,13 +30,21 @@ void Server::createSocket()
 
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(port);
-    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); //(const char*)ipAddr.c_str());
+    server_addr.sin_addr.s_addr = inet_addr(ipAddr); //(const char*)ipAddr.c_str());
 
     cout << "[+] Server socket created Successfully" << endl;
 }
-
-// Bind the server to a port using bind() system call
-// and listening to clients using listen() system call
+/*
+ *  FUNCTION NAME	: bind_listen()
+ *
+ *  DESCRIPTION		: It binds the server to a port using bind() system call
+                      and enables server to listen to clients using listen() system call listen() system call
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		    : void
+ *
+ */
 void Server::bind_listen()
 {
     if (bind(serverSockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
@@ -40,8 +60,19 @@ void Server::bind_listen()
         exit(EXIT_FAILURE);
     }
     cout << "[+] Server listening to the clients" << endl;
-}
+} // end of blind_listen()
 
+/*
+ *  FUNCTION NAME	: acceptClient()
+ *
+ *  DESCRIPTION		: It creates a multi-client server enviorment by calling fork() system call
+                        whenever a client gets accepted using accpet() call.
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		    : void
+ *
+ */
 void Server::acceptClient()
 {
     len = sizeof(client_addr);
@@ -52,20 +83,27 @@ void Server::acceptClient()
         {
             ut.log(FATAL, "accept() error", S_LOGFILE);
         }
-        cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
+        cout << "[+] Accepted the client " << ntohs(client_addr.sin_port) << endl;
         ut.log(INFO, "Server accepts the client", S_LOGFILE);
 
         if (fork() == 0)
         {
             initClient(clientSockfd);
         }
-
-        // initClient(clientSockfd);
-
         close(clientSockfd);
     }
-}
+} // end of acceptClient()
 
+/*
+ *  FUNCTION NAME	: initClient()
+ *
+ *  DESCRIPTION		: It initiates client after accepting and shows
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		    : void
+ *
+ */
 void Server::initClient(int newfd)
 {
     User user;
@@ -116,6 +154,7 @@ void Server::initClient(int newfd)
             }
             else if (isExists == 0)
             {
+                // storing user details in database
                 user.toDatabase(user);
 
                 if (send(newfd, "success", strlen("success"), 0) < 0)
@@ -481,27 +520,37 @@ void Server::initClient(int newfd)
 
         if (buf[0] == '\0')
         {
-            cout << "[-]Client " << ntohs(client_addr.sin_port) << " left the server." << endl;
+            cout << "[-] Client " << ntohs(client_addr.sin_port) << " left the server." << endl;
             break;
         }
     }
-}
+} // end of initClient()
 
-// return -1 on database error, 1 on user exists, 0 on user not exists
+/*
+ *  FUNCTION NAME	: userExists()
+ *
+ *  DESCRIPTION		: It checks the given username exists in the database or not,
+                      A return value of 1 indicates user exists, 0 indicates user does not exists and -1 indicates database error.
+ *
+ *  PARAMETERS		: User &newUser
+ *
+ *  RETURN 		    : int
+ *
+ */
 int Server::userExists(User &newUser)
 {
     User user;
     fstream userDB;
 
-    userDB.open("data/registered.dat", ios::out | ios::in);
+    // make directory if not exists
+    mkdir("data", 0777);
+    userDB.open(USER_DB, ios::out | ios::in);
 
     if (userDB)
     {
         while (!userDB.eof())
         {
-
             userDB.read((char *)&user, sizeof(user));
-
             if (strcmp(newUser.getUsername(), user.getUsername()) == 0)
             {
                 return 1;
@@ -512,17 +561,26 @@ int Server::userExists(User &newUser)
     {
         return -1;
     }
-
     return 0;
-}
+} // end of userExists()
 
-// return 1 on successful login, 0 on unsuccessful and -1 on DB error
+/*
+ *  FUNCTION NAME	: verifyLoginCreds()
+ *
+ *  DESCRIPTION		: It verifies the given credentials from database,
+                      A return value of 1 indicates successful verification, 0 indicates unsucessful verification and -1 indicates database error.
+ *
+ *  PARAMETERS		: User &newUser
+ *
+ *  RETURN 		    : int
+ *
+ */
 int Server::verifyLoginCreds(User &newUser)
 {
     User user;
     fstream userDB;
 
-    userDB.open("data/registered.dat", ios::out | ios::in);
+    userDB.open(USER_DB, ios::out | ios::in);
 
     if (userDB)
     {
@@ -543,8 +601,19 @@ int Server::verifyLoginCreds(User &newUser)
     }
 
     return 0;
-}
+} // end of verifyLoginCreds()
 
+/*
+ *  FUNCTION NAME	: processCallData()
+ *
+ *  DESCRIPTION		: It invokes processAndCreateFile() function for objects of both Operator and Customer classes parallely through threads,
+                      and returns true if both functions return true, and returns false if any fails.
+ *
+ *  PARAMETERS		: User &op, Customer &cust
+ *
+ *  RETURN 		    : bool
+ *
+ */
 bool Server::processCallData(Operator &op, Customer &cust)
 {
 
@@ -567,10 +636,20 @@ bool Server::processCallData(Operator &op, Customer &cust)
     {
         return true;
     }
-
     return false;
-}
+} // end of processCallData()
 
+/*
+ *  FUNCTION NAME	: sendFile()
+ *
+ *  DESCRIPTION		: It send file to client by streaming the data 
+                      A return value of 1 indicates successful transfer, 0 indicates unsuccessful transfer. 
+ *
+ *  PARAMETERS		: int newfd, char *filename
+ *
+ *  RETURN 		    : int
+ *
+ */
 int Server::sendFile(int newfd, char *filename)
 {
     char bufr[MAX_BUFF] = {'\0'};
@@ -587,7 +666,7 @@ int Server::sendFile(int newfd, char *filename)
             strcpy(bufr, line.c_str());
             if (send(newfd, bufr, sizeof(bufr), 0) < 0)
             {
-                ut.log(FATAL, "bufr send() error", S_LOGFILE);
+                ut.log(FATAL, "file send() error", S_LOGFILE);
                 return 0;
             }
 
@@ -610,8 +689,9 @@ int Server::sendFile(int newfd, char *filename)
     }
     file.close();
     return 1;
-}
+} // end of senfile()
 
+// function to close the server socket
 void Server::closeServer()
 {
     close(serverSockfd);

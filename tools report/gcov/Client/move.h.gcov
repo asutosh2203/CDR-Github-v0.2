@@ -47,8 +47,8 @@
         -:   46:   */
         -:   47:  template<typename _Tp>
         -:   48:    inline _GLIBCXX_CONSTEXPR _Tp*
-    #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
-    #####:   50:    { return __builtin_addressof(__r); }
+      13*:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
+      13*:   50:    { return __builtin_addressof(__r); }
 ------------------
 _ZSt11__addressofIKNSt13__future_base13_State_baseV27_SetterIbObEEEPT_RS6_:
     #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
@@ -59,8 +59,8 @@ _ZSt11__addressofIZSt9call_onceIMNSt13__future_base13_State_baseV2EFvPSt8functio
     #####:   50:    { return __builtin_addressof(__r); }
 ------------------
 _ZSt11__addressofINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEPT_RS6_:
-    #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
-    #####:   50:    { return __builtin_addressof(__r); }
+       13:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
+       13:   50:    { return __builtin_addressof(__r); }
 ------------------
 _ZSt11__addressofIbEPT_RS0_:
     #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
@@ -87,6 +87,10 @@ _ZSt11__addressofIbEPT_RS0_:
     #####:   50:    { return __builtin_addressof(__r); }
 ------------------
 _ZSt11__addressofISt8functionIFSt10unique_ptrINSt13__future_base12_Result_baseENS3_8_DeleterEEvEEEPT_RS8_:
+    #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
+    #####:   50:    { return __builtin_addressof(__r); }
+------------------
+_ZSt11__addressofINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEPT_RS6_:
     #####:   49:    __addressof(_Tp& __r) _GLIBCXX_NOEXCEPT
     #####:   50:    { return __builtin_addressof(__r); }
 ------------------
@@ -116,10 +120,10 @@ _ZSt11__addressofISt8functionIFSt10unique_ptrINSt13__future_base12_Result_baseEN
         -:   74:  template<typename _Tp>
         -:   75:    _GLIBCXX_NODISCARD
         -:   76:    constexpr _Tp&&
-    #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-    #####:   78:    { return static_cast<_Tp&&>(__t); }
+      21*:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+      21*:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardISt5tupleIJEEEOT_RNSt16remove_referenceIS2_E4typeE:
+_ZSt7forwardISt5tupleIJRKlEEEOT_RNSt16remove_referenceIS4_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
@@ -139,10 +143,6 @@ _ZSt7forwardIRNSt13__future_base13_State_baseV27_SetterIbObEEEOT_RNSt16remove_re
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardIRKSt4pairIKl8OperatorEEOT_RNSt16remove_referenceIS6_E4typeE:
-    #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-    #####:   78:    { return static_cast<_Tp&&>(__t); }
-------------------
 _ZSt7forwardIRPSt18_Rb_tree_node_baseEOT_RNSt16remove_referenceIS3_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
@@ -155,11 +155,11 @@ _ZSt7forwardINSt13__future_base13_State_baseV27_SetterIbObEEEOT_RNSt16remove_ref
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardIRKlEOT_RNSt16remove_referenceIS2_E4typeE:
+_ZSt7forwardISt5tupleIJEEEOT_RNSt16remove_referenceIS2_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardISt5tupleIJRKlEEEOT_RNSt16remove_referenceIS4_E4typeE:
+_ZSt7forwardIRKlEOT_RNSt16remove_referenceIS2_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
@@ -191,13 +191,17 @@ _ZSt7forwardIMNSt13__future_base13_State_baseV2EFvPSt8functionIFSt10unique_ptrIN
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardISt5tupleIJEEEOT_RNSt16remove_referenceIS2_E4typeE:
+_ZSt7forwardINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS6_E4typeE:
+    #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+    #####:   78:    { return static_cast<_Tp&&>(__t); }
+------------------
+_ZSt7forwardISt5tupleIJRKlEEEOT_RNSt16remove_referenceIS4_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
 _ZSt7forwardINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEOT_RNSt16remove_referenceIS6_E4typeE:
-    #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-    #####:   78:    { return static_cast<_Tp&&>(__t); }
+       21:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+       21:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
 _ZSt7forwardIRKNSt13__future_base13_State_baseV27_SetterIbObEEEOT_RNSt16remove_referenceIS7_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
@@ -208,10 +212,6 @@ _ZSt7forwardIRPSt13_Rb_tree_nodeISt4pairIKl8CustomerEEEOT_RNSt16remove_reference
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
 _ZSt7forwardIRNSt13__future_base13_State_baseV27_SetterIbObEEEOT_RNSt16remove_referenceIS6_E4typeE:
-    #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
-    #####:   78:    { return static_cast<_Tp&&>(__t); }
-------------------
-_ZSt7forwardIRKSt4pairIKl8CustomerEEOT_RNSt16remove_referenceIS6_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
@@ -227,11 +227,11 @@ _ZSt7forwardINSt13__future_base13_State_baseV27_SetterIbObEEEOT_RNSt16remove_ref
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardIRKlEOT_RNSt16remove_referenceIS2_E4typeE:
+_ZSt7forwardISt5tupleIJEEEOT_RNSt16remove_referenceIS2_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
-_ZSt7forwardISt5tupleIJRKlEEEOT_RNSt16remove_referenceIS4_E4typeE:
+_ZSt7forwardIRKlEOT_RNSt16remove_referenceIS2_E4typeE:
     #####:   77:    forward(typename std::remove_reference<_Tp>::type& __t) noexcept
     #####:   78:    { return static_cast<_Tp&&>(__t); }
 ------------------
@@ -288,14 +288,18 @@ _ZSt7forwardIMNSt13__future_base13_State_baseV2EFvPSt8functionIFSt10unique_ptrIN
         -:  101:  template<typename _Tp>
         -:  102:    _GLIBCXX_NODISCARD
         -:  103:    constexpr typename std::remove_reference<_Tp>::type&&
-    #####:  104:    move(_Tp&& __t) noexcept
-    #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+       7*:  104:    move(_Tp&& __t) noexcept
+       7*:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
-_ZSt4moveIRSt5tupleIJPNSt13__future_base7_ResultIbEENS1_12_Result_base8_DeleterEEEEONSt16remove_referenceIT_E4typeEOSA_:
+_ZSt4moveIRSt10unique_ptrINSt13__future_base7_ResultIbEENS1_12_Result_base8_DeleterEEEONSt16remove_referenceIT_E4typeEOS9_:
     #####:  104:    move(_Tp&& __t) noexcept
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
 _ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
+    #####:  104:    move(_Tp&& __t) noexcept
+    #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+------------------
+_ZSt4moveIRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEONSt16remove_referenceIT_E4typeEOS8_:
     #####:  104:    move(_Tp&& __t) noexcept
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
@@ -327,11 +331,11 @@ _ZSt4moveIRPNSt13__future_base7_ResultIbEEEONSt16remove_referenceIT_E4typeEOS6_:
     #####:  104:    move(_Tp&& __t) noexcept
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
-_ZSt4moveIRSt10unique_ptrINSt13__future_base7_ResultIbEENS1_12_Result_base8_DeleterEEEONSt16remove_referenceIT_E4typeEOS9_:
+_ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
     #####:  104:    move(_Tp&& __t) noexcept
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
-_ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
+_ZSt4moveIRSt5tupleIJPNSt13__future_base7_ResultIbEENS1_12_Result_base8_DeleterEEEEONSt16remove_referenceIT_E4typeEOSA_:
     #####:  104:    move(_Tp&& __t) noexcept
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
@@ -344,8 +348,8 @@ _ZSt4moveIRSaIcEEONSt16remove_referenceIT_E4typeEOS3_:
     #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
 _ZSt4moveIRNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEONSt16remove_referenceIT_E4typeEOS8_:
-    #####:  104:    move(_Tp&& __t) noexcept
-    #####:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+        7:  104:    move(_Tp&& __t) noexcept
+        7:  105:    { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
 ------------------
 _ZSt4moveIRPNSt13__future_base12_Result_baseEEONSt16remove_referenceIT_E4typeEOS5_:
     #####:  104:    move(_Tp&& __t) noexcept

@@ -1,18 +1,15 @@
 #include <user.h>
 
-// /*This function is used to get the user ID and Password
-//  from the client for registration and login*/
-// void User::setDetails()
-// {
-//     cout << "Enter User name: ";
-//     cin >> username;
-
-//     // asutosh 2203 
-
-//     char *storedPass = getpass("Enter Password: ");
-//     setPassword(storedPass);
-// }
-
+/*
+ *  FUNCTION NAME	: validateUsername
+ *
+ *  DESCRIPTION		: It validates the username provided during register or login
+ *
+ *  PARAMETERS		: string user
+ *
+ *  RETURN 		: bool
+ *
+ */
 bool User::validateUsername(string user)
 {
     int special = 0, l = user.length();
@@ -45,20 +42,40 @@ bool User::validateUsername(string user)
         }
     }
     return 1;
-}
+} // end of validateUsername
 
+/*
+ *  FUNCTION NAME	: validatePassword
+ *
+ *  DESCRIPTION		: It validates the password provided during register or login
+ *
+ *  PARAMETERS		: char *pass
+ *
+ *  RETURN 		: bool
+ *
+ */
 bool User::validatePassword(char *pass)
 {
-    bool isValid = 0;
+    bool isValid = false;
 
     // check storedPass
     if (strlen(pass) >= 6 && strlen(pass) <= 20)
         // set isValid
-        isValid = 1;
+        isValid = true;
 
     return isValid;
 }
 
+/*
+ *  FUNCTION NAME	: setDetails
+ *
+ *  DESCRIPTION		: It sets the username and password of the current user.
+ *
+ *  PARAMETERS		: None
+ *
+ *  RETURN 		    : void
+ *
+ */
 void User::setDetails()
 {
     string user;
@@ -75,7 +92,7 @@ void User::setDetails()
         getline(cin, user);
     }
 
-    strcpy(username, user.c_str());
+    setUsername(user.c_str());
 
     char *storedPass = getpass("Enter Password: ");
 
@@ -86,17 +103,26 @@ void User::setDetails()
         storedPass = getpass("Enter Password: ");
     }
 
-    setPassword(storedPass);
+    setPassword((const char *)storedPass);
 }
 
-// This function is used to store the registered users data into a file
+/*
+ *  FUNCTION NAME	: toDatabase
+ *
+ *  DESCRIPTION		: It take an object of User type as parameter and stores it in users database.
+ *
+ *  PARAMETERS		: User &newUser
+ *
+ *  RETURN 		: void
+ *
+ */
 void User::toDatabase(User &newUser)
 {
     fstream userDB;
 
     // file.write((const char*)this, sizeof(this));
 
-    userDB.open("data/registered.dat", ios::out | ios::app);
+    userDB.open(USER_DB, ios::out | ios::app);
     if (userDB)
     {
         userDB.write(reinterpret_cast<char *>(&newUser), sizeof(newUser));
@@ -109,12 +135,4 @@ void User::toDatabase(User &newUser)
     }
 
     userDB.close();
-}
-
-string User::toString()
-{
-    ostringstream ss;
-    ss.clear();
-    ss << this->getUsername() << "|" << this->getPassword();
-    return ss.str();
 }

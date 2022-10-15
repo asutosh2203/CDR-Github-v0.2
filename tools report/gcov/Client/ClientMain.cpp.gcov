@@ -4,534 +4,573 @@
         -:    3:Utils ut;
         -:    4:Client newClient;
         -:    5:
-        -:    6:// signal handling
-    #####:    7:void signalHandler(int sig)
-        -:    8:{
-    #####:    9:    if (sig == SIGINT || sig == SIGTSTP)
-        -:   10:    {
-    #####:   11:        cout << endl
-    #####:   12:             << "Program Terminated by the user."
-    #####:   13:             << endl;
-        -:   14:    }
-        -:   15:
-    #####:   16:    ut.log(INFO, "User left", C_LOGFILE);
-        -:   17:
-    #####:   18:    close(newClient.getClientSockfd());
-    #####:   19:    exit(EXIT_SUCCESS);
-        -:   20:}
-        -:   21:
-        1:   22:int main(int argc, char *argv[])
-        -:   23:{
+        -:    6:/*
+        -:    7: *  FUNCTION NAME	: signalHandler
+        -:    8: *
+        -:    9: *  DESCRIPTION		: It handles SIGINT and SIGTSTP signals
+        -:   10: *
+        -:   11: *  PARAMETERS		: int sig
+        -:   12: *
+        -:   13: *  RETURN 		: void
+        -:   14: *
+        -:   15: */
+    #####:   16:void signalHandler(int sig)
+        -:   17:{
+    #####:   18:    if (sig == SIGINT || sig == SIGTSTP)
+        -:   19:    {
+    #####:   20:        cout << endl
+    #####:   21:             << "Program Terminated by the user."
+    #####:   22:             << endl;
+        -:   23:    }
         -:   24:
-        -:   25:    // Signal Handling
-        1:   26:    signal(SIGINT, signalHandler);
-        1:   27:    signal(SIGTSTP, signalHandler);
-        -:   28:
-        1:   29:    newClient.createSocket();
-        1:   30:    newClient.clientConnect();
-        -:   31:
-        -:   32:    int choice;
-        1:   33:    int clientFD = newClient.getClientSockfd();
-        -:   34:
-        1:   35:    User newUser;
-        -:   36:    char buf[MAX_BUFF];
-        -:   37:
-        -:   38:    while (1)
-        -:   39:    {
-        3:   40:        showMenu(0);
-        -:   41:
-        3:   42:        choice = getUserChoice();
-        -:   43:
-        3:   44:        switch (choice)
-        -:   45:        {
-        -:   46:        // Registration
-        1:   47:        case 1:
-        1:   48:            send(clientFD, "1", 2, 0);
-        1:   49:            memset(&buf, 0, MAX_BUFF);
-        1:   50:            recv(clientFD, buf, sizeof(buf), 0);
-        1:   51:            if (strcmp(buf, "register") == 0)
-        -:   52:            {
-        1:   53:                newUser.setDetails();
-        1:   54:                send(clientFD, &newUser, sizeof(User), 0);
-        -:   55:            }
-        1:   56:            memset(&buf, 0, MAX_BUFF);
-        1:   57:            recv(clientFD, buf, sizeof(buf), 0);
-        1:   58:            if (strcmp(buf, "success") == 0)
-        -:   59:            {
-        1:   60:                cout << endl;
-        1:   61:                cout << "Registration successful" << endl;
-        1:   62:                send(clientFD, "success", strlen("success"), 0);
-        -:   63:            }
-    #####:   64:            else if (strcmp(buf, "exists") == 0)
-        -:   65:            {
-    #####:   66:                cout << endl;
-    #####:   67:                cout << "Username already exists.\nCreate a new username or login with your existing account." << endl;
-    #####:   68:                send(clientFD, "failure", strlen("failure"), 0);
-        -:   69:            }
-        -:   70:            else
-        -:   71:            {
-    #####:   72:                cout << endl;
-    #####:   73:                cout << "Registration unsuccessful" << endl;
-    #####:   74:                send(clientFD, "failure", strlen("failure"), 0);
-        -:   75:            }
-        1:   76:            sleep(2);
-        1:   77:            break;
-        -:   78:
-        -:   79:        // login
-        1:   80:        case 2:
-        1:   81:            send(clientFD, "2", 2, 0);
-        1:   82:            memset(&buf, 0, MAX_BUFF);
-        1:   83:            recv(clientFD, buf, sizeof(buf), 0);
-        -:   84:
-        1:   85:            if (strcmp(buf, "login") == 0)
-        -:   86:            {
-        -:   87:                // memset(&newUser, 0, sizeof(User));
-        1:   88:                newUser.setDetails();
-        -:   89:                // string str1 = newUser.toString();
-        1:   90:                send(clientFD, &newUser, sizeof(User), 0);
-        1:   91:                memset(&buf, 0, MAX_BUFF);
-        1:   92:                recv(clientFD, buf, sizeof(buf), 0);
-        1:   93:                if (strcmp(buf, "loggedIn") == 0)
-        -:   94:                {
-        1:   95:                    cout << "Login Successful" << endl;
-        -:   96:
-        -:   97:                    while (1)
-        -:   98:                    {
-        3:   99:                        sleep(2);
-        3:  100:                        showMenu(1);
-        3:  101:                        choice = getUserChoice();
-        -:  102:                        switch (choice)
-        -:  103:                        {
-        1:  104:                        case 1: // Process CDR
-        1:  105:                            if (send(clientFD, "1", 2, 0) < 0)
-        -:  106:                            {
-    #####:  107:                                cout << "Could not connect to server" << endl;
-    #####:  108:                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  109:                                exit(EXIT_FAILURE);
-        -:  110:                            }
-        -:  111:                            // op.processCDR();
-        1:  112:                            memset(&buf, 0, MAX_BUFF);
-        1:  113:                            recv(clientFD, buf, sizeof(buf), 0);
-        1:  114:                            if (strcmp(buf, "processed") == 0)
-        -:  115:                            {
-        1:  116:                                cout << "CDR file processed successfully." << endl;
-        -:  117:                            }
-        -:  118:                            else
-        -:  119:                            {
-    #####:  120:                                ut.log(INFO, "Cannot process CDR file", C_LOGFILE);
-    #####:  121:                                cout << "CDR file cannot be processed." << endl;
-        -:  122:                            }
-        1:  123:                            sleep(2);
-        1:  124:                            break;
-        1:  125:                        case 2: // Billing Info
-        1:  126:                            if (send(clientFD, "2", 2, 0) < 0)
-        -:  127:                            {
-    #####:  128:                                cout << "Could not connect to server" << endl;
-    #####:  129:                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  130:                                exit(EXIT_FAILURE);
-        -:  131:                            }
-        -:  132:                            while (1)
-        -:  133:                            {
-        3:  134:                                showMenu(2);
-        -:  135:                                // cout << "====== BILLING INFO MENU ======" << endl;
-        -:  136:
-        3:  137:                                choice = getUserChoice();
-        -:  138:                                switch (choice)
-        -:  139:                                {
-        1:  140:                                case 1: // Customer Billing
-        1:  141:                                    if (send(clientFD, "1", 2, 0) < 0)
-        -:  142:                                    {
-    #####:  143:                                        cout << "Could not connect to server" << endl;
-    #####:  144:                                        ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  145:                                        exit(EXIT_FAILURE);
-        -:  146:                                    }
-        -:  147:                                    while (1)
-        -:  148:                                    {
-        -:  149:                                        // shows customer billing menu
-        3:  150:                                        showMenu(3);
-        -:  151:
-        3:  152:                                        choice = getUserChoice();
-        -:  153:
-        3:  154:                                        string MSISDN;
-        -:  155:
-        -:  156:                                        switch (choice)
-        -:  157:                                        {
-        1:  158:                                        case 1:
-        1:  159:                                            if (send(clientFD, "1", 2, 0) < 0)
-        -:  160:                                            {
-    #####:  161:                                                cout << "Could not connect to server" << endl;
-    #####:  162:                                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  163:                                                exit(EXIT_FAILURE);
-        -:  164:                                            }
-        -:  165:
-        1:  166:                                            memset(&buf, 0, MAX_BUFF);
-        -:  167:
-        1:  168:                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  169:                                            {
-    #####:  170:                                                cout << "Could not connect to server" << endl;
-    #####:  171:                                                ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  172:                                                exit(EXIT_FAILURE);
-        -:  173:                                            }
-        -:  174:
-        1:  175:                                            if (strcmp(buf, "searchmsisdn") == 0)
-        -:  176:                                            {
-        -:  177:
-        1:  178:                                                cout << "Enter MSISDN to be searched: ";
-        1:  179:                                                cin.ignore();
-        1:  180:                                                getline(cin, MSISDN);
-        -:  181:
-        1:  182:                                                while (!validateInput(MSISDN, 0))
-        -:  183:                                                {
-    #####:  184:                                                    cout << "Invalid MSISDN." << endl;
-    #####:  185:                                                    cout << "Enter MSISDN to be searched: ";
-    #####:  186:                                                    getline(cin, MSISDN);
-        -:  187:                                                }
-        -:  188:
-        -:  189:                                                // sending msisdn to be searched
-        1:  190:                                                if (send(clientFD, MSISDN.c_str(), MAX_BUFF, 0) < 0)
-        -:  191:                                                {
-    #####:  192:                                                    cout << "Could not connect to server" << endl;
-    #####:  193:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  194:                                                    exit(EXIT_FAILURE);
-        -:  195:                                                }
-        -:  196:
-        1:  197:                                                memset(&buf, 0, MAX_BUFF);
-        -:  198:
-        -:  199:                                                // receiving msisdn search results
-        1:  200:                                                if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  201:                                                {
-    #####:  202:                                                    cout << "Could not connect to server" << endl;
-    #####:  203:                                                    ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  204:                                                    exit(EXIT_FAILURE);
-        -:  205:                                                }
-        -:  206:
-        1:  207:                                                cout << buf << endl;
-        -:  208:                                            }
-        -:  209:
-        1:  210:                                            pressEnter();
-        -:  211:
-        -:  212:                                            // for searching by MSISDN
-        1:  213:                                            break;
-        -:  214:
-        1:  215:                                        case 2:
-        1:  216:                                            if (send(clientFD, "2", 2, 0) < 0)
-        -:  217:                                            {
-    #####:  218:                                                cout << "Could not connect to server" << endl;
-    #####:  219:                                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  220:                                                exit(EXIT_FAILURE);
-        -:  221:                                            }
+    #####:   25:    ut.log(INFO, "User left", C_LOGFILE);
+        -:   26:
+    #####:   27:    close(newClient.getClientSockfd());
+    #####:   28:    exit(EXIT_SUCCESS);
+        -:   29:}
+        -:   30:
+        1:   31:int main(int argc, char *argv[])
+        -:   32:{
+        -:   33:    try
+        -:   34:    {
+        1:   35:        if (argc == 3)
+        -:   36:        {
+        1:   37:            int port = atoi(argv[2]);
+        1:   38:            if (!ut.validateIP(argv[1]))
+        -:   39:            {
+    #####:   40:                throw("Invalid IP Address");
+        -:   41:            }
+        1:   42:            if (port > 0)
+        -:   43:            {
+        1:   44:                newClient.setIPAddr(argv[1]);
+        1:   45:                newClient.setPort(port);
+        -:   46:
+        -:   47:                // Signal Handling
+        1:   48:                signal(SIGINT, signalHandler);
+        1:   49:                signal(SIGTSTP, signalHandler);
+        -:   50:
+        1:   51:                newClient.createSocket();
+        1:   52:                newClient.clientConnect();
+        -:   53:
+        -:   54:                int choice;
+        1:   55:                int clientFD = newClient.getClientSockfd();
+        -:   56:
+        1:   57:                User newUser;
+        -:   58:                char buf[MAX_BUFF];
+        -:   59:
+        -:   60:                while (1)
+        -:   61:                {
+        -:   62:                    // Show main menu
+        3:   63:                    showMenu(0);
+        -:   64:
+        3:   65:                    choice = getUserChoice();
+        -:   66:
+        3:   67:                    switch (choice)
+        -:   68:                    {
+        -:   69:                    // Registration
+        1:   70:                    case 1:
+        1:   71:                        send(clientFD, "1", 2, 0);
+        1:   72:                        memset(&buf, 0, MAX_BUFF);
+        1:   73:                        recv(clientFD, buf, sizeof(buf), 0);
+        1:   74:                        if (strcmp(buf, "register") == 0)
+        -:   75:                        {
+        1:   76:                            newUser.setDetails();
+        1:   77:                            send(clientFD, &newUser, sizeof(User), 0);
+        -:   78:                        }
+        1:   79:                        memset(&buf, 0, MAX_BUFF);
+        1:   80:                        recv(clientFD, buf, sizeof(buf), 0);
+        1:   81:                        if (strcmp(buf, "success") == 0)
+        -:   82:                        {
+        1:   83:                            cout << endl;
+        1:   84:                            cout << "Registration successful" << endl;
+        1:   85:                            send(clientFD, "success", strlen("success"), 0);
+        -:   86:                        }
+    #####:   87:                        else if (strcmp(buf, "exists") == 0)
+        -:   88:                        {
+    #####:   89:                            cout << endl;
+    #####:   90:                            cout << "Username already exists.\nCreate a new username or login with your existing account." << endl;
+    #####:   91:                            send(clientFD, "failure", strlen("failure"), 0);
+        -:   92:                        }
+        -:   93:                        else
+        -:   94:                        {
+    #####:   95:                            cout << endl;
+    #####:   96:                            cout << "Registration unsuccessful" << endl;
+    #####:   97:                            send(clientFD, "failure", strlen("failure"), 0);
+        -:   98:                        }
+        1:   99:                        sleep(2);
+        1:  100:                        break;
+        -:  101:
+        -:  102:                    // login
+        1:  103:                    case 2:
+        1:  104:                        send(clientFD, "2", 2, 0);
+        1:  105:                        memset(&buf, 0, MAX_BUFF);
+        1:  106:                        recv(clientFD, buf, sizeof(buf), 0);
+        -:  107:
+        1:  108:                        if (strcmp(buf, "login") == 0)
+        -:  109:                        {
+        -:  110:                            // memset(&newUser, 0, sizeof(User));
+        1:  111:                            newUser.setDetails();
+        -:  112:                            // string str1 = newUser.toString();
+        1:  113:                            send(clientFD, &newUser, sizeof(User), 0);
+        1:  114:                            memset(&buf, 0, MAX_BUFF);
+        1:  115:                            recv(clientFD, buf, sizeof(buf), 0);
+        1:  116:                            if (strcmp(buf, "loggedIn") == 0)
+        -:  117:                            {
+        1:  118:                                cout << "Login Successful" << endl;
+        -:  119:
+        -:  120:                                while (1)
+        -:  121:                                {
+        3:  122:                                    sleep(1);
+        3:  123:                                    showMenu(1); // Show services menu
+        3:  124:                                    choice = getUserChoice();
+        -:  125:                                    switch (choice)
+        -:  126:                                    {
+        1:  127:                                    case 1: // Process CDR
+        1:  128:                                        if (send(clientFD, "1", 2, 0) < 0)
+        -:  129:                                        {
+    #####:  130:                                            cout << "Could not connect to server" << endl;
+    #####:  131:                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  132:                                            exit(EXIT_FAILURE);
+        -:  133:                                        }
+        -:  134:                                        // op.processCDR();
+        1:  135:                                        memset(&buf, 0, MAX_BUFF);
+        1:  136:                                        recv(clientFD, buf, sizeof(buf), 0);
+        1:  137:                                        if (strcmp(buf, "processed") == 0)
+        -:  138:                                        {
+        1:  139:                                            cout << "CDR file processed successfully." << endl;
+        -:  140:                                        }
+        -:  141:                                        else
+        -:  142:                                        {
+    #####:  143:                                            ut.log(INFO, "Cannot process CDR file", C_LOGFILE);
+    #####:  144:                                            cout << "CDR file cannot be processed." << endl
+    #####:  145:                                                 << "CDR doesn't exist or is inaccessible." << endl
+    #####:  146:                                                 << "Try Again." << endl;
+        -:  147:                                        }
+        1:  148:                                        sleep(2);
+        1:  149:                                        break;
+        1:  150:                                    case 2: // Billing Info
+        1:  151:                                        if (send(clientFD, "2", 2, 0) < 0)
+        -:  152:                                        {
+    #####:  153:                                            cout << "Could not connect to server" << endl;
+    #####:  154:                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  155:                                            exit(EXIT_FAILURE);
+        -:  156:                                        }
+        -:  157:                                        while (1)
+        -:  158:                                        {
+        3:  159:                                            showMenu(2);
+        -:  160:                                            // cout << "====== BILLING INFO MENU ======" << endl;
+        -:  161:
+        3:  162:                                            choice = getUserChoice();
+        -:  163:                                            switch (choice)
+        -:  164:                                            {
+        1:  165:                                            case 1: // Customer Billing
+        1:  166:                                                if (send(clientFD, "1", 2, 0) < 0)
+        -:  167:                                                {
+    #####:  168:                                                    cout << "Could not connect to server" << endl;
+    #####:  169:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  170:                                                    exit(EXIT_FAILURE);
+        -:  171:                                                }
+        -:  172:                                                while (1)
+        -:  173:                                                {
+        -:  174:                                                    // shows customer billing menu
+        3:  175:                                                    showMenu(3);
+        -:  176:
+        3:  177:                                                    choice = getUserChoice();
+        -:  178:
+        3:  179:                                                    string MSISDN;
+        -:  180:
+        -:  181:                                                    switch (choice)
+        -:  182:                                                    {
+        1:  183:                                                    case 1:
+        1:  184:                                                        if (send(clientFD, "1", 2, 0) < 0)
+        -:  185:                                                        {
+    #####:  186:                                                            cout << "Could not connect to server" << endl;
+    #####:  187:                                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  188:                                                            exit(EXIT_FAILURE);
+        -:  189:                                                        }
+        -:  190:
+        1:  191:                                                        memset(&buf, 0, MAX_BUFF);
+        -:  192:
+        1:  193:                                                        if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  194:                                                        {
+    #####:  195:                                                            cout << "Could not connect to server" << endl;
+    #####:  196:                                                            ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  197:                                                            exit(EXIT_FAILURE);
+        -:  198:                                                        }
+        -:  199:
+        1:  200:                                                        if (strcmp(buf, "searchmsisdn") == 0)
+        -:  201:                                                        {
+        1:  202:                                                            cout << "Enter MSISDN to be searched: ";
+        1:  203:                                                            cin.ignore();
+        1:  204:                                                            getline(cin, MSISDN);
+        -:  205:
+        1:  206:                                                            while (!validateInput(MSISDN, 0))
+        -:  207:                                                            {
+    #####:  208:                                                                cout << "Invalid MSISDN." << endl;
+    #####:  209:                                                                cout << "Enter MSISDN to be searched: ";
+    #####:  210:                                                                getline(cin, MSISDN);
+        -:  211:                                                            }
+        -:  212:
+        -:  213:                                                            // sending msisdn to be searched
+        1:  214:                                                            if (send(clientFD, MSISDN.c_str(), MAX_BUFF, 0) < 0)
+        -:  215:                                                            {
+    #####:  216:                                                                cout << "Could not connect to server" << endl;
+    #####:  217:                                                                ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  218:                                                                exit(EXIT_FAILURE);
+        -:  219:                                                            }
+        -:  220:
+        1:  221:                                                            memset(&buf, 0, MAX_BUFF);
         -:  222:
-        1:  223:                                            memset(&buf, 0, MAX_BUFF);
-        1:  224:                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  225:                                            {
-    #####:  226:                                                cout << "Could not connect to server" << endl;
-    #####:  227:                                                ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  228:                                                exit(EXIT_FAILURE);
-        -:  229:                                            }
+        -:  223:                                                            // receiving msisdn search results
+        1:  224:                                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  225:                                                            {
+    #####:  226:                                                                cout << "Could not connect to server" << endl;
+    #####:  227:                                                                ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  228:                                                                exit(EXIT_FAILURE);
+        -:  229:                                                            }
         -:  230:
-        1:  231:                                            if (strcmp(buf, "sending") == 0)
-        -:  232:                                            {
-        -:  233:
-        1:  234:                                                if (send(clientFD, "yes", strlen("yes"), 0) < 0)
-        -:  235:                                                {
-    #####:  236:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
-        -:  237:                                                    // exit(EXIT_FAILURE);
-        -:  238:                                                }
-        -:  239:
-        1:  240:                                                cout << "Attempting to download CB.txt into " << CB_DOWNLOAD << "..." << endl;
-        -:  241:                                                // downloading file
-        1:  242:                                                int isSuccess = newClient.writeToFile(clientFD, (char *)CB_DOWNLOAD);
-        -:  243:
-        1:  244:                                                if (isSuccess == 1)
-        -:  245:                                                {
-        -:  246:                                                    // send to server
-        1:  247:                                                    if (send(clientFD, "SUCCESS", strlen("SUCCESS"), 0) < 0)
-        -:  248:                                                    {
-    #####:  249:                                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  250:                                                        clientErrExit();
-        -:  251:                                                    }
-        -:  252:
-        -:  253:                                                    // log to file
-        1:  254:                                                    cout << "File downloaded Successfully in " << CB_DOWNLOAD << endl;
-        1:  255:                                                    ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
-        -:  256:                                                }
-        -:  257:                                                else
-        -:  258:                                                {
-        -:  259:                                                    // send to server
-    #####:  260:                                                    if (send(clientFD, "FAILED", strlen("FAILED"), 0) < 0)
-        -:  261:                                                    {
-    #####:  262:                                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  263:                                                        clientErrExit();
-        -:  264:                                                    }
-        -:  265:
-        -:  266:                                                    // log to file
-    #####:  267:                                                    cout << "Required file could not be generated, please try again." << endl;
-    #####:  268:                                                    ut.log(INFO, "File Downloading failed", C_LOGFILE);
-        -:  269:                                                }
-        -:  270:                                            }
-        -:  271:                                            else
-        -:  272:                                            {
-        -:  273:                                                // if error receive
-    #####:  274:                                                cout << "CDR Processing Failed. Try again!" << endl;
-        -:  275:                                            }
-        1:  276:                                            cout << endl;
-        1:  277:                                            sleep(3);
-        1:  278:                                            break;
-        -:  279:
-        1:  280:                                        case 3:
-        1:  281:                                            if (send(clientFD, "3", 2, 0) < 0)
-        -:  282:                                            {
-    #####:  283:                                                cout << "Could not connect to server" << endl;
-    #####:  284:                                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  285:                                                exit(EXIT_FAILURE);
-        -:  286:                                            }
-        1:  287:                                            cout << "Going back..." << endl;
-        1:  288:                                            sleep(2);
-        1:  289:                                            break;
-        -:  290:
-    #####:  291:                                        default:
-    #####:  292:                                            break;
-        -:  293:                                        }
-        -:  294:
-        3:  295:                                        if (choice == 3)
-        -:  296:                                        {
-        1:  297:                                            choice = 0;
-        1:  298:                                            break;
-        -:  299:                                        }
-        5:  300:                                    }
-        1:  301:                                    break;
-        -:  302:
-        1:  303:                                case 2:
-        1:  304:                                    if (send(clientFD, "2", 2, 0) < 0)
-        -:  305:                                    {
-    #####:  306:                                        cout << "Could not connect to server" << endl;
-    #####:  307:                                        ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  308:                                        exit(EXIT_FAILURE);
-        -:  309:                                    }
-        -:  310:                                    while (1)
-        -:  311:                                    {
-        -:  312:                                        // shows interop billing menu
-        3:  313:                                        showMenu(-1);
-        3:  314:                                        choice = getUserChoice();
-        3:  315:                                        string brandName;
-        -:  316:                                        switch (choice)
-        -:  317:                                        {
-        1:  318:                                        case 1:
-        1:  319:                                            if (send(clientFD, "1", 2, 0) < 0)
-        -:  320:                                            {
-    #####:  321:                                                cout << "Could not connect to server" << endl;
-    #####:  322:                                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  323:                                                exit(EXIT_FAILURE);
-        -:  324:                                            }
-        -:  325:
-        1:  326:                                            memset(&buf, 0, MAX_BUFF);
-        -:  327:
-        1:  328:                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  329:                                            {
-    #####:  330:                                                cout << "Could not connect to server" << endl;
-    #####:  331:                                                ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  332:                                                exit(EXIT_FAILURE);
-        -:  333:                                            }
-        -:  334:
-        1:  335:                                            if (strcmp(buf, "searchbrand") == 0)
-        -:  336:                                            {
-        1:  337:                                                cout << "Enter brand name to be searched: ";
-        1:  338:                                                cin.ignore();
-        1:  339:                                                getline(cin, brandName);
-        -:  340:
-        1:  341:                                                while (!validateInput(brandName, 1))
-        -:  342:                                                {
-    #####:  343:                                                    cout << "Inavlid Brand name"
-    #####:  344:                                                         << endl
-    #####:  345:                                                         << "Enter brand name to be searched: ";
-    #####:  346:                                                    getline(cin, brandName);
-        -:  347:                                                }
-        -:  348:
-        -:  349:                                                // sending brand name to be searched
-        1:  350:                                                if (send(clientFD, brandName.c_str(), brandName.length(), 0) < 0)
-        -:  351:                                                {
-    #####:  352:                                                    cout << "Could not connect to server" << endl;
-    #####:  353:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  354:                                                    exit(EXIT_FAILURE);
-        -:  355:                                                }
-        -:  356:
-        -:  357:                                                // receiving brand search results
-        1:  358:                                                if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  359:                                                {
-    #####:  360:                                                    cout << "Could not connect to server" << endl;
-    #####:  361:                                                    ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  362:                                                    exit(EXIT_FAILURE);
-        -:  363:                                                }
+        1:  231:                                                            cout << endl
+        1:  232:                                                                 << "Search Result for MSISDN: " << MSISDN << endl;
+        1:  233:                                                            cout << buf << endl;
+        -:  234:                                                        }
+        -:  235:
+        1:  236:                                                        pressEnter();
+        1:  237:                                                        break;
+        -:  238:
+        1:  239:                                                    case 2: // Download CB.txt
+        1:  240:                                                        if (send(clientFD, "2", 2, 0) < 0)
+        -:  241:                                                        {
+    #####:  242:                                                            cout << "Could not connect to server" << endl;
+    #####:  243:                                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  244:                                                            exit(EXIT_FAILURE);
+        -:  245:                                                        }
+        -:  246:
+        1:  247:                                                        memset(&buf, 0, MAX_BUFF);
+        1:  248:                                                        if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  249:                                                        {
+    #####:  250:                                                            cout << "Could not connect to server" << endl;
+    #####:  251:                                                            ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  252:                                                            exit(EXIT_FAILURE);
+        -:  253:                                                        }
+        -:  254:
+        1:  255:                                                        if (strcmp(buf, "sending") == 0)
+        -:  256:                                                        {
+        -:  257:
+        1:  258:                                                            if (send(clientFD, "yes", strlen("yes"), 0) < 0)
+        -:  259:                                                            {
+    #####:  260:                                                                ut.log(FATAL, "send() error", C_LOGFILE);
+        -:  261:                                                                // exit(EXIT_FAILURE);
+        -:  262:                                                            }
+        -:  263:
+        1:  264:                                                            cout << "Attempting to download CB.txt into " << CB_DOWNLOAD << "..." << endl;
+        -:  265:                                                            // downloading file
+        1:  266:                                                            int isSuccess = newClient.writeToFile(clientFD, (char *)CB_DOWNLOAD);
+        -:  267:
+        1:  268:                                                            if (isSuccess == 1)
+        -:  269:                                                            {
+        -:  270:                                                                // send to server
+        1:  271:                                                                if (send(clientFD, "SUCCESS", strlen("SUCCESS"), 0) < 0)
+        -:  272:                                                                {
+    #####:  273:                                                                    ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  274:                                                                    clientErrExit();
+        -:  275:                                                                }
+        -:  276:
+        -:  277:                                                                // log to file
+        1:  278:                                                                cout << "File downloaded Successfully in " << CB_DOWNLOAD << endl;
+        1:  279:                                                                ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
+        -:  280:                                                            }
+        -:  281:                                                            else
+        -:  282:                                                            {
+        -:  283:                                                                // send to server
+    #####:  284:                                                                if (send(clientFD, "FAILED", strlen("FAILED"), 0) < 0)
+        -:  285:                                                                {
+    #####:  286:                                                                    ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  287:                                                                    clientErrExit();
+        -:  288:                                                                }
+        -:  289:
+        -:  290:                                                                // log to file
+    #####:  291:                                                                cout << "Required file could not be generated, please try again." << endl;
+    #####:  292:                                                                ut.log(INFO, "File Downloading failed", C_LOGFILE);
+        -:  293:                                                            }
+        -:  294:                                                        }
+        -:  295:                                                        else
+        -:  296:                                                        {
+        -:  297:                                                            // if error receive
+    #####:  298:                                                            cout << "CDR Processing Failed. Try again!" << endl;
+        -:  299:                                                        }
+        1:  300:                                                        cout << endl;
+        1:  301:                                                        sleep(2);
+        1:  302:                                                        break;
+        -:  303:
+        1:  304:                                                    case 3:
+        1:  305:                                                        if (send(clientFD, "3", 2, 0) < 0)
+        -:  306:                                                        {
+    #####:  307:                                                            cout << "Could not connect to server" << endl;
+    #####:  308:                                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  309:                                                            exit(EXIT_FAILURE);
+        -:  310:                                                        }
+        1:  311:                                                        cout << "Going back..." << endl;
+        1:  312:                                                        sleep(1);
+        1:  313:                                                        break;
+        -:  314:
+    #####:  315:                                                    default:
+    #####:  316:                                                        break;
+        -:  317:                                                    }
+        -:  318:
+        3:  319:                                                    if (choice == 3)
+        -:  320:                                                    {
+        1:  321:                                                        choice = 0;
+        1:  322:                                                        break;
+        -:  323:                                                    }
+        5:  324:                                                }
+        1:  325:                                                break;
+        -:  326:
+        1:  327:                                            case 2:
+        1:  328:                                                if (send(clientFD, "2", 2, 0) < 0)
+        -:  329:                                                {
+    #####:  330:                                                    cout << "Could not connect to server" << endl;
+    #####:  331:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  332:                                                    exit(EXIT_FAILURE);
+        -:  333:                                                }
+        -:  334:                                                while (1)
+        -:  335:                                                {
+        -:  336:                                                    // shows interop billing menu
+        3:  337:                                                    showMenu(-1);
+        3:  338:                                                    choice = getUserChoice();
+        3:  339:                                                    string brandName;
+        -:  340:                                                    switch (choice)
+        -:  341:                                                    {
+        1:  342:                                                    case 1:
+        1:  343:                                                        if (send(clientFD, "1", 2, 0) < 0)
+        -:  344:                                                        {
+    #####:  345:                                                            cout << "Could not connect to server" << endl;
+    #####:  346:                                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  347:                                                            exit(EXIT_FAILURE);
+        -:  348:                                                        }
+        -:  349:
+        1:  350:                                                        memset(&buf, 0, MAX_BUFF);
+        -:  351:
+        1:  352:                                                        if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  353:                                                        {
+    #####:  354:                                                            cout << "Could not connect to server" << endl;
+    #####:  355:                                                            ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  356:                                                            exit(EXIT_FAILURE);
+        -:  357:                                                        }
+        -:  358:
+        1:  359:                                                        if (strcmp(buf, "searchbrand") == 0)
+        -:  360:                                                        {
+        1:  361:                                                            cout << "Enter brand name to be searched: ";
+        1:  362:                                                            cin.ignore();
+        1:  363:                                                            getline(cin, brandName);
         -:  364:
-        1:  365:                                                cout << buf << endl;
-        -:  366:                                            }
-        1:  367:                                            pressEnter();
-        1:  368:                                            break; // Brand Search end
-        -:  369:
-        1:  370:                                        case 2: // Download IOSB.txt
-        -:  371:
-        1:  372:                                            if (send(clientFD, "2", 2, 0) < 0)
-        -:  373:                                            {
-    #####:  374:                                                cout << "Could not connect to server" << endl;
-    #####:  375:                                                ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  376:                                                exit(EXIT_FAILURE);
-        -:  377:                                            }
-        -:  378:
-        1:  379:                                            memset(&buf, 0, MAX_BUFF);
-        1:  380:                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
-        -:  381:                                            {
-    #####:  382:                                                cout << "Could not connect to server" << endl;
-    #####:  383:                                                ut.log(FATAL, "recv() error", C_LOGFILE);
-    #####:  384:                                                exit(EXIT_FAILURE);
-        -:  385:                                            }
-        -:  386:
-        1:  387:                                            cout << "IOSB sending buff: " << buf << endl;
-        -:  388:
-        1:  389:                                            if (strcmp(buf, "sending") == 0)
-        -:  390:                                            {
-        -:  391:
-        1:  392:                                                if (send(clientFD, "yes", strlen("yes"), 0) < 0)
-        -:  393:                                                {
-    #####:  394:                                                    ut.log(FATAL, "send() error", C_LOGFILE);
-    #####:  395:                                                    clientErrExit();
-        -:  396:                                                }
-        -:  397:
-        1:  398:                                                cout << "Attempting to download IOSB.txt into " << IOSB_DOWNLOAD << "..." << endl;
-        -:  399:                                                // downloading file
-        1:  400:                                                int isSuccess = newClient.writeToFile(clientFD, (char *)IOSB_DOWNLOAD);
-        1:  401:                                                if (isSuccess == 1)
-        -:  402:                                                {
-        -:  403:                                                    // send to server
-        1:  404:                                                    if (send(clientFD, "SUCCESS", strlen("SUCCESS"), 0) < 0)
-        -:  405:                                                    {
-    #####:  406:                                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  407:                                                        clientErrExit();
-        -:  408:                                                    }
-        -:  409:
-        -:  410:                                                    // log to file
-        1:  411:                                                    cout << "File downloaded Successfully in " << IOSB_DOWNLOAD << endl;
-        1:  412:                                                    ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
-        -:  413:                                                }
-        -:  414:                                                else
-        -:  415:                                                {
-        -:  416:                                                    // send to server
-    #####:  417:                                                    if (send(clientFD, "FAILED", strlen("FAILED"), 0) < 0)
-        -:  418:                                                    {
-    #####:  419:                                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  420:                                                        clientErrExit();
-        -:  421:                                                    }
-        -:  422:                                                    // log to file
-    #####:  423:                                                    cout << "Required file could not be generated, please try again." << endl;
-    #####:  424:                                                    ut.log(INFO, "File Downloading failed", C_LOGFILE);
-        -:  425:                                                }
-        -:  426:                                            }
-        -:  427:                                            else
-        -:  428:                                            {
-        -:  429:                                                // if error receive
-    #####:  430:                                                cout << "CDR Processing Failed. Try again!" << endl;
-        -:  431:                                            }
-        1:  432:                                            cout << endl;
-        1:  433:                                            sleep(3);
-        1:  434:                                            break;
-        -:  435:
-        1:  436:                                        case 3:
-        1:  437:                                            if (send(clientFD, "3", 2, 0) < 0)
-        -:  438:                                            {
-        -:  439:                                                // perror("Fatal: ");
-    #####:  440:                                                cout << "Could not connect to server. Try again!" << endl;
-    #####:  441:                                                ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  442:                                                exit(EXIT_FAILURE);
-        -:  443:                                            }
-        1:  444:                                            cout << "Going back..." << endl;
-        1:  445:                                            sleep(2);
-        1:  446:                                            break;
-        -:  447:
-    #####:  448:                                        default:
-    #####:  449:                                            cout << "Invalid Input" << endl;
-    #####:  450:                                            break;
-        -:  451:                                        }
-        -:  452:
-        3:  453:                                        if (choice == 3)
-        -:  454:                                        {
-        1:  455:                                            choice = 0;
-        1:  456:                                            break;
-        -:  457:                                        }
-        5:  458:                                    }
-        1:  459:                                    break;
-        -:  460:
-        1:  461:                                case 3:
-        1:  462:                                    if (send(clientFD, "3", 2, 0) < 0)
-        -:  463:                                    {
-    #####:  464:                                        cout << "Could not connect to server" << endl;
-    #####:  465:                                        ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  466:                                        exit(EXIT_FAILURE);
-        -:  467:                                    }
-        1:  468:                                    cout << "Going back..." << endl;
-        1:  469:                                    sleep(2);
-        1:  470:                                    break;
+        1:  365:                                                            while (!validateInput(brandName, 1))
+        -:  366:                                                            {
+    #####:  367:                                                                cout << "Inavlid Brand name"
+    #####:  368:                                                                     << endl
+    #####:  369:                                                                     << "Enter brand name to be searched: ";
+    #####:  370:                                                                getline(cin, brandName);
+        -:  371:                                                            }
+        -:  372:
+        -:  373:                                                            // sending brand name to be searched
+        1:  374:                                                            if (send(clientFD, brandName.c_str(), brandName.length(), 0) < 0)
+        -:  375:                                                            {
+    #####:  376:                                                                cout << "Could not connect to server" << endl;
+    #####:  377:                                                                ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  378:                                                                exit(EXIT_FAILURE);
+        -:  379:                                                            }
+        -:  380:
+        -:  381:                                                            // receiving brand search results
+        1:  382:                                                            if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  383:                                                            {
+    #####:  384:                                                                cout << "Could not connect to server" << endl;
+    #####:  385:                                                                ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  386:                                                                exit(EXIT_FAILURE);
+        -:  387:                                                            }
+        1:  388:                                                            cout << endl
+        1:  389:                                                                 << "Search Result for Brand Name: " << brandName << endl;
+        1:  390:                                                            cout << buf << endl;
+        -:  391:                                                        }
+        1:  392:                                                        pressEnter();
+        1:  393:                                                        break; // Brand Search end
+        -:  394:
+        1:  395:                                                    case 2: // Download IOSB.txt
+        -:  396:
+        1:  397:                                                        if (send(clientFD, "2", 2, 0) < 0)
+        -:  398:                                                        {
+    #####:  399:                                                            cout << "Could not connect to server" << endl;
+    #####:  400:                                                            ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  401:                                                            exit(EXIT_FAILURE);
+        -:  402:                                                        }
+        -:  403:
+        1:  404:                                                        memset(&buf, 0, MAX_BUFF);
+        1:  405:                                                        if (recv(clientFD, buf, MAX_BUFF, 0) < 0)
+        -:  406:                                                        {
+    #####:  407:                                                            cout << "Could not connect to server" << endl;
+    #####:  408:                                                            ut.log(FATAL, "recv() error", C_LOGFILE);
+    #####:  409:                                                            exit(EXIT_FAILURE);
+        -:  410:                                                        }
+        -:  411:
+        1:  412:                                                        if (strcmp(buf, "sending") == 0)
+        -:  413:                                                        {
+        -:  414:
+        1:  415:                                                            if (send(clientFD, "yes", strlen("yes"), 0) < 0)
+        -:  416:                                                            {
+    #####:  417:                                                                ut.log(FATAL, "send() error", C_LOGFILE);
+    #####:  418:                                                                clientErrExit();
+        -:  419:                                                            }
+        -:  420:
+        1:  421:                                                            cout << "Attempting to download IOSB.txt into " << IOSB_DOWNLOAD << "..." << endl;
+        -:  422:                                                            // downloading file
+        -:  423:
+        1:  424:                                                            int isSuccess = newClient.writeToFile(clientFD, (char *)IOSB_DOWNLOAD);
+        1:  425:                                                            if (isSuccess == 1)
+        -:  426:                                                            {
+        -:  427:                                                                // send to server
+        1:  428:                                                                if (send(clientFD, "SUCCESS", strlen("SUCCESS"), 0) < 0)
+        -:  429:                                                                {
+    #####:  430:                                                                    ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  431:                                                                    clientErrExit();
+        -:  432:                                                                }
+        -:  433:
+        -:  434:                                                                // log to file
+        1:  435:                                                                cout << "File downloaded Successfully in " << IOSB_DOWNLOAD << endl;
+        1:  436:                                                                ut.log(INFO, "File Downloaded Successfully", C_LOGFILE);
+        -:  437:                                                            }
+        -:  438:                                                            else
+        -:  439:                                                            {
+        -:  440:                                                                // send to server
+    #####:  441:                                                                if (send(clientFD, "FAILED", strlen("FAILED"), 0) < 0)
+        -:  442:                                                                {
+    #####:  443:                                                                    ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  444:                                                                    clientErrExit();
+        -:  445:                                                                }
+        -:  446:                                                                // log to file
+    #####:  447:                                                                cout << "Required file could not be generated, please try again." << endl;
+    #####:  448:                                                                ut.log(INFO, "File Downloading failed", C_LOGFILE);
+        -:  449:                                                            }
+        -:  450:                                                        }
+        -:  451:                                                        else
+        -:  452:                                                        {
+        -:  453:                                                            // if error receive
+    #####:  454:                                                            cout << "CDR Processing Failed. Try again!" << endl;
+        -:  455:                                                        }
+        1:  456:                                                        cout << endl;
+        1:  457:                                                        sleep(2);
+        1:  458:                                                        break;
+        -:  459:
+        1:  460:                                                    case 3:
+        1:  461:                                                        if (send(clientFD, "3", 2, 0) < 0)
+        -:  462:                                                        {
+        -:  463:                                                            // perror("Fatal: ");
+    #####:  464:                                                            cout << "Could not connect to server. Try again!" << endl;
+    #####:  465:                                                            ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  466:                                                            exit(EXIT_FAILURE);
+        -:  467:                                                        }
+        1:  468:                                                        cout << "Going back..." << endl;
+        1:  469:                                                        sleep(1);
+        1:  470:                                                        break;
         -:  471:
-    #####:  472:                                default:
-    #####:  473:                                    cout << "Invalid Input" << endl;
-    #####:  474:                                    sleep(2);
-    #####:  475:                                    break;
-        -:  476:                                }
-        -:  477:
-        3:  478:                                if (choice == 3)
-        -:  479:                                {
-        1:  480:                                    choice = 0;
-        1:  481:                                    break;
-        -:  482:                                }
-        2:  483:                            }
-        1:  484:                            break;
-        -:  485:
-        1:  486:                        case 3:
-        1:  487:                            if (send(clientFD, "3", 2, 0) < 0)
-        -:  488:                            {
-    #####:  489:                                cout << "Could not connect to server" << endl;
-    #####:  490:                                ut.log(FATAL, "Could not connect to server", C_LOGFILE);
-    #####:  491:                                exit(EXIT_FAILURE);
-        -:  492:                            }
-        1:  493:                            cout << "Logged out successfully!" << endl;
-        1:  494:                            sleep(1);
-        1:  495:                            break;
-        -:  496:
-    #####:  497:                        default:
-    #####:  498:                            cout << "Invalid Input" << endl;
-    #####:  499:                            sleep(1);
-    #####:  500:                            break;
-        -:  501:                        }
-        -:  502:
-        3:  503:                        if (choice == 3)
-        -:  504:                        {
-        1:  505:                            choice = 0;
-        1:  506:                            break;
-        -:  507:                        }
-        2:  508:                    }
-        -:  509:                }
-    #####:  510:                else if (strcmp(buf, "failure") == 0)
-        -:  511:                {
-        -:  512:                    // wrong credentials
-    #####:  513:                    cout << "\nLogin Unsuccessful" << endl
-    #####:  514:                         << "Wrong username and password. Try again." << endl;
-        -:  515:                }
-        -:  516:                else
-        -:  517:                {
-        -:  518:                    // for handling db error
-    #####:  519:                    cout << "\nCannot verify user at the moment"
-    #####:  520:                         << endl
-    #####:  521:                         << "Please try again later" << endl;
-        -:  522:                }
-        -:  523:            }
-        -:  524:            else
-        -:  525:            {
-    #####:  526:                cout << "Cannot login right now, try again later" << endl;
-        -:  527:            }
-        1:  528:            sleep(1);
-        1:  529:            break;
-        1:  530:        case 3: // ASCII value of 3
-        1:  531:            send(clientFD, "3", 2, 0);
-        1:  532:            cout << "You've exited sucessfully!" << endl;
-        1:  533:            exit(EXIT_SUCCESS);
-        -:  534:        }
-        2:  535:    }
-        -:  536:}
+    #####:  472:                                                    default:
+    #####:  473:                                                        cout << "Invalid Input" << endl;
+    #####:  474:                                                        break;
+        -:  475:                                                    }
+        -:  476:
+        3:  477:                                                    if (choice == 3)
+        -:  478:                                                    {
+        1:  479:                                                        choice = 0;
+        1:  480:                                                        break;
+        -:  481:                                                    }
+        5:  482:                                                }
+        1:  483:                                                break;
+        -:  484:
+        1:  485:                                            case 3:
+        1:  486:                                                if (send(clientFD, "3", 2, 0) < 0)
+        -:  487:                                                {
+    #####:  488:                                                    cout << "Could not connect to server" << endl;
+    #####:  489:                                                    ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  490:                                                    exit(EXIT_FAILURE);
+        -:  491:                                                }
+        1:  492:                                                cout << "Going back..." << endl;
+        1:  493:                                                sleep(1);
+        1:  494:                                                break;
+        -:  495:
+    #####:  496:                                            default:
+    #####:  497:                                                cout << "Invalid Input" << endl;
+    #####:  498:                                                sleep(1);
+    #####:  499:                                                break;
+        -:  500:                                            }
+        -:  501:
+        3:  502:                                            if (choice == 3)
+        -:  503:                                            {
+        1:  504:                                                choice = 0;
+        1:  505:                                                break;
+        -:  506:                                            }
+        2:  507:                                        }
+        1:  508:                                        break;
+        -:  509:
+        1:  510:                                    case 3:
+        1:  511:                                        if (send(clientFD, "3", 2, 0) < 0)
+        -:  512:                                        {
+    #####:  513:                                            cout << "Could not connect to server" << endl;
+    #####:  514:                                            ut.log(FATAL, "Could not connect to server", C_LOGFILE);
+    #####:  515:                                            exit(EXIT_FAILURE);
+        -:  516:                                        }
+        1:  517:                                        cout << "Logged out successfully!" << endl;
+        1:  518:                                        sleep(2);
+        1:  519:                                        break;
+        -:  520:
+    #####:  521:                                    default:
+    #####:  522:                                        cout << "Invalid Input" << endl;
+    #####:  523:                                        sleep(1);
+    #####:  524:                                        break;
+        -:  525:                                    }
+        -:  526:
+        3:  527:                                    if (choice == 3)
+        -:  528:                                    {
+        1:  529:                                        choice = 0;
+        1:  530:                                        break;
+        -:  531:                                    }
+        2:  532:                                }
+        -:  533:                            }
+    #####:  534:                            else if (strcmp(buf, "failure") == 0)
+        -:  535:                            {
+        -:  536:                                // wrong credentials
+    #####:  537:                                cout << "\nLogin Unsuccessful" << endl
+    #####:  538:                                     << "Wrong username and password. Try again." << endl;
+        -:  539:                            }
+        -:  540:                            else
+        -:  541:                            {
+        -:  542:                                // for handling db error
+    #####:  543:                                cout << "\nCannot verify user at the moment"
+    #####:  544:                                     << endl
+    #####:  545:                                     << "Please try again later" << endl;
+        -:  546:                            }
+        -:  547:                        } // end of login if block
+        -:  548:                        else
+        -:  549:                        {
+    #####:  550:                            cout << "Cannot login right now, try again later" << endl;
+        -:  551:                        }
+        1:  552:                        sleep(1);
+        1:  553:                        break;
+        1:  554:                    case 3: // ASCII value of 3
+        1:  555:                        send(clientFD, "3", 2, 0);
+        1:  556:                        cout << "You've exited sucessfully!" << endl;
+        1:  557:                        exit(EXIT_SUCCESS);
+        -:  558:                    } // end of switch
+        2:  559:                }
+        -:  560:            }
+        -:  561:            else
+        -:  562:            {
+    #####:  563:                throw("Inavlid PORT Number");
+        -:  564:            }
+        -:  565:        }
+        -:  566:        else
+        -:  567:        {
+    #####:  568:            throw("Inavlid number of arguments");
+        -:  569:        }
+        -:  570:    }
+    =====:  571:    catch (const char *err)
+        -:  572:    {
+    =====:  573:        cerr << err << endl;
+    =====:  574:    }
+    =====:  575:}

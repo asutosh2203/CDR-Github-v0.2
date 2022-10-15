@@ -62,55 +62,55 @@
         -:   61:      __aligned_membuf(std::nullptr_t) { }
         -:   62:
         -:   63:      void*
-  2388206:   64:      _M_addr() noexcept
-  2388206:   65:      { return static_cast<void*>(&_M_storage); }
+  2308302:   64:      _M_addr() noexcept
+  2308302:   65:      { return static_cast<void*>(&_M_storage); }
 ------------------
 _ZN9__gnu_cxx16__aligned_membufISt4pairIKl8CustomerEE7_M_addrEv:
-   945031:   64:      _M_addr() noexcept
-   945031:   65:      { return static_cast<void*>(&_M_storage); }
+   865122:   64:      _M_addr() noexcept
+   865122:   65:      { return static_cast<void*>(&_M_storage); }
 ------------------
 _ZN9__gnu_cxx16__aligned_membufISt4pairIKl8OperatorEE7_M_addrEv:
-  1443175:   64:      _M_addr() noexcept
-  1443175:   65:      { return static_cast<void*>(&_M_storage); }
+  1443180:   64:      _M_addr() noexcept
+  1443180:   65:      { return static_cast<void*>(&_M_storage); }
 ------------------
         -:   66:
         -:   67:      const void*
-  7326299:   68:      _M_addr() const noexcept
-  7326299:   69:      { return static_cast<const void*>(&_M_storage); }
+  7133530:   68:      _M_addr() const noexcept
+  7133530:   69:      { return static_cast<const void*>(&_M_storage); }
 ------------------
 _ZNK9__gnu_cxx16__aligned_membufISt4pairIKl8CustomerEE7_M_addrEv:
-  4372696:   68:      _M_addr() const noexcept
-  4372696:   69:      { return static_cast<const void*>(&_M_storage); }
+  4179899:   68:      _M_addr() const noexcept
+  4179899:   69:      { return static_cast<const void*>(&_M_storage); }
 ------------------
 _ZNK9__gnu_cxx16__aligned_membufISt4pairIKl8OperatorEE7_M_addrEv:
-  2953603:   68:      _M_addr() const noexcept
-  2953603:   69:      { return static_cast<const void*>(&_M_storage); }
+  2953631:   68:      _M_addr() const noexcept
+  2953631:   69:      { return static_cast<const void*>(&_M_storage); }
 ------------------
         -:   70:
         -:   71:      _Tp*
-  2388206:   72:      _M_ptr() noexcept
-  2388206:   73:      { return static_cast<_Tp*>(_M_addr()); }
+  2308302:   72:      _M_ptr() noexcept
+  2308302:   73:      { return static_cast<_Tp*>(_M_addr()); }
 ------------------
 _ZN9__gnu_cxx16__aligned_membufISt4pairIKl8CustomerEE6_M_ptrEv:
-   945031:   72:      _M_ptr() noexcept
-   945031:   73:      { return static_cast<_Tp*>(_M_addr()); }
+   865122:   72:      _M_ptr() noexcept
+   865122:   73:      { return static_cast<_Tp*>(_M_addr()); }
 ------------------
 _ZN9__gnu_cxx16__aligned_membufISt4pairIKl8OperatorEE6_M_ptrEv:
-  1443175:   72:      _M_ptr() noexcept
-  1443175:   73:      { return static_cast<_Tp*>(_M_addr()); }
+  1443180:   72:      _M_ptr() noexcept
+  1443180:   73:      { return static_cast<_Tp*>(_M_addr()); }
 ------------------
         -:   74:
         -:   75:      const _Tp*
-  7326299:   76:      _M_ptr() const noexcept
-  7326299:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+  7133530:   76:      _M_ptr() const noexcept
+  7133530:   77:      { return static_cast<const _Tp*>(_M_addr()); }
 ------------------
 _ZNK9__gnu_cxx16__aligned_membufISt4pairIKl8CustomerEE6_M_ptrEv:
-  4372696:   76:      _M_ptr() const noexcept
-  4372696:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+  4179899:   76:      _M_ptr() const noexcept
+  4179899:   77:      { return static_cast<const _Tp*>(_M_addr()); }
 ------------------
 _ZNK9__gnu_cxx16__aligned_membufISt4pairIKl8OperatorEE6_M_ptrEv:
-  2953603:   76:      _M_ptr() const noexcept
-  2953603:   77:      { return static_cast<const _Tp*>(_M_addr()); }
+  2953631:   76:      _M_ptr() const noexcept
+  2953631:   77:      { return static_cast<const _Tp*>(_M_addr()); }
 ------------------
         -:   78:    };
         -:   79:
@@ -142,9 +142,9 @@ _ZNK9__gnu_cxx16__aligned_membufISt4pairIKl8OperatorEE6_M_ptrEv:
         -:  105:      }
 ------------------
 _ZN9__gnu_cxx16__aligned_bufferIbE7_M_addrEv:
-    #####:  102:      _M_addr() noexcept
+        6:  102:      _M_addr() noexcept
         -:  103:      {
-    #####:  104:        return static_cast<void*>(&_M_storage);
+        6:  104:        return static_cast<void*>(&_M_storage);
         -:  105:      }
 ------------------
 _ZN9__gnu_cxx16__aligned_bufferIbE7_M_addrEv:
@@ -160,9 +160,9 @@ _ZN9__gnu_cxx16__aligned_bufferINSt13__future_base13_State_baseV2EE7_M_addrEv:
         -:  105:      }
 ------------------
 _ZN9__gnu_cxx16__aligned_bufferIbE7_M_addrEv:
-        6:  102:      _M_addr() noexcept
+    #####:  102:      _M_addr() noexcept
         -:  103:      {
-        6:  104:        return static_cast<void*>(&_M_storage);
+    #####:  104:        return static_cast<void*>(&_M_storage);
         -:  105:      }
 ------------------
         -:  106:

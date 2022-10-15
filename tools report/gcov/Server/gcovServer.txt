@@ -1,10 +1,14 @@
 File 'src/customer.cpp'
-Lines executed:85.35% of 157
+Lines executed:84.71% of 157
 Creating 'customer.cpp.gcov'
 
 File '/usr/include/c++/11/iostream'
 No executable lines
 Removing 'iostream.gcov'
+
+File '/usr/include/c++/11/bits/stl_map.h'
+Lines executed:100.00% of 19
+Creating 'stl_map.h.gcov'
 
 File '/usr/include/c++/11/tuple'
 Lines executed:100.00% of 60
@@ -26,12 +30,8 @@ File '/usr/include/c++/11/ext/aligned_buffer.h'
 Lines executed:100.00% of 12
 Creating 'aligned_buffer.h.gcov'
 
-File '/usr/include/c++/11/bits/stl_pair.h'
-Lines executed:57.14% of 7
-Creating 'stl_pair.h.gcov'
-
 File '/usr/include/c++/11/bits/alloc_traits.h'
-Lines executed:89.47% of 19
+Lines executed:88.24% of 17
 Creating 'alloc_traits.h.gcov'
 
 File '/usr/include/c++/11/future'
@@ -46,20 +46,20 @@ File '/usr/include/c++/11/bits/std_function.h'
 Lines executed:74.63% of 67
 Creating 'std_function.h.gcov'
 
-File '/usr/include/c++/11/bits/stl_tree.h'
-Lines executed:62.38% of 319
-Creating 'stl_tree.h.gcov'
-
 File '/usr/include/c++/11/bits/stl_algobase.h'
 Lines executed:90.00% of 10
 Creating 'stl_algobase.h.gcov'
+
+File '/usr/include/c++/11/bits/stl_pair.h'
+Lines executed:66.67% of 6
+Creating 'stl_pair.h.gcov'
 
 File '/usr/include/c++/11/bits/invoke.h'
 Lines executed:100.00% of 9
 Creating 'invoke.h.gcov'
 
 File '/usr/include/c++/11/bits/stl_vector.h'
-Lines executed:98.41% of 63
+Lines executed:98.51% of 67
 Creating 'stl_vector.h.gcov'
 
 File '/usr/include/c++/11/bits/stl_construct.h'
@@ -78,6 +78,10 @@ File '/usr/include/c++/11/ext/type_traits.h'
 Lines executed:100.00% of 2
 Creating 'type_traits.h.gcov'
 
+File '/usr/include/c++/11/bits/stl_tree.h'
+Lines executed:85.00% of 200
+Creating 'stl_tree.h.gcov'
+
 File '/usr/include/c++/11/bits/stl_function.h'
 Lines executed:100.00% of 4
 Creating 'stl_function.h.gcov'
@@ -86,40 +90,36 @@ File '/usr/include/c++/11/bits/basic_string.tcc'
 Lines executed:53.85% of 13
 Creating 'basic_string.tcc.gcov'
 
-File '/usr/include/c++/11/bits/allocator.h'
-Lines executed:71.43% of 7
-Creating 'allocator.h.gcov'
-
-File '/usr/include/c++/11/ext/alloc_traits.h'
-Lines executed:66.67% of 6
-Creating 'alloc_traits.h.gcov'
-
 File '/usr/include/c++/11/bits/stl_iterator.h'
-Lines executed:100.00% of 13
+Lines executed:100.00% of 15
 Creating 'stl_iterator.h.gcov'
 
 File '/usr/include/c++/11/bits/basic_string.h'
-Lines executed:63.64% of 22
+Lines executed:68.00% of 25
 Creating 'basic_string.h.gcov'
 
 File '/usr/include/c++/11/bits/shared_ptr_base.h'
 Lines executed:89.22% of 102
 Creating 'shared_ptr_base.h.gcov'
 
-File '/usr/include/c++/11/bits/stl_map.h'
-Lines executed:100.00% of 21
-Creating 'stl_map.h.gcov'
-
 File '/usr/include/c++/11/bits/vector.tcc'
-Lines executed:75.00% of 28
+Lines executed:79.41% of 34
 Creating 'vector.tcc.gcov'
+
+File '/usr/include/c++/11/bits/allocator.h'
+Lines executed:100.00% of 5
+Creating 'allocator.h.gcov'
+
+File '/usr/include/c++/11/ext/alloc_traits.h'
+Lines executed:0.00% of 2
+Creating 'alloc_traits.h.gcov'
 
 File '/usr/include/c++/11/mutex'
 Lines executed:94.12% of 17
 Creating 'mutex.gcov'
 
 File '/usr/include/c++/11/ext/string_conversions.h'
-Lines executed:81.25% of 16
+Lines executed:83.33% of 18
 Creating 'string_conversions.h.gcov'
 
 File '/usr/include/c++/11/bits/char_traits.h'
@@ -187,7 +187,7 @@ Lines executed:25.00% of 32
 Creating 'exception_ptr.h.gcov'
 
 File 'inc/user.h'
-Lines executed:66.67% of 3
+Lines executed:50.00% of 4
 Creating 'user.h.gcov'
 
 File '/usr/include/c++/11/atomic'
@@ -203,23 +203,23 @@ Lines executed:0.00% of 4
 Creating 'typeinfo.gcov'
 
 File 'src/ServerMain.cpp'
-Lines executed:91.67% of 12
+Lines executed:70.83% of 24
 Creating 'ServerMain.cpp.gcov'
 
 File 'inc/server.h'
-No executable lines
-Removing 'server.h.gcov'
+Lines executed:100.00% of 6
+Creating 'server.h.gcov'
 
 File 'src/user.cpp'
-Lines executed:13.21% of 53
+Lines executed:14.89% of 47
 Creating 'user.cpp.gcov'
 
 File 'src/utils.cpp'
-Lines executed:100.00% of 14
+Lines executed:90.70% of 43
 Creating 'utils.cpp.gcov'
 
 File '/usr/include/c++/11/bits/stl_algo.h'
 Lines executed:100.00% of 4
 Creating 'stl_algo.h.gcov'
 
-Lines executed:75.83% of 1858
+Lines executed:79.74% of 1787

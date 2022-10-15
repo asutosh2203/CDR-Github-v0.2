@@ -154,33 +154,27 @@
         -:  153:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
         -:  154:      // 3035. std::allocator's constructors should be constexpr
         -:  155:      _GLIBCXX20_CONSTEXPR
-    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+       3*:  156:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
-    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEEC2Ev:
-    #####:  156:      allocator() _GLIBCXX_NOTHROW { }
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
     #####:  156:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEEC2Ev:
+        1:  156:      allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEC2Ev:
     #####:  156:      allocator() _GLIBCXX_NOTHROW { }
 ------------------
         -:  157:
         -:  158:      _GLIBCXX20_CONSTEXPR
-    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
-    #####:  160:      : __allocator_base<_Tp>(__a) { }
-------------------
-_ZNSaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEEC2ERKS5_:
-    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
-    #####:  160:      : __allocator_base<_Tp>(__a) { }
-------------------
-_ZNSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEEC2ERKS5_:
-    #####:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
-    #####:  160:      : __allocator_base<_Tp>(__a) { }
-------------------
+        -:  159:      allocator(const allocator& __a) _GLIBCXX_NOTHROW
+        -:  160:      : __allocator_base<_Tp>(__a) { }
         -:  161:
         -:  162:#if __cplusplus >= 201103L
         -:  163:      // Avoid implicit deprecation.
@@ -194,18 +188,21 @@ _ZNSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEEC2ERKS5_:
         -:  171:#if __cpp_constexpr_dynamic_alloc
         -:  172:      constexpr
         -:  173:#endif
-    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+       3*:  174:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
-    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEED2Ev:
-    #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
     #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
 _ZNSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEED2Ev:
+        1:  174:      ~allocator() _GLIBCXX_NOTHROW { }
+------------------
+_ZNSaINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEED2Ev:
     #####:  174:      ~allocator() _GLIBCXX_NOTHROW { }
 ------------------
         -:  175:
@@ -242,17 +239,8 @@ _ZNSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEED2Ev:
         -:  206:
         -:  207:#if __cpp_impl_three_way_comparison < 201907L
         -:  208:      friend _GLIBCXX20_CONSTEXPR bool
-    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-    #####:  210:      { return false; }
-------------------
-_ZStneRKSaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEES7_:
-    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-    #####:  210:      { return false; }
-------------------
-_ZStneRKSaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEES7_:
-    #####:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
-    #####:  210:      { return false; }
-------------------
+        -:  209:      operator!=(const allocator&, const allocator&) _GLIBCXX_NOTHROW
+        -:  210:      { return false; }
         -:  211:#endif
         -:  212:
         -:  213:      // Inherit everything else.

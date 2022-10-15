@@ -144,24 +144,34 @@
         -:  143:   */
         -:  144:  template<typename _Tp>
         -:  145:    _GLIBCXX14_CONSTEXPR inline void
- 5355974*:  146:    _Destroy(_Tp* __pointer)
+ 5348739*:  146:    _Destroy(_Tp* __pointer)
         -:  147:    {
         -:  148:#if __cplusplus > 201703L
         -:  149:      std::destroy_at(__pointer);
         -:  150:#else
- 5355974*:  151:      __pointer->~_Tp();
+ 5348739*:  151:      __pointer->~_Tp();
         -:  152:#endif
- 5356325*:  153:    }
+ 5348939*:  153:    }
 ------------------
 _ZSt8_DestroyINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvPT_:
-  5355974:  146:    _Destroy(_Tp* __pointer)
+  5348739:  146:    _Destroy(_Tp* __pointer)
         -:  147:    {
         -:  148:#if __cplusplus > 201703L
         -:  149:      std::destroy_at(__pointer);
         -:  150:#else
-  5355974:  151:      __pointer->~_Tp();
+  5348739:  151:      __pointer->~_Tp();
         -:  152:#endif
-  5356325:  153:    }
+  5348939:  153:    }
+------------------
+_ZSt8_DestroyINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvPT_:
+    #####:  146:    _Destroy(_Tp* __pointer)
+        -:  147:    {
+        -:  148:#if __cplusplus > 201703L
+        -:  149:      std::destroy_at(__pointer);
+        -:  150:#else
+    #####:  151:      __pointer->~_Tp();
+        -:  152:#endif
+    #####:  153:    }
 ------------------
 _ZSt8_DestroyINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvPT_:
     #####:  146:    _Destroy(_Tp* __pointer)
@@ -179,18 +189,25 @@ _ZSt8_DestroyINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvPT_:
         -:  157:    {
         -:  158:      template<typename _ForwardIterator>
         -:  159:	static _GLIBCXX20_CONSTEXPR void
-  598488*:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
+  598002*:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
         -:  161:	{
- 5951239*:  162:	  for (; __first != __last; ++__first)
- 5355857*:  163:	    std::_Destroy(std::__addressof(*__first));
-  595382*:  164:	}
+ 5943723*:  162:	  for (; __first != __last; ++__first)
+ 5349291*:  163:	    std::_Destroy(std::__addressof(*__first));
+  594432*:  164:	}
 ------------------
 _ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvT_S9_:
-   598488:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
+   598002:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
         -:  161:	{
-  5951239:  162:	  for (; __first != __last; ++__first)
-  5355857:  163:	    std::_Destroy(std::__addressof(*__first));
-   595382:  164:	}
+  5943723:  162:	  for (; __first != __last; ++__first)
+  5349291:  163:	    std::_Destroy(std::__addressof(*__first));
+   594432:  164:	}
+------------------
+_ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvT_S9_:
+    #####:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  161:	{
+    #####:  162:	  for (; __first != __last; ++__first)
+    #####:  163:	    std::_Destroy(std::__addressof(*__first));
+    #####:  164:	}
 ------------------
 _ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEEvT_S9_:
     #####:  160:	__destroy(_ForwardIterator __first, _ForwardIterator __last)
@@ -216,7 +233,7 @@ _ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsI
         -:  179:   */
         -:  180:  template<typename _ForwardIterator>
         -:  181:    _GLIBCXX20_CONSTEXPR inline void
-  598510*:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+  598050*:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
         -:  183:    {
         -:  184:      typedef typename iterator_traits<_ForwardIterator>::value_type
         -:  185:                       _Value_type;
@@ -230,11 +247,11 @@ _ZNSt12_Destroy_auxILb0EE9__destroyIPNSt7__cxx1112basic_stringIcSt11char_traitsI
         -:  193:	return _Destroy_aux<false>::__destroy(__first, __last);
         -:  194:#endif
         -:  195:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
-  598510*:  196:	__destroy(__first, __last);
-  595446*:  197:    }
+  598050*:  196:	__destroy(__first, __last);
+  594519*:  197:    }
 ------------------
 _ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvT_S7_:
-   598510:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+   598050:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
         -:  183:    {
         -:  184:      typedef typename iterator_traits<_ForwardIterator>::value_type
         -:  185:                       _Value_type;
@@ -248,8 +265,26 @@ _ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvT_S7_:
         -:  193:	return _Destroy_aux<false>::__destroy(__first, __last);
         -:  194:#endif
         -:  195:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
-   598510:  196:	__destroy(__first, __last);
-   595446:  197:    }
+   598050:  196:	__destroy(__first, __last);
+   594519:  197:    }
+------------------
+_ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvT_S7_:
+    #####:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)
+        -:  183:    {
+        -:  184:      typedef typename iterator_traits<_ForwardIterator>::value_type
+        -:  185:                       _Value_type;
+        -:  186:#if __cplusplus >= 201103L
+        -:  187:      // A deleted destructor is trivial, this ensures we reject such types:
+        -:  188:      static_assert(is_destructible<_Value_type>::value,
+        -:  189:		    "value type is destructible");
+        -:  190:#endif
+        -:  191:#if __cplusplus > 201703L && defined __cpp_lib_is_constant_evaluated
+        -:  192:      if (std::is_constant_evaluated())
+        -:  193:	return _Destroy_aux<false>::__destroy(__first, __last);
+        -:  194:#endif
+        -:  195:      std::_Destroy_aux<__has_trivial_destructor(_Value_type)>::
+    #####:  196:	__destroy(__first, __last);
+    #####:  197:    }
 ------------------
 _ZSt8_DestroyIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEEvT_S7_:
     #####:  182:    _Destroy(_ForwardIterator __first, _ForwardIterator __last)

@@ -1,619 +1,699 @@
         -:    0:Source:src/Server.cpp
-        -:    1:#include <server.h>
-        -:    2:
-        -:    3:Utils ut;
+        -:    1:#include <sys/stat.h>
+        -:    2:#include <fcntl.h>
+        -:    3:#include <server.h>
         -:    4:
-        1:    5:Server::Server()
-        -:    6:{
-        1:    7:    port = 8080;
-        1:    8:}
-        -:    9:// Creation of server socket using socket() system call.
-        1:   10:void Server::createSocket()
-        -:   11:{
-        1:   12:    serverSockfd = socket(AF_INET, SOCK_STREAM, 0);
-        1:   13:    if (serverSockfd < 0)
-        -:   14:    {
-    #####:   15:        ut.log(FATAL, "socket() error", S_LOGFILE);
-    #####:   16:        exit(EXIT_FAILURE);
-        -:   17:    }
-        -:   18:
-        1:   19:    server_addr.sin_family = AF_INET;
-        1:   20:    server_addr.sin_port = htons(port);
-        1:   21:    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1"); //(const char*)ipAddr.c_str());
-        -:   22:
-        1:   23:    cout << "[+] Server socket created Successfully" << endl;
-        1:   24:}
-        -:   25:
-        -:   26:// Bind the server to a port using bind() system call
-        -:   27:// and listening to clients using listen() system call
-        1:   28:void Server::bind_listen()
-        -:   29:{
-        1:   30:    if (bind(serverSockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
-        -:   31:    {
-    #####:   32:        ut.log(FATAL, "bind() error", S_LOGFILE);
-    #####:   33:        perror("bind() error: ");
-    #####:   34:        exit(EXIT_FAILURE);
-        -:   35:    }
-        1:   36:    cout << "[+] Server bind to port" << endl;
-        1:   37:    if (listen(serverSockfd, 7) < 0)
-        -:   38:    {
-    #####:   39:        ut.log(FATAL, "listen() error", S_LOGFILE);
-    #####:   40:        exit(EXIT_FAILURE);
-        -:   41:    }
-        1:   42:    cout << "[+] Server listening to the clients" << endl;
-        1:   43:}
-        -:   44:
-        1:   45:void Server::acceptClient()
-        -:   46:{
-        1:   47:    len = sizeof(client_addr);
-        -:   48:    while (true)
-        -:   49:    {
-        3:   50:        clientSockfd = accept(serverSockfd, (struct sockaddr *)&client_addr, &len);
-        1:   51:        if (clientSockfd < 0)
-        -:   52:        {
-    #####:   53:            ut.log(FATAL, "accept() error", S_LOGFILE);
-        -:   54:        }
-        1:   55:        cout << "[+]Accepted the client " << ntohs(client_addr.sin_port) << endl;
-        1:   56:        ut.log(INFO, "Server accepts the client", S_LOGFILE);
-        -:   57:
-        1:   58:        if (fork() == 0)
-        -:   59:        {
-        1:   60:            initClient(clientSockfd);
-        -:   61:        }
-        -:   62:
-        -:   63:        // initClient(clientSockfd);
+        -:    5:Utils ut;
+        -:    6:
+        1:    7:Server::Server()
+        -:    8:{
+        -:    9:    // default constructor
+        1:   10:}
+        -:   11:
+        -:   12:/*
+        -:   13: *  FUNCTION NAME   : createSocket
+        -:   14: *
+        -:   15: *  DESCRIPTION     : It creates server socket and sets IP address and port number also.
+        -:   16: *
+        -:   17: *  PARAMETERS		: none
+        -:   18: *
+        -:   19: *  RETURN 		    : void
+        -:   20: *
+        -:   21: */
+        1:   22:void Server::createSocket()
+        -:   23:{
+        1:   24:    serverSockfd = socket(AF_INET, SOCK_STREAM, 0);
+        1:   25:    if (serverSockfd < 0)
+        -:   26:    {
+    #####:   27:        ut.log(FATAL, "socket() error", S_LOGFILE);
+    #####:   28:        exit(EXIT_FAILURE);
+        -:   29:    }
+        -:   30:
+        1:   31:    server_addr.sin_family = AF_INET;
+        1:   32:    server_addr.sin_port = htons(port);
+        1:   33:    server_addr.sin_addr.s_addr = inet_addr(ipAddr); //(const char*)ipAddr.c_str());
+        -:   34:
+        1:   35:    cout << "[+] Server socket created Successfully" << endl;
+        1:   36:}
+        -:   37:/*
+        -:   38: *  FUNCTION NAME	: bind_listen()
+        -:   39: *
+        -:   40: *  DESCRIPTION		: It binds the server to a port using bind() system call
+        -:   41:                      and enables server to listen to clients using listen() system call listen() system call
+        -:   42: *
+        -:   43: *  PARAMETERS		: none
+        -:   44: *
+        -:   45: *  RETURN 		    : void
+        -:   46: *
+        -:   47: */
+        1:   48:void Server::bind_listen()
+        -:   49:{
+        1:   50:    if (bind(serverSockfd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+        -:   51:    {
+    #####:   52:        ut.log(FATAL, "bind() error", S_LOGFILE);
+    #####:   53:        perror("bind() error: ");
+    #####:   54:        exit(EXIT_FAILURE);
+        -:   55:    }
+        1:   56:    cout << "[+] Server bind to port" << endl;
+        1:   57:    if (listen(serverSockfd, 7) < 0)
+        -:   58:    {
+    #####:   59:        ut.log(FATAL, "listen() error", S_LOGFILE);
+    #####:   60:        exit(EXIT_FAILURE);
+        -:   61:    }
+        1:   62:    cout << "[+] Server listening to the clients" << endl;
+        1:   63:} // end of blind_listen()
         -:   64:
-        2:   65:        close(clientSockfd);
-        -:   66:    }
-        -:   67:}
-        -:   68:
-        1:   69:void Server::initClient(int newfd)
-        -:   70:{
-        1:   71:    User user;
-        -:   72:
-        1:   73:    char buf[MAX_BUFF] = {
-        -:   74:        '\0',
-        -:   75:    };
-        -:   76:
-        1:   77:    int flag = 0;
-        -:   78:
-        -:   79:    // fstream fs;
-        1:   80:    string line;
-        -:   81:    // MAIN MENU:
-        -:   82:    while (1)
-        -:   83:    {
-        -:   84:        // receiving choice for main menu from clien side
-        4:   85:        memset(&buf, 0, MAX_BUFF);
-        4:   86:        recv(newfd, buf, MAX_BUFF, 0);
-        -:   87:
-        -:   88:        // connvert buffer value to int
-        4:   89:        int choice = atoi(buf);
-        4:   90:        int isExists = -1;
-        4:   91:        switch (choice)
-        -:   92:        {
-        -:   93:        // Resgistration
-        1:   94:        case 1:
-        1:   95:            if (send(newfd, "register", strlen("register"), 0) < 0)
-        -:   96:            {
-    #####:   97:                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:   98:            }
-        -:   99:
-        -:  100:            // Receieving user UserID and Password in user object
-        -:  101:            // memset(&user, 0, MAX_BUFF);
-        -:  102:            // bzero(&user, sizeof(User));
-        -:  103:
-        1:  104:            if (recv(newfd, &user, sizeof(User), 0) < 0)
-        -:  105:            {
-    #####:  106:                ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  107:            }
-        -:  108:
-        1:  109:            isExists = userExists(user);
-        1:  110:            if (isExists == 1)
-        -:  111:            {
-    #####:  112:                if (send(newfd, "exists", strlen("exists"), 0) < 0)
-        -:  113:                {
-    #####:  114:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  115:                }
-        -:  116:            }
-        1:  117:            else if (isExists == 0)
-        -:  118:            {
-        1:  119:                user.toDatabase(user);
-        -:  120:
-        1:  121:                if (send(newfd, "success", strlen("success"), 0) < 0)
-        -:  122:                {
-    #####:  123:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  124:                }
-        -:  125:            }
-        -:  126:            else
-        -:  127:            {
-    #####:  128:                if (send(newfd, "failed", strlen("failed"), 0) < 0)
-        -:  129:                {
-    #####:  130:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  131:                }
-        -:  132:            }
-        1:  133:            memset(buf, 0, MAX_BUFF);
-        1:  134:            recv(newfd, buf, MAX_BUFF, 0);
-        1:  135:            break;
-        -:  136:        // login
-        1:  137:        case 2:
-        1:  138:            if (send(newfd, "login", strlen("login"), 0) < 0)
-        -:  139:            {
-    #####:  140:                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  141:            }
-        -:  142:
-        -:  143:            // memset(&user, 0, sizeof(User));
-        -:  144:            // Receives the login credentials
-        1:  145:            if (recv(newfd, &user, sizeof(User), 0) < 0)
-        -:  146:            {
-    #####:  147:                ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  148:            }
-        -:  149:
-        -:  150:            // Verify if the login credentials matches the registered credentials
-        1:  151:            flag = verifyLoginCreds(user);
-        -:  152:
-        1:  153:            if (flag == 1)
-        -:  154:            {
-        1:  155:                if (send(newfd, "loggedIn", strlen("loggedIn"), 0) < 0)
-        -:  156:                {
-    #####:  157:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  158:                }
+        -:   65:/*
+        -:   66: *  FUNCTION NAME	: acceptClient()
+        -:   67: *
+        -:   68: *  DESCRIPTION		: It creates a multi-client server enviorment by calling fork() system call
+        -:   69:                        whenever a client gets accepted using accpet() call.
+        -:   70: *
+        -:   71: *  PARAMETERS		: none
+        -:   72: *
+        -:   73: *  RETURN 		    : void
+        -:   74: *
+        -:   75: */
+        1:   76:void Server::acceptClient()
+        -:   77:{
+        1:   78:    len = sizeof(client_addr);
+        -:   79:    while (true)
+        -:   80:    {
+        3:   81:        clientSockfd = accept(serverSockfd, (struct sockaddr *)&client_addr, &len);
+        1:   82:        if (clientSockfd < 0)
+        -:   83:        {
+    #####:   84:            ut.log(FATAL, "accept() error", S_LOGFILE);
+        -:   85:        }
+        1:   86:        cout << "[+] Accepted the client " << ntohs(client_addr.sin_port) << endl;
+        1:   87:        ut.log(INFO, "Server accepts the client", S_LOGFILE);
+        -:   88:
+        1:   89:        if (fork() == 0)
+        -:   90:        {
+        1:   91:            initClient(clientSockfd);
+        -:   92:        }
+        2:   93:        close(clientSockfd);
+        -:   94:    }
+        -:   95:} // end of acceptClient()
+        -:   96:
+        -:   97:/*
+        -:   98: *  FUNCTION NAME	: initClient()
+        -:   99: *
+        -:  100: *  DESCRIPTION		: It initiates client after accepting and shows
+        -:  101: *
+        -:  102: *  PARAMETERS		: none
+        -:  103: *
+        -:  104: *  RETURN 		    : void
+        -:  105: *
+        -:  106: */
+        1:  107:void Server::initClient(int newfd)
+        -:  108:{
+        1:  109:    User user;
+        -:  110:
+        1:  111:    char buf[MAX_BUFF] = {
+        -:  112:        '\0',
+        -:  113:    };
+        -:  114:
+        1:  115:    int flag = 0;
+        -:  116:
+        -:  117:    // fstream fs;
+        1:  118:    string line;
+        -:  119:    // MAIN MENU:
+        -:  120:    while (1)
+        -:  121:    {
+        -:  122:        // receiving choice for main menu from clien side
+        4:  123:        memset(&buf, 0, MAX_BUFF);
+        4:  124:        recv(newfd, buf, MAX_BUFF, 0);
+        -:  125:
+        -:  126:        // connvert buffer value to int
+        4:  127:        int choice = atoi(buf);
+        4:  128:        int isExists = -1;
+        4:  129:        switch (choice)
+        -:  130:        {
+        -:  131:        // Resgistration
+        1:  132:        case 1:
+        1:  133:            if (send(newfd, "register", strlen("register"), 0) < 0)
+        -:  134:            {
+    #####:  135:                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  136:            }
+        -:  137:
+        -:  138:            // Receieving user UserID and Password in user object
+        -:  139:            // memset(&user, 0, MAX_BUFF);
+        -:  140:            // bzero(&user, sizeof(User));
+        -:  141:
+        1:  142:            if (recv(newfd, &user, sizeof(User), 0) < 0)
+        -:  143:            {
+    #####:  144:                ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  145:            }
+        -:  146:
+        1:  147:            isExists = userExists(user);
+        1:  148:            if (isExists == 1)
+        -:  149:            {
+    #####:  150:                if (send(newfd, "exists", strlen("exists"), 0) < 0)
+        -:  151:                {
+    #####:  152:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  153:                }
+        -:  154:            }
+        1:  155:            else if (isExists == 0)
+        -:  156:            {
+        -:  157:                // storing user details in database
+        1:  158:                user.toDatabase(user);
         -:  159:
-        -:  160:                while (1)
+        1:  160:                if (send(newfd, "success", strlen("success"), 0) < 0)
         -:  161:                {
-        -:  162:                    // resetting the buffer after login successful
-        3:  163:                    memset(&buf, 0, MAX_BUFF);
-        -:  164:
-        -:  165:                    // receiving option from main menu
-        3:  166:                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  167:                    {
-        -:  168:
-    #####:  169:                        if (flag == 1)
-    #####:  170:                            ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  171:                        //
-        -:  172:                    }
-        -:  173:
-        3:  174:                    Operator op;
-        3:  175:                    Customer cust;
-        -:  176:                    bool isProcessed;
-        3:  177:                    choice = atoi(buf);
-        -:  178:                    switch (choice)
-        -:  179:                    {
-        1:  180:                    case 1: // Process CDR
+    #####:  162:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  163:                }
+        -:  164:            }
+        -:  165:            else
+        -:  166:            {
+    #####:  167:                if (send(newfd, "failed", strlen("failed"), 0) < 0)
+        -:  168:                {
+    #####:  169:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  170:                }
+        -:  171:            }
+        1:  172:            memset(buf, 0, MAX_BUFF);
+        1:  173:            recv(newfd, buf, MAX_BUFF, 0);
+        1:  174:            break;
+        -:  175:        // login
+        1:  176:        case 2:
+        1:  177:            if (send(newfd, "login", strlen("login"), 0) < 0)
+        -:  178:            {
+    #####:  179:                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  180:            }
         -:  181:
-        1:  182:                        isProcessed = processCallData(op, cust);
-        -:  183:
-       1*:  184:                        isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
-        1:  185:                        break;
-        -:  186:
-        3:  187:                    case 2: // Billing info
-        -:  188:                        while (1)
-        -:  189:                        {
-        3:  190:                            memset(&buf, 0, MAX_BUFF);
+        -:  182:            // memset(&user, 0, sizeof(User));
+        -:  183:            // Receives the login credentials
+        1:  184:            if (recv(newfd, &user, sizeof(User), 0) < 0)
+        -:  185:            {
+    #####:  186:                ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  187:            }
+        -:  188:
+        -:  189:            // Verify if the login credentials matches the registered credentials
+        1:  190:            flag = verifyLoginCreds(user);
         -:  191:
-        -:  192:                            // receiving option from billing info menu
-        3:  193:                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  194:                            {
-    #####:  195:                                ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  196:                                //
-        -:  197:                            }
-        3:  198:                            choice = atoi(buf);
-        -:  199:                            switch (choice)
-        -:  200:                            {
-        3:  201:                            case 1: // Customer billing
-        -:  202:                                while (1)
-        -:  203:                                {
-        3:  204:                                    memset(&buf, 0, MAX_BUFF);
-        -:  205:
-        -:  206:                                    // receiving option from customer billing menu
-        3:  207:                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  208:                                    {
-    #####:  209:                                        ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  210:                                        //
-        -:  211:                                    }
-        3:  212:                                    string msisdnSearchResult;
-        -:  213:
-        3:  214:                                    choice = atoi(buf);
-        -:  215:                                    switch (choice)
-        -:  216:                                    {
-        1:  217:                                    case 1:
-        1:  218:                                        if (send(newfd, "searchmsisdn", strlen("searchmsisdn"), 0) < 0)
-        -:  219:                                        {
-    #####:  220:                                            ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  221:                                            //
-        -:  222:                                        }
-        -:  223:
-        1:  224:                                        memset(&buf, 0, MAX_BUFF);
+        1:  192:            if (flag == 1)
+        -:  193:            {
+        1:  194:                if (send(newfd, "loggedIn", strlen("loggedIn"), 0) < 0)
+        -:  195:                {
+    #####:  196:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  197:                }
+        -:  198:
+        -:  199:                while (1)
+        -:  200:                {
+        -:  201:                    // resetting the buffer after login successful
+        3:  202:                    memset(&buf, 0, MAX_BUFF);
+        -:  203:
+        -:  204:                    // receiving option from main menu
+        3:  205:                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  206:                    {
+        -:  207:
+    #####:  208:                        if (flag == 1)
+    #####:  209:                            ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  210:                        //
+        -:  211:                    }
+        -:  212:
+        3:  213:                    Operator op;
+        3:  214:                    Customer cust;
+        -:  215:                    bool isProcessed;
+        3:  216:                    choice = atoi(buf);
+        -:  217:                    switch (choice)
+        -:  218:                    {
+        1:  219:                    case 1: // Process CDR
+        -:  220:
+        1:  221:                        isProcessed = processCallData(op, cust);
+        -:  222:
+       1*:  223:                        isProcessed == true ? send(newfd, "processed", strlen("processed"), 0) : send(newfd, "notprocessed", strlen("notprocessed"), 0);
+        1:  224:                        break;
         -:  225:
-        -:  226:                                        // receiving MSISDN to be searched
-        1:  227:                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  228:                                        {
-    #####:  229:                                            ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  230:                                            //
-        -:  231:                                        }
-        -:  232:
-        1:  233:                                        if (buf[0] == '\0')
-    #####:  234:                                            break;
-        -:  235:
-        1:  236:                                        cust.processCDR();
-        1:  237:                                        msisdnSearchResult = cust.searchMSISDN(stol(buf));
-        -:  238:
-        1:  239:                                        if (send(newfd, msisdnSearchResult.c_str(), msisdnSearchResult.length(), 0) < 0)
-        -:  240:                                        {
-    #####:  241:                                            ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  242:                                        }
-        -:  243:
-        1:  244:                                        break;
-        1:  245:                                    case 2:
-       1*:  246:                                        if (cust.processCDR() && cust.mapToFile())
-        -:  247:                                        {
-        -:  248:
-        -:  249:                                            // sending file to client side
-        1:  250:                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
-        -:  251:                                            {
-    #####:  252:                                                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  253:                                            }
-        -:  254:
-        1:  255:                                            memset(&buf, 0, MAX_BUFF);
-        -:  256:
-        1:  257:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  258:                                            {
-    #####:  259:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  260:                                            }
-        -:  261:
-        1:  262:                                            if (strcmp(buf, "yes") == 0)
-        -:  263:                                            {
+        3:  226:                    case 2: // Billing info
+        -:  227:                        while (1)
+        -:  228:                        {
+        3:  229:                            memset(&buf, 0, MAX_BUFF);
+        -:  230:
+        -:  231:                            // receiving option from billing info menu
+        3:  232:                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  233:                            {
+    #####:  234:                                ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  235:                                //
+        -:  236:                            }
+        3:  237:                            choice = atoi(buf);
+        -:  238:                            switch (choice)
+        -:  239:                            {
+        3:  240:                            case 1: // Customer billing
+        -:  241:                                while (1)
+        -:  242:                                {
+        3:  243:                                    memset(&buf, 0, MAX_BUFF);
+        -:  244:
+        -:  245:                                    // receiving option from customer billing menu
+        3:  246:                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  247:                                    {
+    #####:  248:                                        ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  249:                                        //
+        -:  250:                                    }
+        3:  251:                                    string msisdnSearchResult;
+        -:  252:
+        3:  253:                                    choice = atoi(buf);
+        -:  254:                                    switch (choice)
+        -:  255:                                    {
+        1:  256:                                    case 1:
+        1:  257:                                        if (send(newfd, "searchmsisdn", strlen("searchmsisdn"), 0) < 0)
+        -:  258:                                        {
+    #####:  259:                                            ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  260:                                            //
+        -:  261:                                        }
+        -:  262:
+        1:  263:                                        memset(&buf, 0, MAX_BUFF);
         -:  264:
-        1:  265:                                                if (sendFile(newfd, (char *)"data/CB.txt") == 1)
-        -:  266:                                                {
-        1:  267:                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
-        -:  268:                                                }
-        -:  269:                                                else
-        -:  270:                                                {
-    #####:  271:                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
-        -:  272:                                                }
-        -:  273:                                            }
+        -:  265:                                        // receiving MSISDN to be searched
+        1:  266:                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  267:                                        {
+    #####:  268:                                            ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  269:                                            //
+        -:  270:                                        }
+        -:  271:
+        1:  272:                                        if (buf[0] == '\0')
+    #####:  273:                                            break;
         -:  274:
-        -:  275:                                            // Receiving acknowledgement from client
-        1:  276:                                            memset(&buf, 0, MAX_BUFF);
-        1:  277:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  278:                                            {
-    #####:  279:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-    #####:  280:                                                break;
-        -:  281:                                            }
-        -:  282:                                            // Logging ack in logs
-        -:  283:
-        1:  284:                                            if (strcmp(buf, "SUCCESS") == 0)
-        -:  285:                                            {
-        1:  286:                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
-        -:  287:                                            }
-        -:  288:                                            else
-        -:  289:                                            {
-    #####:  290:                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
-        -:  291:                                            }
-        -:  292:                                        }
-        -:  293:                                        else
-        -:  294:                                        {
-    #####:  295:                                            if (send(newfd, "error", strlen("error"), 0))
-        -:  296:                                            {
-    #####:  297:                                                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  298:                                            }
-        -:  299:                                        }
+        1:  275:                                        cust.processCDR();
+        1:  276:                                        msisdnSearchResult = cust.searchMSISDN(stol(buf));
+        -:  277:
+        1:  278:                                        if (send(newfd, msisdnSearchResult.c_str(), msisdnSearchResult.length(), 0) < 0)
+        -:  279:                                        {
+    #####:  280:                                            ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  281:                                        }
+        -:  282:
+        1:  283:                                        break;
+        1:  284:                                    case 2:
+       1*:  285:                                        if (cust.processCDR() && cust.mapToFile())
+        -:  286:                                        {
+        -:  287:
+        -:  288:                                            // sending file to client side
+        1:  289:                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
+        -:  290:                                            {
+    #####:  291:                                                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  292:                                            }
+        -:  293:
+        1:  294:                                            memset(&buf, 0, MAX_BUFF);
+        -:  295:
+        1:  296:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  297:                                            {
+    #####:  298:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  299:                                            }
         -:  300:
-        1:  301:                                        break;
-        -:  302:
-        1:  303:                                    case 3:
-        1:  304:                                        break;
-        -:  305:
-    #####:  306:                                    default:
-    #####:  307:                                        break;
-        -:  308:                                    }
-        -:  309:
-        3:  310:                                    if (choice == 3 || buf[0] == '\0')
-        -:  311:                                    {
-        1:  312:                                        choice = 0;
-        1:  313:                                        break;
-        -:  314:                                    }
-        5:  315:                                }
-        1:  316:                                break;
-        -:  317:
-        3:  318:                            case 2: // interoperator billing
-        -:  319:                                while (1)
-        -:  320:                                {
-        3:  321:                                    memset(&buf, 0, MAX_BUFF);
+        1:  301:                                            if (strcmp(buf, "yes") == 0)
+        -:  302:                                            {
+        -:  303:
+        1:  304:                                                if (sendFile(newfd, (char *)"data/CB.txt") == 1)
+        -:  305:                                                {
+        1:  306:                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
+        -:  307:                                                }
+        -:  308:                                                else
+        -:  309:                                                {
+    #####:  310:                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
+        -:  311:                                                }
+        -:  312:                                            }
+        -:  313:
+        -:  314:                                            // Receiving acknowledgement from client
+        1:  315:                                            memset(&buf, 0, MAX_BUFF);
+        1:  316:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  317:                                            {
+    #####:  318:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+    #####:  319:                                                break;
+        -:  320:                                            }
+        -:  321:                                            // Logging ack in logs
         -:  322:
-        -:  323:                                    // receiving option from interoperator billing menu
-        3:  324:                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  325:                                    {
-    #####:  326:                                        ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  327:                                    }
-        -:  328:
-        3:  329:                                    string brandSearchResult;
-        3:  330:                                    choice = atoi(buf);
-        -:  331:
-        -:  332:                                    switch (choice)
-        -:  333:                                    {
-        1:  334:                                    case 1:
-        1:  335:                                        if (send(newfd, "searchbrand", strlen("searchbrand"), 0) < 0)
-        -:  336:                                        {
-    #####:  337:                                            ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  338:                                            //
-        -:  339:                                        }
-        -:  340:
-        1:  341:                                        memset(&buf, 0, MAX_BUFF);
-        -:  342:
-        -:  343:                                        // receiving brand name to be searched
-        1:  344:                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  345:                                        {
-    #####:  346:                                            ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  347:                                            //
-        -:  348:                                        }
-        -:  349:
-        1:  350:                                        op.processCDR();
-        1:  351:                                        brandSearchResult = op.searchBrandName(buf);
-        -:  352:
-        1:  353:                                        if (send(newfd, brandSearchResult.c_str(), brandSearchResult.length(), 0) < 0)
-        -:  354:                                        {
-    #####:  355:                                            ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  356:                                        }
-        -:  357:
-        1:  358:                                        break;
-        -:  359:
-        1:  360:                                    case 2:
-        -:  361:                                        // function for sending IOSB.txt to client
-       1*:  362:                                        if (op.processCDR() && op.mapToFile())
-        -:  363:                                        {
-        -:  364:                                            // sending file to client side
-        1:  365:                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
-        -:  366:                                            {
-    #####:  367:                                                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  368:                                            }
-        -:  369:
-        1:  370:                                            memset(&buf, 0, MAX_BUFF);
-        -:  371:
-        1:  372:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  373:                                            {
-    #####:  374:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-        -:  375:                                            }
-        -:  376:
-        1:  377:                                            if (strcmp(buf, "yes") == 0)
-        -:  378:                                            {
-        1:  379:                                                if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
-        -:  380:                                                {
-        1:  381:                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
-        -:  382:                                                }
-        -:  383:                                                else
-        -:  384:                                                {
-    #####:  385:                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
-        -:  386:                                                }
-        -:  387:                                            }
+        1:  323:                                            if (strcmp(buf, "SUCCESS") == 0)
+        -:  324:                                            {
+        1:  325:                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
+        -:  326:                                            }
+        -:  327:                                            else
+        -:  328:                                            {
+    #####:  329:                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
+        -:  330:                                            }
+        -:  331:                                        }
+        -:  332:                                        else
+        -:  333:                                        {
+    #####:  334:                                            if (send(newfd, "error", strlen("error"), 0))
+        -:  335:                                            {
+    #####:  336:                                                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  337:                                            }
+        -:  338:                                        }
+        -:  339:
+        1:  340:                                        break;
+        -:  341:
+        1:  342:                                    case 3:
+        1:  343:                                        break;
+        -:  344:
+    #####:  345:                                    default:
+    #####:  346:                                        break;
+        -:  347:                                    }
+        -:  348:
+        3:  349:                                    if (choice == 3 || buf[0] == '\0')
+        -:  350:                                    {
+        1:  351:                                        choice = 0;
+        1:  352:                                        break;
+        -:  353:                                    }
+        5:  354:                                }
+        1:  355:                                break;
+        -:  356:
+        3:  357:                            case 2: // interoperator billing
+        -:  358:                                while (1)
+        -:  359:                                {
+        3:  360:                                    memset(&buf, 0, MAX_BUFF);
+        -:  361:
+        -:  362:                                    // receiving option from interoperator billing menu
+        3:  363:                                    if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  364:                                    {
+    #####:  365:                                        ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  366:                                    }
+        -:  367:
+        3:  368:                                    string brandSearchResult;
+        3:  369:                                    choice = atoi(buf);
+        -:  370:
+        -:  371:                                    switch (choice)
+        -:  372:                                    {
+        1:  373:                                    case 1:
+        1:  374:                                        if (send(newfd, "searchbrand", strlen("searchbrand"), 0) < 0)
+        -:  375:                                        {
+    #####:  376:                                            ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  377:                                            //
+        -:  378:                                        }
+        -:  379:
+        1:  380:                                        memset(&buf, 0, MAX_BUFF);
+        -:  381:
+        -:  382:                                        // receiving brand name to be searched
+        1:  383:                                        if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  384:                                        {
+    #####:  385:                                            ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  386:                                            //
+        -:  387:                                        }
         -:  388:
-        -:  389:                                            // Receiving acknowledgement from client
-        1:  390:                                            memset(&buf, 0, MAX_BUFF);
-        1:  391:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
-        -:  392:                                            {
-    #####:  393:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
-    #####:  394:                                                break;
-        -:  395:                                            }
-        -:  396:                                            // Logging ack in logs
-        -:  397:
-        1:  398:                                            if (strcmp(buf, "SUCCESS") == 0)
-        -:  399:                                            {
-        1:  400:                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
-        -:  401:                                            }
-        -:  402:                                            else
-        -:  403:                                            {
-    #####:  404:                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
-        -:  405:                                            }
-        -:  406:                                        }
-        -:  407:                                        else
-        -:  408:                                        {
-    #####:  409:                                            if (send(newfd, "error", strlen("error"), 0))
-        -:  410:                                            {
-    #####:  411:                                                ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  412:                                            }
-        -:  413:                                        }
-        -:  414:
-        1:  415:                                        break;
-        -:  416:
-        1:  417:                                    case 3:
-        1:  418:                                        break;
-        -:  419:
-    #####:  420:                                    default:
-    #####:  421:                                        break;
-        -:  422:                                    }
-        -:  423:
-        3:  424:                                    if (choice == 3 || buf[0] == '\0')
-        -:  425:                                    {
-        1:  426:                                        choice = 0;
-        1:  427:                                        break;
-        -:  428:                                    }
-        5:  429:                                }
-        1:  430:                                break;
-        1:  431:                            case 3: // go back
-        1:  432:                                break;
-        -:  433:
-    #####:  434:                            default:
-    #####:  435:                                break;
-        -:  436:                            }
-        -:  437:
-        3:  438:                            if (choice == 3 || buf[0] == '\0')
-        -:  439:                            {
-        1:  440:                                choice = 0;
-        1:  441:                                break;
-        -:  442:                            }
-        2:  443:                        }
-        1:  444:                        break;
-        -:  445:
-        1:  446:                    case 3: // Logout
-        1:  447:                        break;
-        -:  448:
-    #####:  449:                    default:
-    #####:  450:                        break;
-        -:  451:                    }
-        3:  452:                    if (choice == 3 || buf[0] == '\0')
-        -:  453:                    {
-        1:  454:                        choice = 0;
-        1:  455:                        break;
-        -:  456:                    }
-        6:  457:                }
-        -:  458:            }
-    #####:  459:            else if (flag == 0)
-        -:  460:            {
-    #####:  461:                if (send(newfd, "failure", 8, 0) < 0)
-        -:  462:                {
-    #####:  463:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  464:                }
-        -:  465:            }
-        -:  466:            else
-        -:  467:            {
-    #####:  468:                if (send(newfd, "DBerror", 8, 0) < 0)
-        -:  469:                {
-    #####:  470:                    ut.log(FATAL, "send() error", S_LOGFILE);
-        -:  471:                }
-        -:  472:            }
-        1:  473:            break;
-        -:  474:
-        1:  475:        case 3:
-        1:  476:            break;
-        -:  477:
-        1:  478:        default:
-        1:  479:            break;
-        -:  480:        }
-        -:  481:
-        4:  482:        if (buf[0] == '\0')
-        -:  483:        {
-        1:  484:            cout << "[-]Client " << ntohs(client_addr.sin_port) << " left the server." << endl;
-        1:  485:            break;
-        -:  486:        }
-        3:  487:    }
-        1:  488:}
-        -:  489:
-        -:  490:// return -1 on database error, 1 on user exists, 0 on user not exists
-        1:  491:int Server::userExists(User &newUser)
-        -:  492:{
-        1:  493:    User user;
-        1:  494:    fstream userDB;
-        -:  495:
-        1:  496:    userDB.open("data/registered.dat", ios::out | ios::in);
-        -:  497:
-        1:  498:    if (userDB)
-        -:  499:    {
-        8:  500:        while (!userDB.eof())
-        -:  501:        {
-        -:  502:
-        7:  503:            userDB.read((char *)&user, sizeof(user));
-        -:  504:
-        7:  505:            if (strcmp(newUser.getUsername(), user.getUsername()) == 0)
+        1:  389:                                        op.processCDR();
+        1:  390:                                        brandSearchResult = op.searchBrandName(buf);
+        -:  391:
+        1:  392:                                        if (send(newfd, brandSearchResult.c_str(), brandSearchResult.length(), 0) < 0)
+        -:  393:                                        {
+    #####:  394:                                            ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  395:                                        }
+        -:  396:
+        1:  397:                                        break;
+        -:  398:
+        1:  399:                                    case 2:
+        -:  400:                                        // function for sending IOSB.txt to client
+       1*:  401:                                        if (op.processCDR() && op.mapToFile())
+        -:  402:                                        {
+        -:  403:                                            // sending file to client side
+        1:  404:                                            if (send(newfd, "sending", strlen("sending"), 0) < 0)
+        -:  405:                                            {
+    #####:  406:                                                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  407:                                            }
+        -:  408:
+        1:  409:                                            memset(&buf, 0, MAX_BUFF);
+        -:  410:
+        1:  411:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  412:                                            {
+    #####:  413:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+        -:  414:                                            }
+        -:  415:
+        1:  416:                                            if (strcmp(buf, "yes") == 0)
+        -:  417:                                            {
+        1:  418:                                                if (sendFile(newfd, (char *)"data/IOSB.txt") == 1)
+        -:  419:                                                {
+        1:  420:                                                    ut.log(INFO, "File sent succesffuly.", S_LOGFILE);
+        -:  421:                                                }
+        -:  422:                                                else
+        -:  423:                                                {
+    #####:  424:                                                    ut.log(FATAL, "File not accessible.", S_LOGFILE);
+        -:  425:                                                }
+        -:  426:                                            }
+        -:  427:
+        -:  428:                                            // Receiving acknowledgement from client
+        1:  429:                                            memset(&buf, 0, MAX_BUFF);
+        1:  430:                                            if (recv(newfd, buf, MAX_BUFF, 0) < 0)
+        -:  431:                                            {
+    #####:  432:                                                ut.log(FATAL, "recv() error", S_LOGFILE);
+    #####:  433:                                                break;
+        -:  434:                                            }
+        -:  435:                                            // Logging ack in logs
+        -:  436:
+        1:  437:                                            if (strcmp(buf, "SUCCESS") == 0)
+        -:  438:                                            {
+        1:  439:                                                ut.log(INFO, "Client Received the file successfully", S_LOGFILE);
+        -:  440:                                            }
+        -:  441:                                            else
+        -:  442:                                            {
+    #####:  443:                                                ut.log(INFO, "Client does not received the file", S_LOGFILE);
+        -:  444:                                            }
+        -:  445:                                        }
+        -:  446:                                        else
+        -:  447:                                        {
+    #####:  448:                                            if (send(newfd, "error", strlen("error"), 0))
+        -:  449:                                            {
+    #####:  450:                                                ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  451:                                            }
+        -:  452:                                        }
+        -:  453:
+        1:  454:                                        break;
+        -:  455:
+        1:  456:                                    case 3:
+        1:  457:                                        break;
+        -:  458:
+    #####:  459:                                    default:
+    #####:  460:                                        break;
+        -:  461:                                    }
+        -:  462:
+        3:  463:                                    if (choice == 3 || buf[0] == '\0')
+        -:  464:                                    {
+        1:  465:                                        choice = 0;
+        1:  466:                                        break;
+        -:  467:                                    }
+        5:  468:                                }
+        1:  469:                                break;
+        1:  470:                            case 3: // go back
+        1:  471:                                break;
+        -:  472:
+    #####:  473:                            default:
+    #####:  474:                                break;
+        -:  475:                            }
+        -:  476:
+        3:  477:                            if (choice == 3 || buf[0] == '\0')
+        -:  478:                            {
+        1:  479:                                choice = 0;
+        1:  480:                                break;
+        -:  481:                            }
+        2:  482:                        }
+        1:  483:                        break;
+        -:  484:
+        1:  485:                    case 3: // Logout
+        1:  486:                        break;
+        -:  487:
+    #####:  488:                    default:
+    #####:  489:                        break;
+        -:  490:                    }
+        3:  491:                    if (choice == 3 || buf[0] == '\0')
+        -:  492:                    {
+        1:  493:                        choice = 0;
+        1:  494:                        break;
+        -:  495:                    }
+        6:  496:                }
+        -:  497:            }
+    #####:  498:            else if (flag == 0)
+        -:  499:            {
+    #####:  500:                if (send(newfd, "failure", 8, 0) < 0)
+        -:  501:                {
+    #####:  502:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  503:                }
+        -:  504:            }
+        -:  505:            else
         -:  506:            {
-    #####:  507:                return 1;
-        -:  508:            }
-        -:  509:        }
-        -:  510:    }
-        -:  511:    else
-        -:  512:    {
-    #####:  513:        return -1;
-        -:  514:    }
-        -:  515:
-        1:  516:    return 0;
-        1:  517:}
-        -:  518:
-        -:  519:// return 1 on successful login, 0 on unsuccessful and -1 on DB error
-        1:  520:int Server::verifyLoginCreds(User &newUser)
-        -:  521:{
-        1:  522:    User user;
-        1:  523:    fstream userDB;
-        -:  524:
-        1:  525:    userDB.open("data/registered.dat", ios::out | ios::in);
-        -:  526:
-        1:  527:    if (userDB)
-        -:  528:    {
-        7:  529:        while (!userDB.eof())
-        -:  530:        {
-        -:  531:
-        7:  532:            userDB.read((char *)&user, sizeof(user));
-        -:  533:
-        7:  534:            if ((strcmp(newUser.getUsername(), user.getUsername()) == 0) && (strcmp(newUser.getPassword(), user.getPassword()) == 0))
-        -:  535:            {
-        1:  536:                return 1;
-        -:  537:            }
-        -:  538:        }
-        -:  539:    }
-        -:  540:    else
-        -:  541:    {
-    #####:  542:        return -1;
-        -:  543:    }
+    #####:  507:                if (send(newfd, "DBerror", 8, 0) < 0)
+        -:  508:                {
+    #####:  509:                    ut.log(FATAL, "send() error", S_LOGFILE);
+        -:  510:                }
+        -:  511:            }
+        1:  512:            break;
+        -:  513:
+        1:  514:        case 3:
+        1:  515:            break;
+        -:  516:
+        1:  517:        default:
+        1:  518:            break;
+        -:  519:        }
+        -:  520:
+        4:  521:        if (buf[0] == '\0')
+        -:  522:        {
+        1:  523:            cout << "[-] Client " << ntohs(client_addr.sin_port) << " left the server." << endl;
+        1:  524:            break;
+        -:  525:        }
+        3:  526:    }
+        1:  527:} // end of initClient()
+        -:  528:
+        -:  529:/*
+        -:  530: *  FUNCTION NAME	: userExists()
+        -:  531: *
+        -:  532: *  DESCRIPTION		: It checks the given username exists in the database or not,
+        -:  533:                      A return value of 1 indicates user exists, 0 indicates user does not exists and -1 indicates database error.
+        -:  534: *
+        -:  535: *  PARAMETERS		: User &newUser
+        -:  536: *
+        -:  537: *  RETURN 		    : int
+        -:  538: *
+        -:  539: */
+        1:  540:int Server::userExists(User &newUser)
+        -:  541:{
+        1:  542:    User user;
+        1:  543:    fstream userDB;
         -:  544:
-    #####:  545:    return 0;
-        1:  546:}
-        -:  547:
-        1:  548:bool Server::processCallData(Operator &op, Customer &cust)
-        -:  549:{
-        -:  550:
-        1:  551:    promise<bool> opPromise;
-        1:  552:    promise<bool> custPromise;
-        -:  553:
-        1:  554:    thread t1(&Operator::processAndCreateFile, &op, &opPromise);
-        1:  555:    thread t2(&Customer::processAndCreateFile, &cust, &custPromise);
-        -:  556:
-        1:  557:    if (t1.joinable())
-        1:  558:        t1.join();
-        -:  559:
-        1:  560:    if (t2.joinable())
-        1:  561:        t2.join();
-        -:  562:
-        1:  563:    future<bool> opFuture = opPromise.get_future();
-        1:  564:    future<bool> custFuture = custPromise.get_future();
-        -:  565:
-       1*:  566:    if (opFuture.get() && custFuture.get())
-        -:  567:    {
-        1:  568:        return true;
-        -:  569:    }
-        -:  570:
-    #####:  571:    return false;
-        1:  572:}
-        -:  573:
-        2:  574:int Server::sendFile(int newfd, char *filename)
-        -:  575:{
-        2:  576:    char bufr[MAX_BUFF] = {'\0'};
-        -:  577:
-        2:  578:    string line;
-        2:  579:    ifstream file;
-        2:  580:    file.open(filename);
-        -:  581:
-        2:  582:    if (file.is_open())
-        -:  583:    {
-  1077381:  584:        while (!file.eof())
-        -:  585:        {
-  1077379:  586:            getline(file, line);
-  1077379:  587:            strcpy(bufr, line.c_str());
-  1077379:  588:            if (send(newfd, bufr, sizeof(bufr), 0) < 0)
-        -:  589:            {
-    #####:  590:                ut.log(FATAL, "bufr send() error", S_LOGFILE);
-    #####:  591:                return 0;
-        -:  592:            }
-        -:  593:
-  1077379:  594:            memset(bufr, 0, MAX_BUFF);
-        -:  595:        }
-        -:  596:        // Sending EOF msg to client
-        2:  597:        if (send(newfd, "EOF", strlen("EOF"), 0) < 0)
-        -:  598:        {
-    #####:  599:            ut.log(FATAL, "EOF send() error", S_LOGFILE);
-    #####:  600:            return 0;
-        -:  601:        }
-        -:  602:    }
-        -:  603:    else
-        -:  604:    {
-    #####:  605:        if (send(newfd, "openErr", strlen("openErr"), 0) < 0)
-        -:  606:        {
-    #####:  607:            ut.log(FATAL, "Could not send file.", S_LOGFILE);
-    #####:  608:            return 0;
-        -:  609:        }
-        -:  610:    }
-        2:  611:    file.close();
-        2:  612:    return 1;
-        2:  613:}
-        -:  614:
-        2:  615:void Server::closeServer()
-        -:  616:{
-        2:  617:    close(serverSockfd);
-        2:  618:}
+        -:  545:    // make directory if not exists
+        1:  546:    mkdir("data", 0777);
+        1:  547:    userDB.open(USER_DB, ios::out | ios::in);
+        -:  548:
+        1:  549:    if (userDB)
+        -:  550:    {
+        9:  551:        while (!userDB.eof())
+        -:  552:        {
+        8:  553:            userDB.read((char *)&user, sizeof(user));
+        8:  554:            if (strcmp(newUser.getUsername(), user.getUsername()) == 0)
+        -:  555:            {
+    #####:  556:                return 1;
+        -:  557:            }
+        -:  558:        }
+        -:  559:    }
+        -:  560:    else
+        -:  561:    {
+    #####:  562:        return -1;
+        -:  563:    }
+        1:  564:    return 0;
+        1:  565:} // end of userExists()
+        -:  566:
+        -:  567:/*
+        -:  568: *  FUNCTION NAME	: verifyLoginCreds()
+        -:  569: *
+        -:  570: *  DESCRIPTION		: It verifies the given credentials from database,
+        -:  571:                      A return value of 1 indicates successful verification, 0 indicates unsucessful verification and -1 indicates database error.
+        -:  572: *
+        -:  573: *  PARAMETERS		: User &newUser
+        -:  574: *
+        -:  575: *  RETURN 		    : int
+        -:  576: *
+        -:  577: */
+        1:  578:int Server::verifyLoginCreds(User &newUser)
+        -:  579:{
+        1:  580:    User user;
+        1:  581:    fstream userDB;
+        -:  582:
+        1:  583:    userDB.open(USER_DB, ios::out | ios::in);
+        -:  584:
+        1:  585:    if (userDB)
+        -:  586:    {
+        3:  587:        while (!userDB.eof())
+        -:  588:        {
+        -:  589:
+        3:  590:            userDB.read((char *)&user, sizeof(user));
+        -:  591:
+        3:  592:            if ((strcmp(newUser.getUsername(), user.getUsername()) == 0) && (strcmp(newUser.getPassword(), user.getPassword()) == 0))
+        -:  593:            {
+        1:  594:                return 1;
+        -:  595:            }
+        -:  596:        }
+        -:  597:    }
+        -:  598:    else
+        -:  599:    {
+    #####:  600:        return -1;
+        -:  601:    }
+        -:  602:
+    #####:  603:    return 0;
+        1:  604:} // end of verifyLoginCreds()
+        -:  605:
+        -:  606:/*
+        -:  607: *  FUNCTION NAME	: processCallData()
+        -:  608: *
+        -:  609: *  DESCRIPTION		: It invokes processAndCreateFile() function for objects of both Operator and Customer classes parallely through threads,
+        -:  610:                      and returns true if both functions return true, and returns false if any fails.
+        -:  611: *
+        -:  612: *  PARAMETERS		: User &op, Customer &cust
+        -:  613: *
+        -:  614: *  RETURN 		    : bool
+        -:  615: *
+        -:  616: */
+        1:  617:bool Server::processCallData(Operator &op, Customer &cust)
+        -:  618:{
+        -:  619:
+        1:  620:    promise<bool> opPromise;
+        1:  621:    promise<bool> custPromise;
+        -:  622:
+        1:  623:    thread t1(&Operator::processAndCreateFile, &op, &opPromise);
+        1:  624:    thread t2(&Customer::processAndCreateFile, &cust, &custPromise);
+        -:  625:
+        1:  626:    if (t1.joinable())
+        1:  627:        t1.join();
+        -:  628:
+        1:  629:    if (t2.joinable())
+        1:  630:        t2.join();
+        -:  631:
+        1:  632:    future<bool> opFuture = opPromise.get_future();
+        1:  633:    future<bool> custFuture = custPromise.get_future();
+        -:  634:
+       1*:  635:    if (opFuture.get() && custFuture.get())
+        -:  636:    {
+        1:  637:        return true;
+        -:  638:    }
+    #####:  639:    return false;
+        1:  640:} // end of processCallData()
+        -:  641:
+        -:  642:/*
+        -:  643: *  FUNCTION NAME	: sendFile()
+        -:  644: *
+        -:  645: *  DESCRIPTION		: It send file to client by streaming the data 
+        -:  646:                      A return value of 1 indicates successful transfer, 0 indicates unsuccessful transfer. 
+        -:  647: *
+        -:  648: *  PARAMETERS		: int newfd, char *filename
+        -:  649: *
+        -:  650: *  RETURN 		    : int
+        -:  651: *
+        -:  652: */
+        2:  653:int Server::sendFile(int newfd, char *filename)
+        -:  654:{
+        2:  655:    char bufr[MAX_BUFF] = {'\0'};
+        -:  656:
+        2:  657:    string line;
+        2:  658:    ifstream file;
+        2:  659:    file.open(filename);
+        -:  660:
+        2:  661:    if (file.is_open())
+        -:  662:    {
+  1077381:  663:        while (!file.eof())
+        -:  664:        {
+  1077379:  665:            getline(file, line);
+  1077379:  666:            strcpy(bufr, line.c_str());
+  1077379:  667:            if (send(newfd, bufr, sizeof(bufr), 0) < 0)
+        -:  668:            {
+    #####:  669:                ut.log(FATAL, "file send() error", S_LOGFILE);
+    #####:  670:                return 0;
+        -:  671:            }
+        -:  672:
+  1077379:  673:            memset(bufr, 0, MAX_BUFF);
+        -:  674:        }
+        -:  675:        // Sending EOF msg to client
+        2:  676:        if (send(newfd, "EOF", strlen("EOF"), 0) < 0)
+        -:  677:        {
+    #####:  678:            ut.log(FATAL, "EOF send() error", S_LOGFILE);
+    #####:  679:            return 0;
+        -:  680:        }
+        -:  681:    }
+        -:  682:    else
+        -:  683:    {
+    #####:  684:        if (send(newfd, "openErr", strlen("openErr"), 0) < 0)
+        -:  685:        {
+    #####:  686:            ut.log(FATAL, "Could not send file.", S_LOGFILE);
+    #####:  687:            return 0;
+        -:  688:        }
+        -:  689:    }
+        2:  690:    file.close();
+        2:  691:    return 1;
+        2:  692:} // end of senfile()
+        -:  693:
+        -:  694:// function to close the server socket
+        2:  695:void Server::closeServer()
+        -:  696:{
+        2:  697:    close(serverSockfd);
+        2:  698:}

@@ -1,6 +1,8 @@
 #include <interoperator.h>
 #include <utils.h>
 
+map<long, Operator> operatorsMap;
+
 Utils utl;
 
 Operator::Operator()
@@ -43,12 +45,22 @@ long Operator::getOutMsg() { return outMsg; }
 long Operator::getMMC() { return MMC; }
 string Operator::getBrandName() { return brandName; }
 
+/*
+ *  FUNCTION NAME	: processCDR
+ *
+ *  DESCRIPTION		: It takes the data from data.cdr and puts it into STL containers after formatting
+ *
+ *  PARAMETERS		: None
+ *
+ *  RETURN 		    : bool
+ *
+ */
 bool Operator::processCDR()
 {
     fstream dataCDR;
     dataCDR.open("data/data.cdr", ios::in);
-    string line;
-    string token;
+    string line = "";
+    string token = "";
     vector<string> parameters;
     if (dataCDR)
     {
@@ -63,14 +75,14 @@ bool Operator::processCDR()
                 parameters.push_back(token);
             }
 
-            // parameters[3] --> call type.
-            // stol: converts the string as a argument in function call.
+            // stol: converts the string to long data type
             string brand = parameters[1];
-            long brandMMC = stol(parameters[2]);     // parameters[2]=brand MMC
-            long callDuration = stol(parameters[4]); // parameters[4]= (call duration)
-            long dataDownload = stol(parameters[5]); // parameters[5]= (data download)
-            long dataUpload = stol(parameters[6]);   // parameters[6]= (data upload)
+            long brandMMC = stol(parameters[2]);
+            long callDuration = stol(parameters[4]);
+            long dataDownload = stol(parameters[5]);
+            long dataUpload = stol(parameters[6]);
 
+            // checking if a brand MMC already exists in the operators map
             if (operatorsMap.count(brandMMC))
             {
                 if (parameters[3] == "MTC")
@@ -97,7 +109,6 @@ bool Operator::processCDR()
             }
             else if (parameters[3] == "MTC")
             {
-                // Operator::Operator(string brandName, long MMC, long inCall, long outCall, long down, long up, long incMsg, long outMsg)
                 Operator newOp(brand, brandMMC, callDuration, 0, 0, 0, 0, 0);
                 operatorsMap[brandMMC] = newOp;
             }
@@ -123,24 +134,11 @@ bool Operator::processCDR()
             }
 
             parameters.clear();
-        }
+        } // end of while loop
 
         // closing data.cdr
         dataCDR.close();
-
-        // if (IOSB)
-        // {
-        //     mapToFile(IOSB);
-
-        //     // closing IOSB.txt
-        //     IOSB.close();
-        // }
-        // else
-        // {
-        //     perror("IOSB.txt File error: ");
-        //     return false;
-        // }
-    }
+    } // end of if block
     else
     {
         perror("data.cdr File error: ");
@@ -149,8 +147,18 @@ bool Operator::processCDR()
     }
 
     return true;
-}
+} // end of processCDR()
 
+/*
+ *  FUNCTION NAME	: mapToFile
+ *
+ *  DESCRIPTION		: It takes the data from operatorsMap and puts it into IOSB.txt after formatting
+ *
+ *  PARAMETERS		: None
+ *
+ *  RETURN 		: bool
+ *
+ */
 bool Operator::mapToFile()
 {
     fstream IOSB;
@@ -174,8 +182,19 @@ bool Operator::mapToFile()
     }
 
     return true;
-}
+} // end of mapToFile()
 
+/*
+ *  FUNCTION NAME	: searchBrandName
+ *
+ *  DESCRIPTION		: It takes a string as parameter, searches for it in the operatorsMap 
+                       and returns the formatted result.
+ *
+ *  PARAMETERS		: string brand
+ *
+ *  RETURN 		: string
+ *
+ */
 string Operator::searchBrandName(string brand)
 {
     string result;
@@ -193,8 +212,18 @@ string Operator::searchBrandName(string brand)
     // checking if brand name is invalid
     string notFound = "Brand name doesn't exist.";
     return notFound;
-}
+} // end of searchBrandName()
 
+/*
+ *  FUNCTION NAME	: oprToString
+ *
+ *  DESCRIPTION		: It takes an object of Operator type, formats the data and returns it in a string
+ *
+ *  PARAMETERS		: Operator &oprData
+ *
+ *  RETURN 		: string
+ *
+ */
 string Operator::oprToString(Operator &oprData)
 {
     ostringstream ss;
@@ -220,8 +249,19 @@ string Operator::oprToString(Operator &oprData)
        << endl;
 
     return ss.str();
-}
+} // end of oprToString()
 
+/*
+ *  FUNCTION NAME	: processAndCreateFile
+ *
+ *  DESCRIPTION		: It invokes processCDR and mapToFile and returns true on successful processing 
+                       and file creation, false otherwise.
+ *
+ *  PARAMETERS		: promise<bool> *isProcessed
+ *
+ *  RETURN 		: bool
+ *
+ */
 bool Operator::processAndCreateFile(promise<bool> *isProcessed)
 {
     bool process = processCDR();
@@ -235,7 +275,7 @@ bool Operator::processAndCreateFile(promise<bool> *isProcessed)
 
     isProcessed->set_value(false);
     return false;
-}
+} //end of processAndCreateFile
 
 Operator::~Operator()
 {

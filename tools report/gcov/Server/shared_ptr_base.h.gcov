@@ -1025,16 +1025,16 @@ _ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Loc
        6*:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
 ------------------
 _ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2ELb0ELb0EE6_M_getEv:
-    #####:  992:      _M_get() const noexcept
-    #####:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
-------------------
-_ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2ELb0ELb0EE6_M_getEv:
-    #####:  992:      _M_get() const noexcept
-    #####:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
-------------------
-_ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2ELb0ELb0EE6_M_getEv:
         6:  992:      _M_get() const noexcept
         6:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
+------------------
+_ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2ELb0ELb0EE6_M_getEv:
+    #####:  992:      _M_get() const noexcept
+    #####:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
+------------------
+_ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2ELb0ELb0EE6_M_getEv:
+    #####:  992:      _M_get() const noexcept
+    #####:  993:      { return static_cast<const __shared_ptr<_Tp, _Lp>*>(this)->get(); }
 ------------------
         -:  994:    };
         -:  995:
@@ -1341,16 +1341,16 @@ _ZNKSt19__shared_ptr_accessINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Loc
        6*: 1296:      { return _M_ptr; }
 ------------------
 _ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EE3getEv:
-    #####: 1295:      get() const noexcept
-    #####: 1296:      { return _M_ptr; }
-------------------
-_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EE3getEv:
-    #####: 1295:      get() const noexcept
-    #####: 1296:      { return _M_ptr; }
-------------------
-_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EE3getEv:
         6: 1295:      get() const noexcept
         6: 1296:      { return _M_ptr; }
+------------------
+_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EE3getEv:
+    #####: 1295:      get() const noexcept
+    #####: 1296:      { return _M_ptr; }
+------------------
+_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EE3getEv:
+    #####: 1295:      get() const noexcept
+    #####: 1296:      { return _M_ptr; }
 ------------------
         -: 1297:
         -: 1298:      /// Return true if the stored pointer is not null.
@@ -1358,16 +1358,16 @@ _ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_polic
        8*: 1300:      { return _M_ptr != nullptr; }
 ------------------
 _ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EEcvbEv:
-    #####: 1299:      explicit operator bool() const noexcept
-    #####: 1300:      { return _M_ptr != nullptr; }
-------------------
-_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EEcvbEv:
-    #####: 1299:      explicit operator bool() const noexcept
-    #####: 1300:      { return _M_ptr != nullptr; }
-------------------
-_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EEcvbEv:
         8: 1299:      explicit operator bool() const noexcept
         8: 1300:      { return _M_ptr != nullptr; }
+------------------
+_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EEcvbEv:
+    #####: 1299:      explicit operator bool() const noexcept
+    #####: 1300:      { return _M_ptr != nullptr; }
+------------------
+_ZNKSt12__shared_ptrINSt13__future_base13_State_baseV2ELN9__gnu_cxx12_Lock_policyE2EEcvbEv:
+    #####: 1299:      explicit operator bool() const noexcept
+    #####: 1300:      { return _M_ptr != nullptr; }
 ------------------
         -: 1301:
         -: 1302:      /// Return true if use_count() == 1.

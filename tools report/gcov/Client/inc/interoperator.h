@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <map>
@@ -55,5 +57,5 @@ private:
     long downData;
     long upData;
 
-    map<long, Operator> operatorsMap;
-};
+   
+}; 

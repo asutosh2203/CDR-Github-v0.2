@@ -1,31 +1,127 @@
         -:    0:Source:src/utils.cpp
         -:    1:#include <utils.h>
-        -:    2:
-        -:    3:// this function creates a logfile which stores all the log messages at runtime along with the time stamp
-        3:    4:void Utils::log(const char *type, const char *msg, const char *filename)
-        -:    5:{
-        3:    6:    fstream logfile;
-        3:    7:    logfile.open(filename, ios::app);
-        -:    8:
-        3:    9:    time_t ltime = time(NULL);
-        -:   10:
-        -:   11:    struct tm res;
-        -:   12:    char TIMESTAMP[32];
-        -:   13:
-        3:   14:    localtime_r(&ltime, &res);
-        3:   15:    asctime_r(&res, TIMESTAMP);
-        -:   16:
-        -:   17:    // Writing log in file with formatting
-        3:   18:    logfile << endl
-        3:   19:            << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl;
-        -:   20:
-        3:   21:    logfile.close();
-        3:   22:}
+        -:    2:#include <sys/stat.h>
+        -:    3:#include <fcntl.h>
+        -:    4:
+        -:    5:/*
+        -:    6: *  FUNCTION NAME	: processAndCreateFile
+        -:    7: *
+        -:    8: *  DESCRIPTION		: It logs a message and it's type along with the time stamp in given filename.
+        -:    9: *
+        -:   10: *  PARAMETERS		: const char* type, const char* msg, const char* filename
+        -:   11: *
+        -:   12: *  RETURN 		: void
+        -:   13: *
+        -:   14: */
+        3:   15:void Utils::log(const char *type, const char *msg, const char *filename)
+        -:   16:{
+        3:   17:    mkdir("logs", 0777);
+        -:   18:
+        3:   19:    fstream logfile;
+        3:   20:    logfile.open(filename, ios::app);
+        -:   21:
+        3:   22:    time_t ltime = time(NULL);
         -:   23:
-    #####:   24:string Utils::toLowerCase(string str)
-        -:   25:{
-    #####:   26:    for_each(str.begin(), str.end(), [](char &c)
-    #####:   27:             { c = tolower(c); });
-        -:   28:
-    #####:   29:    return str;
-        -:   30:}
+        -:   24:    struct tm res;
+        -:   25:    char TIMESTAMP[32];
+        -:   26:
+        3:   27:    localtime_r(&ltime, &res);
+        3:   28:    asctime_r(&res, TIMESTAMP);
+        -:   29:
+        -:   30:    // Writing log in file with formatting
+        3:   31:    logfile << endl
+        3:   32:            << "~" << TIMESTAMP << " \t " << type << ": " << msg << endl;
+        -:   33:
+        3:   34:    logfile.close();
+        3:   35:}
+        -:   36:
+        -:   37:// converts a given string into lowercase
+        -:   38:// Returns a string
+    #####:   39:string Utils::toLowerCase(string str)
+        -:   40:{
+    #####:   41:    for_each(str.begin(), str.end(), [](char &c)
+    #####:   42:             { c = tolower(c); });
+        -:   43:
+    #####:   44:    return str;
+        -:   45:}
+        -:   46:
+        4:   47:bool Utils::isNumber(string str)
+        -:   48:{
+        4:   49:    int len = str.length();
+       10:   50:    for (int i = 0; i < len; i++)
+        -:   51:    {
+        6:   52:        char c = str.at(i);
+        -:   53:
+        6:   54:        if (c < 48 || c > 57)
+        -:   55:        {
+    #####:   56:            return false;
+        -:   57:        }
+        -:   58:    }
+        -:   59:
+        4:   60:    return true;
+        -:   61:}
+        -:   62:
+        -:   63:/*
+        -:   64: *  FUNCTION NAME	: split
+        -:   65: *
+        -:   66: *  DESCRIPTION		: It splits a given string on the basis of delimiter
+        -:   67: *
+        -:   68: *  PARAMETERS		: const string &str, char delim
+        -:   69: *
+        -:   70: *  RETURN 		: vector<string>
+        -:   71: *
+        -:   72: */
+        1:   73:vector<string> Utils::split(const string &str, char delim)
+        -:   74:{
+        1:   75:    auto i = 0;
+        1:   76:    vector<string> tokens;
+        -:   77:
+        1:   78:    auto pos = str.find(delim);
+        -:   79:
+        4:   80:    while (pos < str.length())
+        -:   81:    {
+        3:   82:        tokens.push_back(str.substr(i, pos - i));
+        3:   83:        i = ++pos;
+        3:   84:        pos = str.find(delim, pos);
+        -:   85:    }
+        -:   86:
+        1:   87:    tokens.push_back(str.substr(i, str.length()));
+        -:   88:
+        1:   89:    return tokens;
+    =====:   90:}
+        -:   91:
+        -:   92:/*
+        -:   93: *  FUNCTION NAME	: validateIP
+        -:   94: *
+        -:   95: *  DESCRIPTION		: It validates the IP according to required conditions
+        -:   96: *
+        -:   97: *  PARAMETERS		: string ip
+        -:   98: *
+        -:   99: *  RETURN 		: bool
+        -:  100: *
+        -:  101: */
+        1:  102:bool Utils::validateIP(string ip)
+        -:  103:{
+        -:  104:    // split the string into tokens
+        1:  105:    vector<string> ipTokens = split(ip, '.');
+        -:  106:
+        -:  107:    // if the token size is not equal to four
+        1:  108:    if (ipTokens.size() != 4)
+        -:  109:    {
+    #####:  110:        return false;
+        -:  111:    }
+        -:  112:
+        -:  113:    // validate each token
+        5:  114:    for (string ipToken : ipTokens)
+        -:  115:    {
+        -:  116:        // verify that the string is a number or not, and the numbers
+        -:  117:        // are in the valid range
+        -:  118:
+       4*:  119:        if (!isNumber(ipToken) || stoi(ipToken) > 255 || stoi(ipToken) < 0)
+        -:  120:        {
+    #####:  121:            return false;
+        -:  122:        }
+        4:  123:    }
+        -:  124:
+        1:  125:    return true;
+        1:  126:}

@@ -9,9 +9,11 @@
 #include <errno.h>
 #include <unistd.h>
 #include <pthread.h>
-
 #include <bits/stdc++.h>
 #include <sys/time.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <user.h>
 #include <interoperator.h>
@@ -25,11 +27,15 @@ class Server
 {
 public:
         Server();
-        Server(int port, string ipAddr)
+        void setIPAddr(const char *ipAddr)
         {
-                this->port = port;
                 this->ipAddr = ipAddr;
         }
+        void setPort(int port)
+        {
+                this->port = port;
+        }
+
         void createSocket();
         void bind_listen();
         void acceptClient();
@@ -51,7 +57,7 @@ public:
 private:
         int serverSockfd, clientSockfd;
         int port;
-        string ipAddr;
+        const char *ipAddr;
         struct sockaddr_in server_addr;
         struct sockaddr_in client_addr;
         socklen_t len;

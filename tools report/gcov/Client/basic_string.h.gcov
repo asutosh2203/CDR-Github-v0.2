@@ -288,6 +288,14 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S
     #####:  255:          _M_construct(__beg, __end, _Tag());
     #####:  256:	}
 ------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S7_St12__false_type:
+    #####:  251:        _M_construct_aux(_InIterator __beg, _InIterator __end,
+        -:  252:			 std::__false_type)
+        -:  253:	{
+        -:  254:          typedef typename iterator_traits<_InIterator>::iterator_category _Tag;
+    #####:  255:          _M_construct(__beg, __end, _Tag());
+    #####:  256:	}
+------------------
         -:  257:
         -:  258:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
         -:  259:      // 438. Ambiguity in the "do the right thing" clause
@@ -302,6 +310,13 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S
         -:  268:
         -:  269:      template<typename _InIterator>
         -:  270:        void
+    #####:  271:        _M_construct(_InIterator __beg, _InIterator __end)
+        -:  272:	{
+        -:  273:	  typedef typename std::__is_integer<_InIterator>::__type _Integral;
+    #####:  274:	  _M_construct_aux(__beg, __end, _Integral());
+    #####:  275:        }
+------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_:
     #####:  271:        _M_construct(_InIterator __beg, _InIterator __end)
         -:  272:	{
         -:  273:	  typedef typename std::__is_integer<_InIterator>::__type _Integral;
@@ -593,14 +608,24 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_:
         -:  530:      // 3076. basic_string CTAD ambiguity
         -:  531:      template<typename = _RequireAllocator<_Alloc>>
         -:  532:#endif
-    #####:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
-    #####:  534:      : _M_dataplus(_M_local_data(), __a)
+       1*:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+       1*:  534:      : _M_dataplus(_M_local_data(), __a)
         -:  535:      {
-    #####:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
+       1*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
         -:  537:	  // We just need a non-null pointer here to get an exception:
         -:  538:	  : reinterpret_cast<const _CharT*>(__alignof__(_CharT));
-    #####:  539:	_M_construct(__s, __end, random_access_iterator_tag());
-    #####:  540:      }
+       1*:  539:	_M_construct(__s, __end, random_access_iterator_tag());
+       1*:  540:      }
+------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
+        1:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+        1:  534:      : _M_dataplus(_M_local_data(), __a)
+        -:  535:      {
+       1*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
+        -:  537:	  // We just need a non-null pointer here to get an exception:
+        -:  538:	  : reinterpret_cast<const _CharT*>(__alignof__(_CharT));
+        1:  539:	_M_construct(__s, __end, random_access_iterator_tag());
+        1:  540:      }
 ------------------
 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
     #####:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
@@ -6726,9 +6751,9 @@ _ZSteqIcSt11char_traitsIcESaIcEEbRKNSt7__cxx1112basic_stringIT_T0_T1_EEPKS5_:
         -: 6616:#if _GLIBCXX_USE_C99_STDLIB
         -: 6617:  // 21.4 Numeric Conversions [string.conversions].
         -: 6618:  inline int
-        -: 6619:  stoi(const string& __str, size_t* __idx = 0, int __base = 10)
-        -: 6620:  { return __gnu_cxx::__stoa<long, int>(&std::strtol, "stoi", __str.c_str(),
-        -: 6621:					__idx, __base); }
+        8: 6619:  stoi(const string& __str, size_t* __idx = 0, int __base = 10)
+        8: 6620:  { return __gnu_cxx::__stoa<long, int>(&std::strtol, "stoi", __str.c_str(),
+        8: 6621:					__idx, __base); }
         -: 6622:
         -: 6623:  inline long
     #####: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)

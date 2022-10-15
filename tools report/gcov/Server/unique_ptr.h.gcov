@@ -167,16 +167,16 @@ _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_Deleter
        2*:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEEC2IS2_EEPS1_OT_:
-    #####:  158:      __uniq_ptr_impl(pointer __p, _Del&& __d)
-    #####:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEEC2IS2_EEPS1_OT_:
-    #####:  158:      __uniq_ptr_impl(pointer __p, _Del&& __d)
-    #####:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEEC2IS2_EEPS1_OT_:
         2:  158:      __uniq_ptr_impl(pointer __p, _Del&& __d)
         2:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEEC2IS2_EEPS1_OT_:
+    #####:  158:      __uniq_ptr_impl(pointer __p, _Del&& __d)
+    #####:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEEC2IS2_EEPS1_OT_:
+    #####:  158:      __uniq_ptr_impl(pointer __p, _Del&& __d)
+    #####:  159:	: _M_t(__p, std::forward<_Del>(__d)) { }
 ------------------
         -:  160:
        2*:  161:      __uniq_ptr_impl(__uniq_ptr_impl&& __u) noexcept
@@ -204,10 +204,10 @@ _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_Deleter
       24*:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE6_M_ptrEv:
-    #####:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
+       12:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE6_M_ptrEv:
-    #####:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
+        8:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE6_M_ptrEv:
     #####:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
@@ -219,10 +219,10 @@ _ZNSt15__uniq_ptr_implINSt6thread6_StateESt14default_deleteIS1_EE6_M_ptrEv:
         4:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE6_M_ptrEv:
-       12:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
+    #####:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE6_M_ptrEv:
-        8:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
+    #####:  172:      pointer&   _M_ptr() { return std::get<0>(_M_t); }
 ------------------
        4*:  173:      pointer    _M_ptr() const { return std::get<0>(_M_t); }
 ------------------
@@ -238,10 +238,10 @@ _ZNKSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE6_M_ptrE
        8*:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE10_M_deleterEv:
-    #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
+        2:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE10_M_deleterEv:
-    #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
+        6:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE10_M_deleterEv:
     #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
@@ -253,10 +253,10 @@ _ZNSt15__uniq_ptr_implINSt6thread6_StateESt14default_deleteIS1_EE10_M_deleterEv:
     #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE10_M_deleterEv:
-        2:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
+    #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE10_M_deleterEv:
-        6:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
+    #####:  174:      _Dp&       _M_deleter() { return std::get<1>(_M_t); }
 ------------------
         -:  175:      const _Dp& _M_deleter() const { return std::get<1>(_M_t); }
         -:  176:
@@ -276,27 +276,27 @@ _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE10_M_dele
         -:  190:      }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
-    #####:  185:      pointer release() noexcept
-        -:  186:      {
-    #####:  187:	pointer __p = _M_ptr();
-    #####:  188:	_M_ptr() = nullptr;
-    #####:  189:	return __p;
-        -:  190:      }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
-    #####:  185:      pointer release() noexcept
-        -:  186:      {
-    #####:  187:	pointer __p = _M_ptr();
-    #####:  188:	_M_ptr() = nullptr;
-    #####:  189:	return __p;
-        -:  190:      }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
         2:  185:      pointer release() noexcept
         -:  186:      {
         2:  187:	pointer __p = _M_ptr();
         2:  188:	_M_ptr() = nullptr;
         2:  189:	return __p;
+        -:  190:      }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
+    #####:  185:      pointer release() noexcept
+        -:  186:      {
+    #####:  187:	pointer __p = _M_ptr();
+    #####:  188:	_M_ptr() = nullptr;
+    #####:  189:	return __p;
+        -:  190:      }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
+    #####:  185:      pointer release() noexcept
+        -:  186:      {
+    #####:  187:	pointer __p = _M_ptr();
+    #####:  188:	_M_ptr() = nullptr;
+    #####:  189:	return __p;
         -:  190:      }
 ------------------
         -:  191:
@@ -309,28 +309,28 @@ _ZNSt15__uniq_ptr_implINSt13__future_base7_ResultIbEENS0_12_Result_base8_Deleter
        2*:  198:      }
 ------------------
 _ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
-    #####:  193:      swap(__uniq_ptr_impl& __rhs) noexcept
-        -:  194:      {
-        -:  195:	using std::swap;
-    #####:  196:	swap(this->_M_ptr(), __rhs._M_ptr());
-    #####:  197:	swap(this->_M_deleter(), __rhs._M_deleter());
-    #####:  198:      }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
-    #####:  193:      swap(__uniq_ptr_impl& __rhs) noexcept
-        -:  194:      {
-        -:  195:	using std::swap;
-    #####:  196:	swap(this->_M_ptr(), __rhs._M_ptr());
-    #####:  197:	swap(this->_M_deleter(), __rhs._M_deleter());
-    #####:  198:      }
-------------------
-_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
         2:  193:      swap(__uniq_ptr_impl& __rhs) noexcept
         -:  194:      {
         -:  195:	using std::swap;
         2:  196:	swap(this->_M_ptr(), __rhs._M_ptr());
         2:  197:	swap(this->_M_deleter(), __rhs._M_deleter());
         2:  198:      }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
+    #####:  193:      swap(__uniq_ptr_impl& __rhs) noexcept
+        -:  194:      {
+        -:  195:	using std::swap;
+    #####:  196:	swap(this->_M_ptr(), __rhs._M_ptr());
+    #####:  197:	swap(this->_M_deleter(), __rhs._M_deleter());
+    #####:  198:      }
+------------------
+_ZNSt15__uniq_ptr_implINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
+    #####:  193:      swap(__uniq_ptr_impl& __rhs) noexcept
+        -:  194:      {
+        -:  195:	using std::swap;
+    #####:  196:	swap(this->_M_ptr(), __rhs._M_ptr());
+    #####:  197:	swap(this->_M_deleter(), __rhs._M_deleter());
+    #####:  198:      }
 ------------------
         -:  199:
         -:  200:    private:
@@ -503,19 +503,19 @@ _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEEC2E
        2*:  342:	{ }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_ResultIbEES2_vEEOS_IT_T0_E:
-    #####:  340:	unique_ptr(unique_ptr<_Up, _Ep>&& __u) noexcept
-    #####:  341:	: _M_t(__u.release(), std::forward<_Ep>(__u.get_deleter()))
-    #####:  342:	{ }
-------------------
-_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_ResultIbEES2_vEEOS_IT_T0_E:
-    #####:  340:	unique_ptr(unique_ptr<_Up, _Ep>&& __u) noexcept
-    #####:  341:	: _M_t(__u.release(), std::forward<_Ep>(__u.get_deleter()))
-    #####:  342:	{ }
-------------------
-_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_ResultIbEES2_vEEOS_IT_T0_E:
         2:  340:	unique_ptr(unique_ptr<_Up, _Ep>&& __u) noexcept
         2:  341:	: _M_t(__u.release(), std::forward<_Ep>(__u.get_deleter()))
         2:  342:	{ }
+------------------
+_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_ResultIbEES2_vEEOS_IT_T0_E:
+    #####:  340:	unique_ptr(unique_ptr<_Up, _Ep>&& __u) noexcept
+    #####:  341:	: _M_t(__u.release(), std::forward<_Ep>(__u.get_deleter()))
+    #####:  342:	{ }
+------------------
+_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_ResultIbEES2_vEEOS_IT_T0_E:
+    #####:  340:	unique_ptr(unique_ptr<_Up, _Ep>&& __u) noexcept
+    #####:  341:	: _M_t(__u.release(), std::forward<_Ep>(__u.get_deleter()))
+    #####:  342:	{ }
 ------------------
         -:  343:
         -:  344:#if _GLIBCXX_USE_DEPRECATED
@@ -540,26 +540,26 @@ _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEEC2INS0_7_Resul
       10*:  363:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEED2Ev:
-    #####:  355:      ~unique_ptr() noexcept
+        4:  355:      ~unique_ptr() noexcept
         -:  356:      {
         -:  357:	static_assert(__is_invocable<deleter_type&, pointer>::value,
         -:  358:		      "unique_ptr's deleter must be invocable with a pointer");
-    #####:  359:	auto& __ptr = _M_t._M_ptr();
-    #####:  360:	if (__ptr != nullptr)
+        4:  359:	auto& __ptr = _M_t._M_ptr();
+        4:  360:	if (__ptr != nullptr)
     #####:  361:	  get_deleter()(std::move(__ptr));
-    #####:  362:	__ptr = pointer();
-    #####:  363:      }
+        4:  362:	__ptr = pointer();
+        4:  363:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEED2Ev:
-    #####:  355:      ~unique_ptr() noexcept
+        4:  355:      ~unique_ptr() noexcept
         -:  356:      {
         -:  357:	static_assert(__is_invocable<deleter_type&, pointer>::value,
         -:  358:		      "unique_ptr's deleter must be invocable with a pointer");
-    #####:  359:	auto& __ptr = _M_t._M_ptr();
-    #####:  360:	if (__ptr != nullptr)
-    #####:  361:	  get_deleter()(std::move(__ptr));
-    #####:  362:	__ptr = pointer();
-    #####:  363:      }
+        4:  359:	auto& __ptr = _M_t._M_ptr();
+        4:  360:	if (__ptr != nullptr)
+        2:  361:	  get_deleter()(std::move(__ptr));
+        4:  362:	__ptr = pointer();
+        4:  363:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEED2Ev:
     #####:  355:      ~unique_ptr() noexcept
@@ -595,26 +595,26 @@ _ZNSt10unique_ptrINSt6thread6_StateESt14default_deleteIS1_EED2Ev:
         2:  363:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEED2Ev:
-        4:  355:      ~unique_ptr() noexcept
+    #####:  355:      ~unique_ptr() noexcept
         -:  356:      {
         -:  357:	static_assert(__is_invocable<deleter_type&, pointer>::value,
         -:  358:		      "unique_ptr's deleter must be invocable with a pointer");
-        4:  359:	auto& __ptr = _M_t._M_ptr();
-        4:  360:	if (__ptr != nullptr)
+    #####:  359:	auto& __ptr = _M_t._M_ptr();
+    #####:  360:	if (__ptr != nullptr)
     #####:  361:	  get_deleter()(std::move(__ptr));
-        4:  362:	__ptr = pointer();
-        4:  363:      }
+    #####:  362:	__ptr = pointer();
+    #####:  363:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEED2Ev:
-        4:  355:      ~unique_ptr() noexcept
+    #####:  355:      ~unique_ptr() noexcept
         -:  356:      {
         -:  357:	static_assert(__is_invocable<deleter_type&, pointer>::value,
         -:  358:		      "unique_ptr's deleter must be invocable with a pointer");
-        4:  359:	auto& __ptr = _M_t._M_ptr();
-        4:  360:	if (__ptr != nullptr)
-        2:  361:	  get_deleter()(std::move(__ptr));
-        4:  362:	__ptr = pointer();
-        4:  363:      }
+    #####:  359:	auto& __ptr = _M_t._M_ptr();
+    #####:  360:	if (__ptr != nullptr)
+    #####:  361:	  get_deleter()(std::move(__ptr));
+    #####:  362:	__ptr = pointer();
+    #####:  363:      }
 ------------------
         -:  364:
         -:  365:      // Assignment.
@@ -717,12 +717,12 @@ _ZNKSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE3getEv:
        4*:  427:      { return _M_t._M_deleter(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE11get_deleterEv:
-    #####:  426:      get_deleter() noexcept
-    #####:  427:      { return _M_t._M_deleter(); }
+        2:  426:      get_deleter() noexcept
+        2:  427:      { return _M_t._M_deleter(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE11get_deleterEv:
-    #####:  426:      get_deleter() noexcept
-    #####:  427:      { return _M_t._M_deleter(); }
+        2:  426:      get_deleter() noexcept
+        2:  427:      { return _M_t._M_deleter(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE11get_deleterEv:
     #####:  426:      get_deleter() noexcept
@@ -737,12 +737,12 @@ _ZNSt10unique_ptrINSt6thread6_StateESt14default_deleteIS1_EE11get_deleterEv:
     #####:  427:      { return _M_t._M_deleter(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE11get_deleterEv:
-        2:  426:      get_deleter() noexcept
-        2:  427:      { return _M_t._M_deleter(); }
+    #####:  426:      get_deleter() noexcept
+    #####:  427:      { return _M_t._M_deleter(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE11get_deleterEv:
-        2:  426:      get_deleter() noexcept
-        2:  427:      { return _M_t._M_deleter(); }
+    #####:  426:      get_deleter() noexcept
+    #####:  427:      { return _M_t._M_deleter(); }
 ------------------
         -:  428:
         -:  429:      /// Return a reference to the stored deleter.
@@ -762,16 +762,16 @@ _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE11get_deleterE
        2*:  443:      { return _M_t.release(); }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
-    #####:  442:      release() noexcept
-    #####:  443:      { return _M_t.release(); }
-------------------
-_ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
-    #####:  442:      release() noexcept
-    #####:  443:      { return _M_t.release(); }
-------------------
-_ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
         2:  442:      release() noexcept
         2:  443:      { return _M_t.release(); }
+------------------
+_ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
+    #####:  442:      release() noexcept
+    #####:  443:      { return _M_t.release(); }
+------------------
+_ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7releaseEv:
+    #####:  442:      release() noexcept
+    #####:  443:      { return _M_t.release(); }
 ------------------
         -:  444:
         -:  445:      /** @brief Replace the stored pointer.
@@ -797,25 +797,25 @@ _ZNSt10unique_ptrINSt13__future_base7_ResultIbEENS0_12_Result_base8_DeleterEE7re
        2*:  465:      }
 ------------------
 _ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
-    #####:  461:      swap(unique_ptr& __u) noexcept
-        -:  462:      {
-        -:  463:	static_assert(__is_swappable<_Dp>::value, "deleter must be swappable");
-    #####:  464:	_M_t.swap(__u._M_t);
-    #####:  465:      }
-------------------
-_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
-    #####:  461:      swap(unique_ptr& __u) noexcept
-        -:  462:      {
-        -:  463:	static_assert(__is_swappable<_Dp>::value, "deleter must be swappable");
-    #####:  464:	_M_t.swap(__u._M_t);
-    #####:  465:      }
-------------------
-_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
         2:  461:      swap(unique_ptr& __u) noexcept
         -:  462:      {
         -:  463:	static_assert(__is_swappable<_Dp>::value, "deleter must be swappable");
         2:  464:	_M_t.swap(__u._M_t);
         2:  465:      }
+------------------
+_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
+    #####:  461:      swap(unique_ptr& __u) noexcept
+        -:  462:      {
+        -:  463:	static_assert(__is_swappable<_Dp>::value, "deleter must be swappable");
+    #####:  464:	_M_t.swap(__u._M_t);
+    #####:  465:      }
+------------------
+_ZNSt10unique_ptrINSt13__future_base12_Result_baseENS1_8_DeleterEE4swapERS3_:
+    #####:  461:      swap(unique_ptr& __u) noexcept
+        -:  462:      {
+        -:  463:	static_assert(__is_swappable<_Dp>::value, "deleter must be swappable");
+    #####:  464:	_M_t.swap(__u._M_t);
+    #####:  465:      }
 ------------------
         -:  466:
         -:  467:      // Disable copy from lvalue.

@@ -183,13 +183,13 @@
         -:  182:#if __cplusplus < 201103L
         -:  183:      map() : _M_t() { }
         -:  184:#else
-   394122:  185:      map() = default;
+        2:  185:      map() = default;
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
-   394099:  185:      map() = default;
+        1:  185:      map() = default;
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
-       23:  185:      map() = default;
+        1:  185:      map() = default;
 ------------------
         -:  186:#endif
         -:  187:
@@ -212,14 +212,7 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
         -:  204:      map(const map& __x)
         -:  205:      : _M_t(__x._M_t) { }
         -:  206:#else
-   156894:  207:      map(const map&) = default;
-------------------
-_ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
-   156881:  207:      map(const map&) = default;
-------------------
-_ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
-       13:  207:      map(const map&) = default;
-------------------
+        -:  207:      map(const map&) = default;
         -:  208:
         -:  209:      /**
         -:  210:       *  @brief  %Map move constructor.
@@ -314,13 +307,13 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
         -:  299:       *  themselves are pointers, the pointed-to memory is not touched in any
         -:  300:       *  way.  Managing the pointer is the user's responsibility.
         -:  301:       */
-   551016:  302:      ~map() = default;
+        4:  302:      ~map() = default;
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEED2Ev:
-   550980:  302:      ~map() = default;
+        2:  302:      ~map() = default;
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEED2Ev:
-       36:  302:      ~map() = default;
+        2:  302:      ~map() = default;
 ------------------
         -:  303:#endif
         -:  304:
@@ -338,14 +331,7 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEED2Ev:
         -:  316:      }
         -:  317:#else
         -:  318:      map&
-   240202:  319:      operator=(const map&) = default;
-------------------
-_ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEaSERKS7_:
-   240192:  319:      operator=(const map&) = default;
-------------------
-_ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEaSERKS7_:
-       10:  319:      operator=(const map&) = default;
-------------------
+        -:  319:      operator=(const map&) = default;
         -:  320:
         -:  321:      /// Move assignment operator.
         -:  322:      map&
@@ -409,16 +395,16 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE5beginEv:
         -:  371:       *  according to the keys.
         -:  372:       */
         -:  373:      iterator
-  1118664:  374:      end() _GLIBCXX_NOEXCEPT
-  1118664:  375:      { return _M_t.end(); }
+  1192645:  374:      end() _GLIBCXX_NOEXCEPT
+  1192645:  375:      { return _M_t.end(); }
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEE3endEv:
-   397075:  374:      end() _GLIBCXX_NOEXCEPT
-   397075:  375:      { return _M_t.end(); }
+   471049:  374:      end() _GLIBCXX_NOEXCEPT
+   471049:  375:      { return _M_t.end(); }
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE3endEv:
-   721589:  374:      end() _GLIBCXX_NOEXCEPT
-   721589:  375:      { return _M_t.end(); }
+   721596:  374:      end() _GLIBCXX_NOEXCEPT
+   721596:  375:      { return _M_t.end(); }
 ------------------
         -:  376:
         -:  377:      /**
@@ -536,22 +522,22 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE3endEv:
         -:  489:       *  Lookup requires logarithmic time.
         -:  490:       */
         -:  491:      mapped_type&
-   961766:  492:      operator[](const key_type& __k)
+   961771:  492:      operator[](const key_type& __k)
         -:  493:      {
         -:  494:	// concept requirements
         -:  495:	__glibcxx_function_requires(_DefaultConstructibleConcept<mapped_type>)
         -:  496:
-   961766:  497:	iterator __i = lower_bound(__k);
+   961771:  497:	iterator __i = lower_bound(__k);
         -:  498:	// __i->first is greater than or equivalent to __k.
-   961766:  499:	if (__i == end() || key_comp()(__k, (*__i).first))
+   961771:  499:	if (__i == end() || key_comp()(__k, (*__i).first))
         -:  500:#if __cplusplus >= 201103L
-   153914:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
-   153914:  502:					    std::tuple<const key_type&>(__k),
-   153914:  503:					    std::tuple<>());
+    76957:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
+    76957:  502:					    std::tuple<const key_type&>(__k),
+    76957:  503:					    std::tuple<>());
         -:  504:#else
         -:  505:	  __i = insert(__i, value_type(__k, mapped_type()));
         -:  506:#endif
-   961766:  507:	return (*__i).second;
+   961771:  507:	return (*__i).second;
         -:  508:      }
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEixERS4_:
@@ -564,9 +550,9 @@ _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEixERS4_:
         -:  498:	// __i->first is greater than or equivalent to __k.
    240192:  499:	if (__i == end() || key_comp()(__k, (*__i).first))
         -:  500:#if __cplusplus >= 201103L
-   153904:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
-   153904:  502:					    std::tuple<const key_type&>(__k),
-   153904:  503:					    std::tuple<>());
+    76952:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
+    76952:  502:					    std::tuple<const key_type&>(__k),
+    76952:  503:					    std::tuple<>());
         -:  504:#else
         -:  505:	  __i = insert(__i, value_type(__k, mapped_type()));
         -:  506:#endif
@@ -574,22 +560,22 @@ _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEixERS4_:
         -:  508:      }
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEixERS4_:
-   721574:  492:      operator[](const key_type& __k)
+   721579:  492:      operator[](const key_type& __k)
         -:  493:      {
         -:  494:	// concept requirements
         -:  495:	__glibcxx_function_requires(_DefaultConstructibleConcept<mapped_type>)
         -:  496:
-   721574:  497:	iterator __i = lower_bound(__k);
+   721579:  497:	iterator __i = lower_bound(__k);
         -:  498:	// __i->first is greater than or equivalent to __k.
-   721574:  499:	if (__i == end() || key_comp()(__k, (*__i).first))
+   721579:  499:	if (__i == end() || key_comp()(__k, (*__i).first))
         -:  500:#if __cplusplus >= 201103L
-       10:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
-       10:  502:					    std::tuple<const key_type&>(__k),
-       10:  503:					    std::tuple<>());
+        5:  501:	  __i = _M_t._M_emplace_hint_unique(__i, std::piecewise_construct,
+        5:  502:					    std::tuple<const key_type&>(__k),
+        5:  503:					    std::tuple<>());
         -:  504:#else
         -:  505:	  __i = insert(__i, value_type(__k, mapped_type()));
         -:  506:#endif
-   721574:  507:	return (*__i).second;
+   721579:  507:	return (*__i).second;
         -:  508:      }
 ------------------
         -:  509:
@@ -1225,16 +1211,16 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEixERS4_:
         -: 1139:       *  constructed.
         -: 1140:       */
         -: 1141:      key_compare
-   961718: 1142:      key_comp() const
-   961718: 1143:      { return _M_t.key_comp(); }
+   961747: 1142:      key_comp() const
+   961747: 1143:      { return _M_t.key_comp(); }
 ------------------
 _ZNKSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEE8key_compEv:
-   240150: 1142:      key_comp() const
-   240150: 1143:      { return _M_t.key_comp(); }
+   240171: 1142:      key_comp() const
+   240171: 1143:      { return _M_t.key_comp(); }
 ------------------
 _ZNKSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE8key_compEv:
-   721568: 1142:      key_comp() const
-   721568: 1143:      { return _M_t.key_comp(); }
+   721576: 1142:      key_comp() const
+   721576: 1143:      { return _M_t.key_comp(); }
 ------------------
         -: 1144:
         -: 1145:      /**
@@ -1350,16 +1336,16 @@ _ZNKSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE8key_compEv:
         -: 1255:       *  or end() if no such element exists.
         -: 1256:       */
         -: 1257:      iterator
-   961766: 1258:      lower_bound(const key_type& __x)
-   961766: 1259:      { return _M_t.lower_bound(__x); }
+   961771: 1258:      lower_bound(const key_type& __x)
+   961771: 1259:      { return _M_t.lower_bound(__x); }
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEE11lower_boundERS4_:
    240192: 1258:      lower_bound(const key_type& __x)
    240192: 1259:      { return _M_t.lower_bound(__x); }
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEE11lower_boundERS4_:
-   721574: 1258:      lower_bound(const key_type& __x)
-   721574: 1259:      { return _M_t.lower_bound(__x); }
+   721579: 1258:      lower_bound(const key_type& __x)
+   721579: 1259:      { return _M_t.lower_bound(__x); }
 ------------------
         -: 1260:
         -: 1261:#if __cplusplus > 201103L

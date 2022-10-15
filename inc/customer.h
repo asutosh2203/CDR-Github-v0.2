@@ -9,6 +9,7 @@
 #include <cstring>
 #include <vector>
 #include <future>
+#include <utils.h>
 using namespace std;
 
 class Customer
@@ -74,6 +75,4 @@ private:
         long outMsgO;
         long downData;
         long upData;
-
-        map<long, Customer> CustomersMap;
 };

@@ -312,14 +312,7 @@
         -:  311:#endif
         -:  312:
         -:  313:#if __cplusplus >= 201103L
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
-_ZNSt4pairIKl8CustomerEC2ERKS2_:
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
-_ZNSt4pairIKl8OperatorEC2ERKS2_:
-    #####:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
-------------------
+        -:  314:      constexpr pair(const pair&) = default;	///< Copy constructor
         -:  315:      constexpr pair(pair&&) = default;		///< Move constructor
         -:  316:
         -:  317:      // DR 811.

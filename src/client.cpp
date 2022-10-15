@@ -5,19 +5,20 @@
 Utils clientUtil;
 
 // default constructor
-Client::Client()
-{
-    port = 8080;
-    strcpy(ipAddr, "127.0.0.1");
-}
+Client::Client() {}
 
-// parameterized constructore
-Client::Client(int port, char *ipAddr)
-{
-    this->port = port;
-    strcpy(this->ipAddr, ipAddr);
-}
+// parameterized constructor
 
+/*
+ *  FUNCTION NAME	: processAndCreateFile
+ *
+ *  DESCRIPTION		: It switches on menuType and shows the required menu to the client accordingly.
+ *
+ *  PARAMETERS		: int menuType
+ *
+ *  RETURN 		: void
+ *
+ */
 void showMenu(int menuType)
 {
     system("clear");
@@ -25,6 +26,7 @@ void showMenu(int menuType)
     //  main menu
     if (menuType == 0)
     {
+        cout << "WELCOME TO CALL DATA RECORDS\n";
         cout << "\nDo you want to register or login?" << endl;
         cout << "\t1. Register" << endl;
         cout << "\t2. Login" << endl;
@@ -63,9 +65,18 @@ void showMenu(int menuType)
         cout << "\t3. Go Back" << endl;
     }
     cout << "Choose your option: ";
-}
+} // end of showMenu()
 
-// creates client socket
+/*
+ *  FUNCTION NAME	: createSocket
+ *
+ *  DESCRIPTION		: It creates client socket and sets IP address and port number also.
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		: void
+ *
+ */
 void Client::createSocket()
 {
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -82,9 +93,18 @@ void Client::createSocket()
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(port);
     serverAddr.sin_addr.s_addr = inet_addr((const char *)ipAddr);
-}
+} // end of createSocket()
 
-// connects client to the server
+/*
+ *  FUNCTION NAME	: clientConnect
+ *
+ *  DESCRIPTION		: It establishes a connection with the server
+ *
+ *  PARAMETERS		: none
+ *
+ *  RETURN 		: void
+ *
+ */
 void Client::clientConnect()
 {
     if (connect(sockfd, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0)
@@ -93,9 +113,18 @@ void Client::clientConnect()
         exit(EXIT_FAILURE);
     }
     clientUtil.log(INFO, "Connection Established", C_LOGFILE);
-    cout << "\t\t\t\t WELCOME \n";
 }
 
+/*
+ *  FUNCTION NAME	: writeToFile
+ *
+ *  DESCRIPTION		: It receives data from the server's sendFile funtion and writes it into the given filename.
+ *
+ *  PARAMETERS		: int clientFD, char *filename
+ *
+ *  RETURN 		: int
+ *
+ */
 int Client::writeToFile(int clientFD, char *filename)
 {
     // creating data/downloads
@@ -111,7 +140,6 @@ int Client::writeToFile(int clientFD, char *filename)
 
     if (file.is_open())
     {
-
         // infinite loop to recevie data from server and store it in a file on client side
         while (true)
         {
@@ -137,7 +165,7 @@ int Client::writeToFile(int clientFD, char *filename)
             // writing in file
             file << buff << endl;
         }
-    }
+    } // end of if block
     else
     {
         return 0;
@@ -147,8 +175,18 @@ int Client::writeToFile(int clientFD, char *filename)
     file.close();
 
     return 1;
-}
+} // end of writeToFile()
 
+/*
+ *  FUNCTION NAME	: getUserChoice
+ *
+ *  DESCRIPTION		: It prompts the client to give an input, validates and returns it.
+ *
+ *  PARAMETERS		: None
+ *
+ *  RETURN 		: int
+ *
+ */
 int getUserChoice()
 {
     int choice;
@@ -174,14 +212,11 @@ int getUserChoice()
         {
             cout << "Invalid Choice. Please choose option: ";
         }
-        // cin.ignore();
     }
-
-    // clearing cin buffer
-    // cin.clear();
     return choice;
-}
+} // end of getUSerChoice()
 
+// It exits the client process on fatal error.
 void clientErrExit()
 {
     cout << "Could not connect to server. Try again!" << endl;
@@ -189,6 +224,7 @@ void clientErrExit()
     exit(EXIT_FAILURE);
 }
 
+// Pauses for the client to press enter and continue
 void pressEnter()
 {
     cout << "Press ENTER to continue";
@@ -196,8 +232,16 @@ void pressEnter()
     getchar();
 }
 
-// validate user input
-// 0 - validate MSISDN, 1 - validate Brand name
+/*
+ *  FUNCTION NAME	: validateInput
+ *
+ *  DESCRIPTION		: It takes a string and validates it based on the inputType.
+ *
+ *  PARAMETERS		: string str, int inputType
+ *
+ *  RETURN 		: bool
+ *
+ */
 bool validateInput(string str, int inputType)
 {
     int l = str.length();
@@ -244,7 +288,7 @@ bool validateInput(string str, int inputType)
     }
 
     return false;
-}
+} // end of validateInput
 
 // default deconstructor
 Client::~Client()

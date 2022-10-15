@@ -183,13 +183,13 @@
         -:  182:#if __cplusplus < 201103L
         -:  183:      map() : _M_t() { }
         -:  184:#else
-    #####:  185:      map() = default;
+        2:  185:      map() = default;
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
-    #####:  185:      map() = default;
+        1:  185:      map() = default;
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
-    #####:  185:      map() = default;
+        1:  185:      map() = default;
 ------------------
         -:  186:#endif
         -:  187:
@@ -212,14 +212,7 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2Ev:
         -:  204:      map(const map& __x)
         -:  205:      : _M_t(__x._M_t) { }
         -:  206:#else
-    #####:  207:      map(const map&) = default;
-------------------
-_ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
-    #####:  207:      map(const map&) = default;
-------------------
-_ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
-    #####:  207:      map(const map&) = default;
-------------------
+        -:  207:      map(const map&) = default;
         -:  208:
         -:  209:      /**
         -:  210:       *  @brief  %Map move constructor.
@@ -314,13 +307,13 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEC2ERKS7_:
         -:  299:       *  themselves are pointers, the pointed-to memory is not touched in any
         -:  300:       *  way.  Managing the pointer is the user's responsibility.
         -:  301:       */
-    #####:  302:      ~map() = default;
+        2:  302:      ~map() = default;
 ------------------
 _ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEED2Ev:
-    #####:  302:      ~map() = default;
+        1:  302:      ~map() = default;
 ------------------
 _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEED2Ev:
-    #####:  302:      ~map() = default;
+        1:  302:      ~map() = default;
 ------------------
         -:  303:#endif
         -:  304:
@@ -338,14 +331,7 @@ _ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEED2Ev:
         -:  316:      }
         -:  317:#else
         -:  318:      map&
-    #####:  319:      operator=(const map&) = default;
-------------------
-_ZNSt3mapIl8CustomerSt4lessIlESaISt4pairIKlS0_EEEaSERKS7_:
-    #####:  319:      operator=(const map&) = default;
-------------------
-_ZNSt3mapIl8OperatorSt4lessIlESaISt4pairIKlS0_EEEaSERKS7_:
-    #####:  319:      operator=(const map&) = default;
-------------------
+        -:  319:      operator=(const map&) = default;
         -:  320:
         -:  321:      /// Move assignment operator.
         -:  322:      map&

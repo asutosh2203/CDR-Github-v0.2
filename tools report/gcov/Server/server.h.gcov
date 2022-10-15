@@ -1,0 +1,65 @@
+        -:    0:Source:inc/server.h
+        -:    1:#pragma once
+        -:    2:
+        -:    3:#include <iostream>
+        -:    4:#include <sys/socket.h>
+        -:    5:#include <sys/types.h>
+        -:    6:#include <netinet/in.h>
+        -:    7:#include <arpa/inet.h>
+        -:    8:#include <cstring>
+        -:    9:#include <errno.h>
+        -:   10:#include <unistd.h>
+        -:   11:#include <pthread.h>
+        -:   12:#include <bits/stdc++.h>
+        -:   13:#include <sys/time.h>
+        -:   14:#include <unistd.h>
+        -:   15:#include <sys/stat.h>
+        -:   16:#include <fcntl.h>
+        -:   17:
+        -:   18:#include <user.h>
+        -:   19:#include <interoperator.h>
+        -:   20:#include <customer.h>
+        -:   21:#include <utils.h>
+        -:   22:
+        -:   23:#define MAX_BUFF 4096
+        -:   24:
+        -:   25:using namespace std;
+        -:   26:class Server
+        -:   27:{
+        -:   28:public:
+        -:   29:        Server();
+        1:   30:        void setIPAddr(const char *ipAddr)
+        -:   31:        {
+        1:   32:                this->ipAddr = ipAddr;
+        1:   33:        }
+        1:   34:        void setPort(int port)
+        -:   35:        {
+        1:   36:                this->port = port;
+        1:   37:        }
+        -:   38:
+        -:   39:        void createSocket();
+        -:   40:        void bind_listen();
+        -:   41:        void acceptClient();
+        -:   42:        void initClient(int);
+        -:   43:
+        -:   44:        int userExists(User &);
+        -:   45:        int verifyLoginCreds(User &);
+        -:   46:
+        -:   47:        bool processCallData(Operator &, Customer &);
+        -:   48:
+        -:   49:        int sendFile(int, char *);
+        -:   50:
+        -:   51:        void log(string);
+        -:   52:
+        -:   53:        void closeServer();
+        -:   54:        struct sockaddr_in getClientAddr() { return client_addr; }
+        -:   55:        socklen_t getClientAddrLen() { return len; }
+        -:   56:
+        -:   57:private:
+        -:   58:        int serverSockfd, clientSockfd;
+        -:   59:        int port;
+        -:   60:        const char *ipAddr;
+        -:   61:        struct sockaddr_in server_addr;
+        -:   62:        struct sockaddr_in client_addr;
+        -:   63:        socklen_t len;
+        -:   64:};

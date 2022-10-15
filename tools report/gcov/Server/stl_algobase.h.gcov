@@ -228,25 +228,36 @@
         -:  227:  template<typename _Tp>
         -:  228:    _GLIBCXX14_CONSTEXPR
         -:  229:    inline const _Tp&
-      57*:  230:    min(const _Tp& __a, const _Tp& __b)
+      66*:  230:    min(const _Tp& __a, const _Tp& __b)
         -:  231:    {
         -:  232:      // concept requirements
         -:  233:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  234:      //return __b < __a ? __b : __a;
-      57*:  235:      if (__b < __a)
+      66*:  235:      if (__b < __a)
     #####:  236:	return __b;
-      57*:  237:      return __a;
+      66*:  237:      return __a;
         -:  238:    }
 ------------------
 _ZSt3minImERKT_S2_S2_:
-       57:  230:    min(const _Tp& __a, const _Tp& __b)
+       66:  230:    min(const _Tp& __a, const _Tp& __b)
         -:  231:    {
         -:  232:      // concept requirements
         -:  233:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  234:      //return __b < __a ? __b : __a;
-       57:  235:      if (__b < __a)
+       66:  235:      if (__b < __a)
     #####:  236:	return __b;
-       57:  237:      return __a;
+       66:  237:      return __a;
+        -:  238:    }
+------------------
+_ZSt3minImERKT_S2_S2_:
+    #####:  230:    min(const _Tp& __a, const _Tp& __b)
+        -:  231:    {
+        -:  232:      // concept requirements
+        -:  233:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
+        -:  234:      //return __b < __a ? __b : __a;
+    #####:  235:      if (__b < __a)
+    #####:  236:	return __b;
+    #####:  237:      return __a;
         -:  238:    }
 ------------------
 _ZSt3minImERKT_S2_S2_:
@@ -275,25 +286,36 @@ _ZSt3minImERKT_S2_S2_:
         -:  251:  template<typename _Tp>
         -:  252:    _GLIBCXX14_CONSTEXPR
         -:  253:    inline const _Tp&
-      28*:  254:    max(const _Tp& __a, const _Tp& __b)
+      33*:  254:    max(const _Tp& __a, const _Tp& __b)
         -:  255:    {
         -:  256:      // concept requirements
         -:  257:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  258:      //return  __a < __b ? __b : __a;
-      28*:  259:      if (__a < __b)
-       5*:  260:	return __b;
-      23*:  261:      return __a;
+      33*:  259:      if (__a < __b)
+       7*:  260:	return __b;
+      26*:  261:      return __a;
         -:  262:    }
 ------------------
 _ZSt3maxImERKT_S2_S2_:
-       28:  254:    max(const _Tp& __a, const _Tp& __b)
+       33:  254:    max(const _Tp& __a, const _Tp& __b)
         -:  255:    {
         -:  256:      // concept requirements
         -:  257:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  258:      //return  __a < __b ? __b : __a;
-       28:  259:      if (__a < __b)
-        5:  260:	return __b;
-       23:  261:      return __a;
+       33:  259:      if (__a < __b)
+        7:  260:	return __b;
+       26:  261:      return __a;
+        -:  262:    }
+------------------
+_ZSt3maxImERKT_S2_S2_:
+    #####:  254:    max(const _Tp& __a, const _Tp& __b)
+        -:  255:    {
+        -:  256:      // concept requirements
+        -:  257:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
+        -:  258:      //return  __a < __b ? __b : __a;
+    #####:  259:      if (__a < __b)
+    #####:  260:	return __b;
+    #####:  261:      return __a;
         -:  262:    }
 ------------------
 _ZSt3maxImERKT_S2_S2_:
@@ -357,14 +379,19 @@ _ZSt3maxImERKT_S2_S2_:
         -:  310:  template<typename _Iterator>
         -:  311:    _GLIBCXX20_CONSTEXPR
         -:  312:    inline _Iterator
-     177*:  313:    __niter_base(_Iterator __it)
+     198*:  313:    __niter_base(_Iterator __it)
         -:  314:    _GLIBCXX_NOEXCEPT_IF(std::is_nothrow_copy_constructible<_Iterator>::value)
-     177*:  315:    { return __it; }
+     198*:  315:    { return __it; }
 ------------------
 _ZSt12__niter_baseIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEET_S7_:
-      177:  313:    __niter_base(_Iterator __it)
+      198:  313:    __niter_base(_Iterator __it)
         -:  314:    _GLIBCXX_NOEXCEPT_IF(std::is_nothrow_copy_constructible<_Iterator>::value)
-      177:  315:    { return __it; }
+      198:  315:    { return __it; }
+------------------
+_ZSt12__niter_baseIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEET_S7_:
+    #####:  313:    __niter_base(_Iterator __it)
+        -:  314:    _GLIBCXX_NOEXCEPT_IF(std::is_nothrow_copy_constructible<_Iterator>::value)
+    #####:  315:    { return __it; }
 ------------------
 _ZSt12__niter_baseIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEET_S7_:
     #####:  313:    __niter_base(_Iterator __it)

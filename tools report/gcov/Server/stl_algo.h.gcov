@@ -3812,14 +3812,14 @@
         -: 3811:  template<typename _InputIterator, typename _Function>
         -: 3812:    _GLIBCXX20_CONSTEXPR
         -: 3813:    _Function
-        6: 3814:    for_each(_InputIterator __first, _InputIterator __last, _Function __f)
+       10: 3814:    for_each(_InputIterator __first, _InputIterator __last, _Function __f)
         -: 3815:    {
         -: 3816:      // concept requirements
         -: 3817:      __glibcxx_function_requires(_InputIteratorConcept<_InputIterator>)
         -: 3818:      __glibcxx_requires_valid_range(__first, __last);
-       32: 3819:      for (; __first != __last; ++__first)
-       26: 3820:	__f(*__first);
-        6: 3821:      return __f; // N.B. [alg.foreach] says std::move(f) but it's redundant.
+       51: 3819:      for (; __first != __last; ++__first)
+       41: 3820:	__f(*__first);
+       10: 3821:      return __f; // N.B. [alg.foreach] says std::move(f) but it's redundant.
         -: 3822:    }
         -: 3823:
         -: 3824:#if __cplusplus >= 201703L

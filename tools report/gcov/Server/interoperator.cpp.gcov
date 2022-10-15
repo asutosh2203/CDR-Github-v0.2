@@ -2,243 +2,283 @@
         -:    1:#include <interoperator.h>
         -:    2:#include <utils.h>
         -:    3:
-        -:    4:Utils utl;
+        -:    4:map<long, Operator> operatorsMap;
         -:    5:
-       13:    6:Operator::Operator()
-        -:    7:{
-        -:    8:    // default constructor
-       13:    9:}
-        -:   10:
-       10:   11:Operator::Operator(string brandName, long MMC, long inCall, long outCall, long down, long up, long incMsg, long outMsg)
-        -:   12:{
-       10:   13:    this->MMC = MMC;
-       10:   14:    this->brandName = brandName;
-       10:   15:    this->inCallDuration = inCall;
-       10:   16:    this->outCallDuration = outCall;
-       10:   17:    this->downData = down;
-       10:   18:    this->upData = up;
-       10:   19:    this->inMsg = incMsg;
-       10:   20:    this->outMsg = outMsg;
-       10:   21:}
-        -:   22:
-        -:   23:// setters functions
-    59808:   24:void Operator::setOutCallDuration(long outCallDuration) { this->outCallDuration = outCallDuration; }
-    59933:   25:void Operator::setInCallDuration(long inCallDuration) { this->inCallDuration = inCallDuration; }
-    60792:   26:void Operator::setDownloadData(long downData) { this->downData = downData; }
-    60792:   27:void Operator::setUploadData(long upData) { this->upData = upData; }
-    59224:   28:void Operator::setInMsg(long inMsg) { this->inMsg = inMsg; }
-    60233:   29:void Operator::setOutMsg(long outMsg)
-        -:   30:{
-    60233:   31:    this->outMsg = outMsg;
-    60233:   32:}
-        -:   33:// getters functions
-    59944:   34:long Operator::getInCallDuration() { return inCallDuration; }
-    59819:   35:long Operator::getOutCallDuration() { return outCallDuration; }
-    60803:   36:long Operator::getDownloadData() { return downData; }
-    60803:   37:long Operator::getUploadData()
-        -:   38:{
-    60803:   39:    return upData;
-        -:   40:}
-    59235:   41:long Operator::getInMsg() { return inMsg; }
-    60244:   42:long Operator::getOutMsg() { return outMsg; }
-       11:   43:long Operator::getMMC() { return MMC; }
-       14:   44:string Operator::getBrandName() { return brandName; }
-        -:   45:
-        3:   46:bool Operator::processCDR()
-        -:   47:{
-        3:   48:    fstream dataCDR;
-        3:   49:    dataCDR.open("data/data.cdr", ios::in);
-        3:   50:    string line;
-        3:   51:    string token;
-        3:   52:    vector<string> parameters;
-        3:   53:    if (dataCDR)
-        -:   54:    {
-   300003:   55:        while (getline(dataCDR, line))
-        -:   56:        {
-        -:   57:            // stringstream class check
-   300000:   58:            stringstream check(line);
-        -:   59:
-        -:   60:            // Tokenizing w.r.t. space '|'
-  3000000:   61:            while (getline(check, token, '|'))
-        -:   62:            {
-  2700000:   63:                parameters.push_back(token);
-        -:   64:            }
-        -:   65:
-        -:   66:            // parameters[3] --> call type.
-        -:   67:            // stol: converts the string as a argument in function call.
-   300000:   68:            string brand = parameters[1];
-   300000:   69:            long brandMMC = stol(parameters[2]);     // parameters[2]=brand MMC
-   300000:   70:            long callDuration = stol(parameters[4]); // parameters[4]= (call duration)
-   300000:   71:            long dataDownload = stol(parameters[5]); // parameters[5]= (data download)
-   300000:   72:            long dataUpload = stol(parameters[6]);   // parameters[6]= (data upload)
-        -:   73:
-   300000:   74:            if (operatorsMap.count(brandMMC))
-        -:   75:            {
-   299990:   76:                if (parameters[3] == "MTC")
-        -:   77:                {
-    59933:   78:                    operatorsMap[brandMMC].setInCallDuration(operatorsMap[brandMMC].getInCallDuration() + callDuration);
-        -:   79:                }
-   240057:   80:                else if (parameters[3] == "MOC")
-        -:   81:                {
-    59808:   82:                    operatorsMap[brandMMC].setOutCallDuration(operatorsMap[brandMMC].getOutCallDuration() + callDuration);
-        -:   83:                }
-   180249:   84:                else if (parameters[3] == "SMS-MT")
-        -:   85:                {
-    59224:   86:                    operatorsMap[brandMMC].setInMsg(operatorsMap[brandMMC].getInMsg() + 1);
-        -:   87:                }
-   121025:   88:                else if (parameters[3] == "SMS-MO")
+        -:    6:Utils utl;
+        -:    7:
+        8:    8:Operator::Operator()
+        -:    9:{
+        -:   10:    // default constructor
+        8:   11:}
+        -:   12:
+        5:   13:Operator::Operator(string brandName, long MMC, long inCall, long outCall, long down, long up, long incMsg, long outMsg)
+        -:   14:{
+        5:   15:    this->MMC = MMC;
+        5:   16:    this->brandName = brandName;
+        5:   17:    this->inCallDuration = inCall;
+        5:   18:    this->outCallDuration = outCall;
+        5:   19:    this->downData = down;
+        5:   20:    this->upData = up;
+        5:   21:    this->inMsg = incMsg;
+        5:   22:    this->outMsg = outMsg;
+        5:   23:}
+        -:   24:
+        -:   25:// setters functions
+    59808:   26:void Operator::setOutCallDuration(long outCallDuration) { this->outCallDuration = outCallDuration; }
+    59935:   27:void Operator::setInCallDuration(long inCallDuration) { this->inCallDuration = inCallDuration; }
+    60792:   28:void Operator::setDownloadData(long downData) { this->downData = downData; }
+    60792:   29:void Operator::setUploadData(long upData) { this->upData = upData; }
+    59225:   30:void Operator::setInMsg(long inMsg) { this->inMsg = inMsg; }
+    60235:   31:void Operator::setOutMsg(long outMsg)
+        -:   32:{
+    60235:   33:    this->outMsg = outMsg;
+    60235:   34:}
+        -:   35:// getters functions
+    59946:   36:long Operator::getInCallDuration() { return inCallDuration; }
+    59819:   37:long Operator::getOutCallDuration() { return outCallDuration; }
+    60803:   38:long Operator::getDownloadData() { return downData; }
+    60803:   39:long Operator::getUploadData()
+        -:   40:{
+    60803:   41:    return upData;
+        -:   42:}
+    59236:   43:long Operator::getInMsg() { return inMsg; }
+    60246:   44:long Operator::getOutMsg() { return outMsg; }
+       11:   45:long Operator::getMMC() { return MMC; }
+       16:   46:string Operator::getBrandName() { return brandName; }
+        -:   47:
+        -:   48:/*
+        -:   49: *  FUNCTION NAME	: processCDR
+        -:   50: *
+        -:   51: *  DESCRIPTION		: It takes the data from data.cdr and puts it into STL containers after formatting
+        -:   52: *
+        -:   53: *  PARAMETERS		: None
+        -:   54: *
+        -:   55: *  RETURN 		    : bool
+        -:   56: *
+        -:   57: */
+        3:   58:bool Operator::processCDR()
+        -:   59:{
+        3:   60:    fstream dataCDR;
+        3:   61:    dataCDR.open("data/data.cdr", ios::in);
+        3:   62:    string line = "";
+        3:   63:    string token = "";
+        3:   64:    vector<string> parameters;
+        3:   65:    if (dataCDR)
+        -:   66:    {
+   300003:   67:        while (getline(dataCDR, line))
+        -:   68:        {
+        -:   69:            // stringstream class check
+   300000:   70:            stringstream check(line);
+        -:   71:
+        -:   72:            // Tokenizing w.r.t. space '|'
+  3000000:   73:            while (getline(check, token, '|'))
+        -:   74:            {
+  2700000:   75:                parameters.push_back(token);
+        -:   76:            }
+        -:   77:
+        -:   78:            // stol: converts the string to long data type
+   300000:   79:            string brand = parameters[1];
+   300000:   80:            long brandMMC = stol(parameters[2]);
+   300000:   81:            long callDuration = stol(parameters[4]);
+   300000:   82:            long dataDownload = stol(parameters[5]);
+   300000:   83:            long dataUpload = stol(parameters[6]);
+        -:   84:
+        -:   85:            // checking if a brand MMC already exists in the operators map
+   300000:   86:            if (operatorsMap.count(brandMMC))
+        -:   87:            {
+   299995:   88:                if (parameters[3] == "MTC")
         -:   89:                {
-    60233:   90:                    operatorsMap[brandMMC].setOutMsg(operatorsMap[brandMMC].getOutMsg() + 1);
+    59935:   90:                    operatorsMap[brandMMC].setInCallDuration(operatorsMap[brandMMC].getInCallDuration() + callDuration);
         -:   91:                }
-        -:   92:                else
+   240060:   92:                else if (parameters[3] == "MOC")
         -:   93:                {
-    60792:   94:                    operatorsMap[brandMMC].setDownloadData(operatorsMap[brandMMC].getDownloadData() + dataDownload);
-    60792:   95:                    operatorsMap[brandMMC].setUploadData(operatorsMap[brandMMC].getUploadData() + dataUpload);
-        -:   96:                }
-        -:   97:            }
-       10:   98:            else if (parameters[3] == "MTC")
-        -:   99:            {
-        -:  100:                // Operator::Operator(string brandName, long MMC, long inCall, long outCall, long down, long up, long incMsg, long outMsg)
-        4:  101:                Operator newOp(brand, brandMMC, callDuration, 0, 0, 0, 0, 0);
-        4:  102:                operatorsMap[brandMMC] = newOp;
-        4:  103:            }
-        6:  104:            else if (parameters[3] == "MOC")
-        -:  105:            {
-    #####:  106:                Operator newOp(brand, brandMMC, 0, callDuration, 0, 0, 0, 0);
-    #####:  107:                operatorsMap[brandMMC] = newOp;
-    #####:  108:            }
-        6:  109:            else if (parameters[3] == "SMS-MT")
-        -:  110:            {
-        2:  111:                Operator newOp(brand, brandMMC, 0, 0, 0, 0, 1, 0);
-        2:  112:                operatorsMap[brandMMC] = newOp;
-        2:  113:            }
-        4:  114:            else if (parameters[3] == "SMS-MO")
-        -:  115:            {
-        4:  116:                Operator newOp(brand, brandMMC, 0, 0, 0, 0, 0, 1);
-        4:  117:                operatorsMap[brandMMC] = newOp;
-        4:  118:            }
-        -:  119:            else
-        -:  120:            {
-    #####:  121:                Operator newOp(brand, brandMMC, 0, 0, dataDownload, dataUpload, 0, 0);
-    #####:  122:                operatorsMap[brandMMC] = newOp;
-    #####:  123:            }
-        -:  124:
-   300000:  125:            parameters.clear();
-   300000:  126:        }
-        -:  127:
-        -:  128:        // closing data.cdr
-        3:  129:        dataCDR.close();
-        -:  130:
-        -:  131:        // if (IOSB)
-        -:  132:        // {
-        -:  133:        //     mapToFile(IOSB);
-        -:  134:
-        -:  135:        //     // closing IOSB.txt
-        -:  136:        //     IOSB.close();
-        -:  137:        // }
-        -:  138:        // else
-        -:  139:        // {
-        -:  140:        //     perror("IOSB.txt File error: ");
-        -:  141:        //     return false;
-        -:  142:        // }
-        -:  143:    }
-        -:  144:    else
-        -:  145:    {
-    #####:  146:        perror("data.cdr File error: ");
-    #####:  147:        utl.log(FATAL, "data.cdr could not be opened", S_LOGFILE);
-    #####:  148:        return false;
-        -:  149:    }
-        -:  150:
-        3:  151:    return true;
-        3:  152:}
-        -:  153:
-        2:  154:bool Operator::mapToFile()
-        -:  155:{
-        2:  156:    fstream IOSB;
-        2:  157:    IOSB.open("data/IOSB.txt", ios::out);
-        -:  158:
-        2:  159:    if (IOSB)
-        -:  160:    {
-        2:  161:        IOSB << "=========== OPERATOR DATA BASE ===========\n\n";
-        2:  162:        map<long, Operator>::iterator opr;
-       12:  163:        for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
-        -:  164:        {
-       10:  165:            Operator oprData = opr->second;
-       10:  166:            IOSB << oprToString(oprData);
-       10:  167:        }
-        2:  168:        IOSB.close();
-        -:  169:    }
-        -:  170:    else
-        -:  171:    {
-    #####:  172:        utl.log(FATAL, "IOSB.txt could not be opened", S_LOGFILE);
-    #####:  173:        return false;
-        -:  174:    }
-        -:  175:
-        2:  176:    return true;
-        2:  177:}
-        -:  178:
-        1:  179:string Operator::searchBrandName(string brand)
-        -:  180:{
-        1:  181:    string result;
-        1:  182:    map<long, Operator>::iterator opr;
-        3:  183:    for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
-        -:  184:    {
-        3:  185:        Operator oprData = opr->second;
-        3:  186:        if (utl.toLowerCase(oprData.getBrandName()) == utl.toLowerCase(brand))
-        -:  187:        {
-        1:  188:            result = oprToString(oprData);
-        1:  189:            return result;
-        -:  190:        }
-        3:  191:    }
-        -:  192:
-        -:  193:    // checking if brand name is invalid
-    #####:  194:    string notFound = "Brand name doesn't exist.";
-    #####:  195:    return notFound;
-       1*:  196:}
-        -:  197:
-       11:  198:string Operator::oprToString(Operator &oprData)
+    59808:   94:                    operatorsMap[brandMMC].setOutCallDuration(operatorsMap[brandMMC].getOutCallDuration() + callDuration);
+        -:   95:                }
+   180252:   96:                else if (parameters[3] == "SMS-MT")
+        -:   97:                {
+    59225:   98:                    operatorsMap[brandMMC].setInMsg(operatorsMap[brandMMC].getInMsg() + 1);
+        -:   99:                }
+   121027:  100:                else if (parameters[3] == "SMS-MO")
+        -:  101:                {
+    60235:  102:                    operatorsMap[brandMMC].setOutMsg(operatorsMap[brandMMC].getOutMsg() + 1);
+        -:  103:                }
+        -:  104:                else
+        -:  105:                {
+    60792:  106:                    operatorsMap[brandMMC].setDownloadData(operatorsMap[brandMMC].getDownloadData() + dataDownload);
+    60792:  107:                    operatorsMap[brandMMC].setUploadData(operatorsMap[brandMMC].getUploadData() + dataUpload);
+        -:  108:                }
+        -:  109:            }
+        5:  110:            else if (parameters[3] == "MTC")
+        -:  111:            {
+        2:  112:                Operator newOp(brand, brandMMC, callDuration, 0, 0, 0, 0, 0);
+        2:  113:                operatorsMap[brandMMC] = newOp;
+        2:  114:            }
+        3:  115:            else if (parameters[3] == "MOC")
+        -:  116:            {
+    #####:  117:                Operator newOp(brand, brandMMC, 0, callDuration, 0, 0, 0, 0);
+    #####:  118:                operatorsMap[brandMMC] = newOp;
+    #####:  119:            }
+        3:  120:            else if (parameters[3] == "SMS-MT")
+        -:  121:            {
+        1:  122:                Operator newOp(brand, brandMMC, 0, 0, 0, 0, 1, 0);
+        1:  123:                operatorsMap[brandMMC] = newOp;
+        1:  124:            }
+        2:  125:            else if (parameters[3] == "SMS-MO")
+        -:  126:            {
+        2:  127:                Operator newOp(brand, brandMMC, 0, 0, 0, 0, 0, 1);
+        2:  128:                operatorsMap[brandMMC] = newOp;
+        2:  129:            }
+        -:  130:            else
+        -:  131:            {
+    #####:  132:                Operator newOp(brand, brandMMC, 0, 0, dataDownload, dataUpload, 0, 0);
+    #####:  133:                operatorsMap[brandMMC] = newOp;
+    #####:  134:            }
+        -:  135:
+   300000:  136:            parameters.clear();
+   300000:  137:        } // end of while loop
+        -:  138:
+        -:  139:        // closing data.cdr
+        3:  140:        dataCDR.close();
+        -:  141:    } // end of if block
+        -:  142:    else
+        -:  143:    {
+    #####:  144:        perror("data.cdr File error: ");
+    #####:  145:        utl.log(FATAL, "data.cdr could not be opened", S_LOGFILE);
+    #####:  146:        return false;
+        -:  147:    }
+        -:  148:
+        3:  149:    return true;
+        3:  150:} // end of processCDR()
+        -:  151:
+        -:  152:/*
+        -:  153: *  FUNCTION NAME	: mapToFile
+        -:  154: *
+        -:  155: *  DESCRIPTION		: It takes the data from operatorsMap and puts it into IOSB.txt after formatting
+        -:  156: *
+        -:  157: *  PARAMETERS		: None
+        -:  158: *
+        -:  159: *  RETURN 		: bool
+        -:  160: *
+        -:  161: */
+        2:  162:bool Operator::mapToFile()
+        -:  163:{
+        2:  164:    fstream IOSB;
+        2:  165:    IOSB.open("data/IOSB.txt", ios::out);
+        -:  166:
+        2:  167:    if (IOSB)
+        -:  168:    {
+        2:  169:        IOSB << "=========== OPERATOR DATA BASE ===========\n\n";
+        2:  170:        map<long, Operator>::iterator opr;
+       12:  171:        for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
+        -:  172:        {
+       10:  173:            Operator oprData = opr->second;
+       10:  174:            IOSB << oprToString(oprData);
+       10:  175:        }
+        2:  176:        IOSB.close();
+        -:  177:    }
+        -:  178:    else
+        -:  179:    {
+    #####:  180:        utl.log(FATAL, "IOSB.txt could not be opened", S_LOGFILE);
+    #####:  181:        return false;
+        -:  182:    }
+        -:  183:
+        2:  184:    return true;
+        2:  185:} // end of mapToFile()
+        -:  186:
+        -:  187:/*
+        -:  188: *  FUNCTION NAME	: searchBrandName
+        -:  189: *
+        -:  190: *  DESCRIPTION		: It takes a string as parameter, searches for it in the operatorsMap 
+        -:  191:                       and returns the formatted result.
+        -:  192: *
+        -:  193: *  PARAMETERS		: string brand
+        -:  194: *
+        -:  195: *  RETURN 		: string
+        -:  196: *
+        -:  197: */
+        1:  198:string Operator::searchBrandName(string brand)
         -:  199:{
-       11:  200:    ostringstream ss;
-       11:  201:    ss.clear();
-        -:  202:
-       22:  203:    ss << "Operator Brand: " << oprData.getBrandName() << "(" << oprData.getMMC() << ")" << endl
-        -:  204:       << "\t"
-       11:  205:       << "Incoming Call Duration: " << oprData.getInCallDuration() << endl
-        -:  206:       << "\t"
-       11:  207:       << "Outgoing Call Duration: " << oprData.getOutCallDuration() << endl
-        -:  208:       << "\t"
-       11:  209:       << "Incoming Messages: " << oprData.getInMsg() << endl
-        -:  210:       << "\t"
-       11:  211:       << "Outgoing Messages: " << oprData.getOutMsg() << endl
-        -:  212:       << "\t"
-       11:  213:       << "GPRS usage: " << endl
-        -:  214:       << "\t"
-        -:  215:       << "\t"
-       11:  216:       << "Downloaded Data: " << oprData.getDownloadData() << " MB" << endl
-        -:  217:       << "\t"
-        -:  218:       << "\t"
-       11:  219:       << "Uploaded Data: " << oprData.getUploadData() << " MB" << endl
-       11:  220:       << endl;
-        -:  221:
-       22:  222:    return ss.str();
-       11:  223:}
-        -:  224:
-        1:  225:bool Operator::processAndCreateFile(promise<bool> *isProcessed)
-        -:  226:{
-        1:  227:    bool process = processCDR();
-        1:  228:    bool toFile = mapToFile();
-        -:  229:
-        1:  230:    if (process && toFile)
-        -:  231:    {
-        1:  232:        isProcessed->set_value(true);
-        1:  233:        return true;
-        -:  234:    }
-        -:  235:
-    #####:  236:    isProcessed->set_value(false);
-    #####:  237:    return false;
-        -:  238:}
-        -:  239:
-       36:  240:Operator::~Operator()
-        -:  241:{
-        -:  242:    // default constructor
-       36:  243:}
+        1:  200:    string result;
+        1:  201:    map<long, Operator>::iterator opr;
+        5:  202:    for (opr = operatorsMap.begin(); opr != operatorsMap.end(); opr++)
+        -:  203:    {
+        5:  204:        Operator oprData = opr->second;
+        5:  205:        if (utl.toLowerCase(oprData.getBrandName()) == utl.toLowerCase(brand))
+        -:  206:        {
+        1:  207:            result = oprToString(oprData);
+        1:  208:            return result;
+        -:  209:        }
+        5:  210:    }
+        -:  211:
+        -:  212:    // checking if brand name is invalid
+    #####:  213:    string notFound = "Brand name doesn't exist.";
+    #####:  214:    return notFound;
+       1*:  215:} // end of searchBrandName()
+        -:  216:
+        -:  217:/*
+        -:  218: *  FUNCTION NAME	: oprToString
+        -:  219: *
+        -:  220: *  DESCRIPTION		: It takes an object of Operator type, formats the data and returns it in a string
+        -:  221: *
+        -:  222: *  PARAMETERS		: Operator &oprData
+        -:  223: *
+        -:  224: *  RETURN 		: string
+        -:  225: *
+        -:  226: */
+       11:  227:string Operator::oprToString(Operator &oprData)
+        -:  228:{
+       11:  229:    ostringstream ss;
+       11:  230:    ss.clear();
+        -:  231:
+       22:  232:    ss << "Operator Brand: " << oprData.getBrandName() << "(" << oprData.getMMC() << ")" << endl
+        -:  233:       << "\t"
+       11:  234:       << "Incoming Call Duration: " << oprData.getInCallDuration() << endl
+        -:  235:       << "\t"
+       11:  236:       << "Outgoing Call Duration: " << oprData.getOutCallDuration() << endl
+        -:  237:       << "\t"
+       11:  238:       << "Incoming Messages: " << oprData.getInMsg() << endl
+        -:  239:       << "\t"
+       11:  240:       << "Outgoing Messages: " << oprData.getOutMsg() << endl
+        -:  241:       << "\t"
+       11:  242:       << "GPRS usage: " << endl
+        -:  243:       << "\t"
+        -:  244:       << "\t"
+       11:  245:       << "Downloaded Data: " << oprData.getDownloadData() << " MB" << endl
+        -:  246:       << "\t"
+        -:  247:       << "\t"
+       11:  248:       << "Uploaded Data: " << oprData.getUploadData() << " MB" << endl
+       11:  249:       << endl;
+        -:  250:
+       22:  251:    return ss.str();
+       11:  252:} // end of oprToString()
+        -:  253:
+        -:  254:/*
+        -:  255: *  FUNCTION NAME	: processAndCreateFile
+        -:  256: *
+        -:  257: *  DESCRIPTION		: It invokes processCDR and mapToFile and returns true on successful processing 
+        -:  258:                       and file creation, false otherwise.
+        -:  259: *
+        -:  260: *  PARAMETERS		: promise<bool> *isProcessed
+        -:  261: *
+        -:  262: *  RETURN 		: bool
+        -:  263: *
+        -:  264: */
+        1:  265:bool Operator::processAndCreateFile(promise<bool> *isProcessed)
+        -:  266:{
+        1:  267:    bool process = processCDR();
+        1:  268:    bool toFile = mapToFile();
+        -:  269:
+        1:  270:    if (process && toFile)
+        -:  271:    {
+        1:  272:        isProcessed->set_value(true);
+        1:  273:        return true;
+        -:  274:    }
+        -:  275:
+    #####:  276:    isProcessed->set_value(false);
+    #####:  277:    return false;
+        -:  278:} //end of processAndCreateFile
+        -:  279:
+       28:  280:Operator::~Operator()
+        -:  281:{
+        -:  282:    // default constructor
+       28:  283:}

@@ -1,53 +1,61 @@
         -:    0:Source:inc/client.h
         -:    1:#pragma once
         -:    2:
-        -:    3:#include <stdio.h>
-        -:    4:#include <iostream>
-        -:    5:#include <iostream>
-        -:    6:#include <fstream>
-        -:    7:#include <sys/types.h>
-        -:    8:#include <sys/socket.h>
-        -:    9:#include <netinet/in.h>
-        -:   10:#include <arpa/inet.h>
-        -:   11:#include <unistd.h>
-        -:   12:#include <sys/wait.h>
-        -:   13:#include <signal.h>
-        -:   14:#include <cstring>
-        -:   15:#include <string> // std::string
-        -:   16:#include <stdlib.h>
-        -:   17:
-        -:   18:#include <user.h>
-        -:   19:#include <utils.h>
-        -:   20:
-        -:   21:#define IOSB_DOWNLOAD "data/downloads/IOSB.txt"
-        -:   22:#define CB_DOWNLOAD "data/downloads/CB.txt"
-        -:   23:
-        -:   24:using namespace std;
-        -:   25:#define MAX_BUFF 4096
-        -:   26:typedef struct sockaddr_in SA_IN;
-        -:   27:
-        -:   28:class Client
-        -:   29:{
-        -:   30:private:
-        -:   31:    int sockfd;
-        -:   32:    int port;
-        -:   33:    char ipAddr[20];
-        -:   34:    struct sockaddr_in serverAddr;
-        -:   35:    socklen_t len;
-        -:   36:
-        -:   37:public:
-        -:   38:    Client();
-        -:   39:    Client(int, char *);
-        -:   40:    void createSocket();
-        -:   41:    void clientConnect();
-        1:   42:    int getClientSockfd() { return sockfd; }
-        -:   43:
-        -:   44:    int writeToFile(int, char *);
-        -:   45:    ~Client();
-        -:   46:};
+        -:    3:#include <iostream>
+        -:    4:#include <fstream>
+        -:    5:#include <sys/types.h>
+        -:    6:#include <sys/socket.h>
+        -:    7:#include <netinet/in.h>
+        -:    8:#include <arpa/inet.h>
+        -:    9:#include <unistd.h>
+        -:   10:#include <sys/wait.h>
+        -:   11:#include <signal.h>
+        -:   12:#include <cstring>
+        -:   13:#include <stdlib.h>
+        -:   14:#include <sys/stat.h>
+        -:   15:#include <fcntl.h>
+        -:   16:
+        -:   17:#include <user.h>
+        -:   18:#include <utils.h>
+        -:   19:
+        -:   20:#define IOSB_DOWNLOAD "data/downloads/IOSB.txt"
+        -:   21:#define CB_DOWNLOAD "data/downloads/CB.txt"
+        -:   22:
+        -:   23:using namespace std;
+        -:   24:#define MAX_BUFF 4096
+        -:   25:typedef struct sockaddr_in SA_IN;
+        -:   26:
+        -:   27:class Client
+        -:   28:{
+        -:   29:public:
+        -:   30:    Client();
+        -:   31:
+        1:   32:    void setIPAddr(const char *ipAddr)
+        -:   33:    {
+        1:   34:        this->ipAddr = ipAddr;
+        1:   35:    }
+        1:   36:    void setPort(int port)
+        -:   37:    {
+        1:   38:        this->port = port;
+        1:   39:    }
+        -:   40:
+        -:   41:    void createSocket();
+        -:   42:    void clientConnect();
+        1:   43:    int getClientSockfd() { return sockfd; }
+        -:   44:
+        -:   45:    int writeToFile(int, char *);
+        -:   46:    ~Client();
         -:   47:
-        -:   48:void clientErrExit();
-        -:   49:void showMenu(int menuType);
-        -:   50:int getUserChoice();
-        -:   51:void pressEnter();
-        -:   52:bool validateInput(string, int);
+        -:   48:private:
+        -:   49:    int sockfd;
+        -:   50:    int port;
+        -:   51:    const char* ipAddr;
+        -:   52:    struct sockaddr_in serverAddr;
+        -:   53:    socklen_t len;
+        -:   54:};
+        -:   55:
+        -:   56:void clientErrExit();
+        -:   57:void showMenu(int);
+        -:   58:int getUserChoice();
+        -:   59:void pressEnter();
+        -:   60:bool validateInput(string, int);

@@ -2,34 +2,32 @@
         -:    1:#pragma once
         -:    2:#include <iostream>
         -:    3:#include <cstring>
-        -:    4:#include <string>
-        -:    5:#include <sstream>
-        -:    6:#include <stdlib.h>
+        -:    4:#include <sstream>
+        -:    5:#include <stdlib.h>
+        -:    6:#include <bits/stdc++.h>
         -:    7:#include <ctype.h>
-        -:    8:#include <bits/stdc++.h>
-        -:    9:#include <ctype.h>
+        -:    8:
+        -:    9:#define USER_DB "data/registered.dat"
         -:   10:
         -:   11:using namespace std;
         -:   12:
         -:   13:class User
         -:   14:{
-        -:   15:private:
-        -:   16:    char username[20] = {'\0'};
-        -:   17:    char password[20] = {'\0'};
-        -:   18:
-        -:   19:public:
-        -:   20:
-        -:   21:    void setDetails();
-        -:   22:    // void registerDetails();
-        -:   23:    bool validateUsername(string);
-        -:   24:    bool validatePassword(char *);
-        -:   25:    void toDatabase(User &);
-        -:   26:    void setUsername(char *s) { strcpy(username, s); }
-        2:   27:    void setPassword(char *s) { strcpy(password, s); }
-    #####:   28:    char *getUsername() { return username; }
-    #####:   29:    char *getPassword() { return password; }
-        -:   30:    void getDetails() { cout << "Username:" <<username << '\n'
-        -:   31:                             << "Password: "<<password << endl; }
-        -:   32:    string toString();
-        -:   33:    void log(string);
-        -:   34:};
+        -:   15:public:
+        -:   16:    void setDetails();
+        -:   17:    // void registerDetails();
+        -:   18:    bool validateUsername(string);
+        -:   19:    bool validatePassword(char *);
+        -:   20:    void toDatabase(User &);
+        2:   21:    void setUsername(const char *s) { strcpy(username, s); }
+        2:   22:    void setPassword(const char *s) { strcpy(password, s); }
+        -:   23:    char *getUsername() { return username; }
+        -:   24:    char *getPassword() { return password; }
+        -:   25:    void getDetails() { cout << "Username:" << username << '\n'
+        -:   26:                             << "Password: " << password << endl; }
+        -:   27:    void log(string);
+        -:   28:
+        -:   29:private:
+        -:   30:    char username[20] = {'\0'};
+        -:   31:    char password[20] = {'\0'};
+        -:   32:};

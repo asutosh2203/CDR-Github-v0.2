@@ -102,15 +102,11 @@ _ZN9__gnu_cxx14__alloc_traitsISaIcEcE17_S_select_on_copyERKS1_:
     #####:   97:    static constexpr _Alloc _S_select_on_copy(const _Alloc& __a)
     #####:   98:    { return _Base_type::select_on_container_copy_construction(__a); }
 ------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEES6_E17_S_select_on_copyERKS7_:
-    #####:   97:    static constexpr _Alloc _S_select_on_copy(const _Alloc& __a)
-    #####:   98:    { return _Base_type::select_on_container_copy_construction(__a); }
-------------------
 _ZN9__gnu_cxx14__alloc_traitsISaIcEcE17_S_select_on_copyERKS1_:
     #####:   97:    static constexpr _Alloc _S_select_on_copy(const _Alloc& __a)
     #####:   98:    { return _Base_type::select_on_container_copy_construction(__a); }
 ------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEES6_E17_S_select_on_copyERKS7_:
+_ZN9__gnu_cxx14__alloc_traitsISaIcEcE17_S_select_on_copyERKS1_:
     #####:   97:    static constexpr _Alloc _S_select_on_copy(const _Alloc& __a)
     #####:   98:    { return _Base_type::select_on_container_copy_construction(__a); }
 ------------------
@@ -126,17 +122,8 @@ _ZN9__gnu_cxx14__alloc_traitsISaIcEcE17_S_select_on_copyERKS1_:
         -:  100:    static _GLIBCXX14_CONSTEXPR void _S_on_swap(_Alloc& __a, _Alloc& __b)
         -:  101:    { std::__alloc_on_swap(__a, __b); }
         -:  102:
-    #####:  103:    static constexpr bool _S_propagate_on_copy_assign()
-    #####:  104:    { return _Base_type::propagate_on_container_copy_assignment::value; }
-------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEES6_E27_S_propagate_on_copy_assignEv:
-    #####:  103:    static constexpr bool _S_propagate_on_copy_assign()
-    #####:  104:    { return _Base_type::propagate_on_container_copy_assignment::value; }
-------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEES6_E27_S_propagate_on_copy_assignEv:
-    #####:  103:    static constexpr bool _S_propagate_on_copy_assign()
-    #####:  104:    { return _Base_type::propagate_on_container_copy_assignment::value; }
-------------------
+        -:  103:    static constexpr bool _S_propagate_on_copy_assign()
+        -:  104:    { return _Base_type::propagate_on_container_copy_assignment::value; }
         -:  105:
         -:  106:    static constexpr bool _S_propagate_on_move_assign()
         -:  107:    { return _Base_type::propagate_on_container_move_assignment::value; }
@@ -144,17 +131,8 @@ _ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEES6_E27_
         -:  109:    static constexpr bool _S_propagate_on_swap()
         -:  110:    { return _Base_type::propagate_on_container_swap::value; }
         -:  111:
-    #####:  112:    static constexpr bool _S_always_equal()
-    #####:  113:    { return _Base_type::is_always_equal::value; }
-------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8CustomerEEES6_E15_S_always_equalEv:
-    #####:  112:    static constexpr bool _S_always_equal()
-    #####:  113:    { return _Base_type::is_always_equal::value; }
-------------------
-_ZN9__gnu_cxx14__alloc_traitsISaISt13_Rb_tree_nodeISt4pairIKl8OperatorEEES6_E15_S_always_equalEv:
-    #####:  112:    static constexpr bool _S_always_equal()
-    #####:  113:    { return _Base_type::is_always_equal::value; }
-------------------
+        -:  112:    static constexpr bool _S_always_equal()
+        -:  113:    { return _Base_type::is_always_equal::value; }
         -:  114:
         -:  115:    static constexpr bool _S_nothrow_move()
         -:  116:    { return _S_propagate_on_move_assign() || _S_always_equal(); }

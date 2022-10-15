@@ -52,7 +52,7 @@
         -:   51:  template<typename _TRet, typename _Ret = _TRet, typename _CharT,
         -:   52:	   typename... _Base>
         -:   53:    _Ret
- 2388830*:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
+ 2386359*:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
         -:   55:	   const char* __name, const _CharT* __str, std::size_t* __idx,
         -:   56:	   _Base... __base)
         -:   57:    {
@@ -61,14 +61,57 @@
         -:   60:      _CharT* __endptr;
         -:   61:
         -:   62:      struct _Save_errno {
- 2388704*:   63:	_Save_errno() : _M_errno(errno) { errno = 0; }
- 2389524*:   64:	~_Save_errno() { if (errno == 0) errno = _M_errno; }
+ 2385530*:   63:	_Save_errno() : _M_errno(errno) { errno = 0; }
+ 2386675*:   64:	~_Save_errno() { if (errno == 0) errno = _M_errno; }
         -:   65:	int _M_errno;
- 2388830*:   66:      } const __save_errno;
+ 2386359*:   66:      } const __save_errno;
         -:   67:
         -:   68:      struct _Range_chk {
         -:   69:	  static bool
- 2389576*:   70:	  _S_chk(_TRet, std::false_type) { return false; }
+ 2385871*:   70:	  _S_chk(_TRet, std::false_type) { return false; }
+        -:   71:
+        -:   72:	  static bool
+        8:   73:	  _S_chk(_TRet __val, std::true_type) // only called when _Ret is int
+        -:   74:	  {
+        -:   75:	    return __val < _TRet(__numeric_traits<int>::__min)
+       8*:   76:	      || __val > _TRet(__numeric_traits<int>::__max);
+        -:   77:	  }
+        -:   78:      };
+        -:   79:
+ 2385465*:   80:      const _TRet __tmp = __convf(__str, &__endptr, __base...);
+        -:   81:
+ 2385916*:   82:      if (__endptr == __str)
+    #####:   83:	std::__throw_invalid_argument(__name);
+ 4772192*:   84:      else if (errno == ERANGE
+ 2385916*:   85:	  || _Range_chk::_S_chk(__tmp, std::is_same<_Ret, int>{}))
+    #####:   86:	std::__throw_out_of_range(__name);
+        -:   87:      else
+ 2386276*:   88:	__ret = __tmp;
+        -:   89:
+ 2386276*:   90:      if (__idx)
+    #####:   91:	*__idx = __endptr - __str;
+        -:   92:
+ 2387755*:   93:      return __ret;
+ 2386276*:   94:    }
+------------------
+_ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
+  2386351:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
+        -:   55:	   const char* __name, const _CharT* __str, std::size_t* __idx,
+        -:   56:	   _Base... __base)
+        -:   57:    {
+        -:   58:      _Ret __ret;
+        -:   59:
+        -:   60:      _CharT* __endptr;
+        -:   61:
+        -:   62:      struct _Save_errno {
+        -:   63:	_Save_errno() : _M_errno(errno) { errno = 0; }
+        -:   64:	~_Save_errno() { if (errno == 0) errno = _M_errno; }
+        -:   65:	int _M_errno;
+  2386351:   66:      } const __save_errno;
+        -:   67:
+        -:   68:      struct _Range_chk {
+        -:   69:	  static bool
+        -:   70:	  _S_chk(_TRet, std::false_type) { return false; }
         -:   71:
         -:   72:	  static bool
         -:   73:	  _S_chk(_TRet __val, std::true_type) // only called when _Ret is int
@@ -78,21 +121,21 @@
         -:   77:	  }
         -:   78:      };
         -:   79:
- 2388641*:   80:      const _TRet __tmp = __convf(__str, &__endptr, __base...);
+  2385457:   80:      const _TRet __tmp = __convf(__str, &__endptr, __base...);
         -:   81:
- 2389260*:   82:      if (__endptr == __str)
+  2385908:   82:      if (__endptr == __str)
     #####:   83:	std::__throw_invalid_argument(__name);
- 4778545*:   84:      else if (errno == ERANGE
- 2389260*:   85:	  || _Range_chk::_S_chk(__tmp, std::is_same<_Ret, int>{}))
+  4772176:   84:      else if (errno == ERANGE
+ 2385908*:   85:	  || _Range_chk::_S_chk(__tmp, std::is_same<_Ret, int>{}))
     #####:   86:	std::__throw_out_of_range(__name);
         -:   87:      else
- 2389285*:   88:	__ret = __tmp;
+  2386268:   88:	__ret = __tmp;
         -:   89:
- 2389285*:   90:      if (__idx)
+  2386268:   90:      if (__idx)
     #####:   91:	*__idx = __endptr - __str;
         -:   92:
- 2389216*:   93:      return __ret;
- 2389285*:   94:    }
+  2387747:   93:      return __ret;
+  2386268:   94:    }
 ------------------
 _ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
     #####:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
@@ -180,8 +223,8 @@ _ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
     #####:   93:      return __ret;
     #####:   94:    }
 ------------------
-_ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
-  2388830:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
+_ZN9__gnu_cxx6__stoaIlicJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
+        8:   54:    __stoa(_TRet (*__convf) (const _CharT*, _CharT**, _Base...),
         -:   55:	   const char* __name, const _CharT* __str, std::size_t* __idx,
         -:   56:	   _Base... __base)
         -:   57:    {
@@ -193,7 +236,7 @@ _ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
         -:   63:	_Save_errno() : _M_errno(errno) { errno = 0; }
         -:   64:	~_Save_errno() { if (errno == 0) errno = _M_errno; }
         -:   65:	int _M_errno;
-  2388830:   66:      } const __save_errno;
+        8:   66:      } const __save_errno;
         -:   67:
         -:   68:      struct _Range_chk {
         -:   69:	  static bool
@@ -207,21 +250,21 @@ _ZN9__gnu_cxx6__stoaIllcJiEEET0_PFT_PKT1_PPS3_DpT2_EPKcS5_PmS9_:
         -:   77:	  }
         -:   78:      };
         -:   79:
-  2388641:   80:      const _TRet __tmp = __convf(__str, &__endptr, __base...);
+        8:   80:      const _TRet __tmp = __convf(__str, &__endptr, __base...);
         -:   81:
-  2389260:   82:      if (__endptr == __str)
+        8:   82:      if (__endptr == __str)
     #####:   83:	std::__throw_invalid_argument(__name);
-  4778545:   84:      else if (errno == ERANGE
- 2389260*:   85:	  || _Range_chk::_S_chk(__tmp, std::is_same<_Ret, int>{}))
+       16:   84:      else if (errno == ERANGE
+       8*:   85:	  || _Range_chk::_S_chk(__tmp, std::is_same<_Ret, int>{}))
     #####:   86:	std::__throw_out_of_range(__name);
         -:   87:      else
-  2389285:   88:	__ret = __tmp;
+        8:   88:	__ret = __tmp;
         -:   89:
-  2389285:   90:      if (__idx)
+        8:   90:      if (__idx)
     #####:   91:	*__idx = __endptr - __str;
         -:   92:
-  2389216:   93:      return __ret;
-  2389285:   94:    }
+        8:   93:      return __ret;
+        8:   94:    }
 ------------------
         -:   95:
         -:   96:  // Helper for the to_string / to_wstring functions.

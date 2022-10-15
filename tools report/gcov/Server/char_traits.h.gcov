@@ -119,6 +119,10 @@ _ZN9__gnu_cxx11char_traitsIcE2eqERKcS3_:
     #####:  106:      eq(const char_type& __c1, const char_type& __c2)
     #####:  107:      { return __c1 == __c2; }
 ------------------
+_ZN9__gnu_cxx11char_traitsIcE2eqERKcS3_:
+    #####:  106:      eq(const char_type& __c1, const char_type& __c2)
+    #####:  107:      { return __c1 == __c2; }
+------------------
         -:  108:
         -:  109:      static _GLIBCXX_CONSTEXPR bool
         -:  110:      lt(const char_type& __c1, const char_type& __c2)
@@ -178,6 +182,16 @@ _ZN9__gnu_cxx11char_traitsIcE2eqERKcS3_:
         -:  164:
         -:  165:  template<typename _CharT>
         -:  166:    _GLIBCXX14_CONSTEXPR std::size_t
+    #####:  167:    char_traits<_CharT>::
+        -:  168:    length(const char_type* __p)
+        -:  169:    {
+    #####:  170:      std::size_t __i = 0;
+    #####:  171:      while (!eq(__p[__i], char_type()))
+    #####:  172:        ++__i;
+    #####:  173:      return __i;
+        -:  174:    }
+------------------
+_ZN9__gnu_cxx11char_traitsIcE6lengthEPKc:
     #####:  167:    char_traits<_CharT>::
         -:  168:    length(const char_type* __p)
         -:  169:    {
@@ -332,7 +346,7 @@ _ZN9__gnu_cxx11char_traitsIcE6lengthEPKc:
         -:  287:#ifdef _GLIBCXX_HAVE_BUILTIN_IS_CONSTANT_EVALUATED
         -:  288:      (void) __s;
         -:  289:      // In constexpr contexts all strings should be constant.
-       2*:  290:      return __builtin_is_constant_evaluated();
+       9*:  290:      return __builtin_is_constant_evaluated();
         -:  291:#else
         -:  292:      while (__builtin_constant_p(*__s) && *__s)
         -:  293:	__s++;
@@ -431,14 +445,14 @@ _ZNSt11char_traitsIcE2ltERKcS2_:
 ------------------
         -:  370:
         -:  371:      static _GLIBCXX17_CONSTEXPR int
-  300001*:  372:      compare(const char_type* __s1, const char_type* __s2, size_t __n)
+  300002*:  372:      compare(const char_type* __s1, const char_type* __s2, size_t __n)
         -:  373:      {
-  300001*:  374:	if (__n == 0)
+  300002*:  374:	if (__n == 0)
     #####:  375:	  return 0;
         -:  376:#if __cplusplus >= 201703L
-  300001*:  377:	if (__builtin_constant_p(__n)
+  300002*:  377:	if (__builtin_constant_p(__n)
         -:  378:	    && __constant_char_array_p(__s1, __n)
-  300001*:  379:	    && __constant_char_array_p(__s2, __n))
+  300002*:  379:	    && __constant_char_array_p(__s2, __n))
         -:  380:	  {
     #####:  381:	    for (size_t __i = 0; __i < __n; ++__i)
     #####:  382:	      if (lt(__s1[__i], __s2[__i]))
@@ -448,18 +462,18 @@ _ZNSt11char_traitsIcE2ltERKcS2_:
     #####:  386:	    return 0;
         -:  387:	  }
         -:  388:#endif
-  300001*:  389:	return __builtin_memcmp(__s1, __s2, __n);
+  300002*:  389:	return __builtin_memcmp(__s1, __s2, __n);
         -:  390:      }
 ------------------
 _ZNSt11char_traitsIcE7compareEPKcS2_m:
-   300001:  372:      compare(const char_type* __s1, const char_type* __s2, size_t __n)
+   300002:  372:      compare(const char_type* __s1, const char_type* __s2, size_t __n)
         -:  373:      {
-   300001:  374:	if (__n == 0)
+   300002:  374:	if (__n == 0)
     #####:  375:	  return 0;
         -:  376:#if __cplusplus >= 201703L
-   300001:  377:	if (__builtin_constant_p(__n)
+   300002:  377:	if (__builtin_constant_p(__n)
         -:  378:	    && __constant_char_array_p(__s1, __n)
-   300001:  379:	    && __constant_char_array_p(__s2, __n))
+   300002:  379:	    && __constant_char_array_p(__s2, __n))
         -:  380:	  {
     #####:  381:	    for (size_t __i = 0; __i < __n; ++__i)
     #####:  382:	      if (lt(__s1[__i], __s2[__i]))
@@ -469,7 +483,7 @@ _ZNSt11char_traitsIcE7compareEPKcS2_m:
     #####:  386:	    return 0;
         -:  387:	  }
         -:  388:#endif
-   300001:  389:	return __builtin_memcmp(__s1, __s2, __n);
+   300002:  389:	return __builtin_memcmp(__s1, __s2, __n);
         -:  390:      }
 ------------------
 _ZNSt11char_traitsIcE7compareEPKcS2_m:
@@ -495,13 +509,23 @@ _ZNSt11char_traitsIcE7compareEPKcS2_m:
 ------------------
         -:  391:
         -:  392:      static _GLIBCXX17_CONSTEXPR size_t
-       2*:  393:      length(const char_type* __s)
+       9*:  393:      length(const char_type* __s)
         -:  394:      {
         -:  395:#if __cplusplus >= 201703L
-       2*:  396:	if (__constant_string_p(__s))
+       9*:  396:	if (__constant_string_p(__s))
     #####:  397:	  return __gnu_cxx::char_traits<char_type>::length(__s);
         -:  398:#endif
-       2*:  399:	return __builtin_strlen(__s);
+       9*:  399:	return __builtin_strlen(__s);
+        -:  400:      }
+------------------
+_ZNSt11char_traitsIcE6lengthEPKc:
+        9:  393:      length(const char_type* __s)
+        -:  394:      {
+        -:  395:#if __cplusplus >= 201703L
+        9:  396:	if (__constant_string_p(__s))
+    #####:  397:	  return __gnu_cxx::char_traits<char_type>::length(__s);
+        -:  398:#endif
+        9:  399:	return __builtin_strlen(__s);
         -:  400:      }
 ------------------
 _ZNSt11char_traitsIcE6lengthEPKc:
@@ -525,13 +549,13 @@ _ZNSt11char_traitsIcE6lengthEPKc:
         -:  400:      }
 ------------------
 _ZNSt11char_traitsIcE6lengthEPKc:
-        2:  393:      length(const char_type* __s)
+    #####:  393:      length(const char_type* __s)
         -:  394:      {
         -:  395:#if __cplusplus >= 201703L
-        2:  396:	if (__constant_string_p(__s))
+    #####:  396:	if (__constant_string_p(__s))
     #####:  397:	  return __gnu_cxx::char_traits<char_type>::length(__s);
         -:  398:#endif
-        2:  399:	return __builtin_strlen(__s);
+    #####:  399:	return __builtin_strlen(__s);
         -:  400:      }
 ------------------
         -:  401:

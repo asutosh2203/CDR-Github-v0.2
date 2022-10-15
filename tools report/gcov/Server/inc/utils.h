@@ -1,6 +1,13 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
+#include <cstring>
 #include <algorithm>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <vector>
 using namespace std;
 
 // Log type macros
@@ -20,4 +27,13 @@ public:
 
     // converts a string to lowercase
     string toLowerCase(string);
+
+    // check if a given string is a numeric string or not
+    bool isNumber(string str);
+
+    // Function to split string `str` using a given delimiter
+    vector<string> split(const string &str, char delim);
+
+    // Function to validate an IP address
+    bool validateIP(string ip);
 };

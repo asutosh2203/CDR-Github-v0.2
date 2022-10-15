@@ -280,6 +280,14 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S
     #####:  255:          _M_construct(__beg, __end, _Tag());
     #####:  256:	}
 ------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S7_St12__false_type:
+    #####:  251:        _M_construct_aux(_InIterator __beg, _InIterator __end,
+        -:  252:			 std::__false_type)
+        -:  253:	{
+        -:  254:          typedef typename iterator_traits<_InIterator>::iterator_category _Tag;
+    #####:  255:          _M_construct(__beg, __end, _Tag());
+    #####:  256:	}
+------------------
         -:  257:
         -:  258:      // _GLIBCXX_RESOLVE_LIB_DEFECTS
         -:  259:      // 438. Ambiguity in the "do the right thing" clause
@@ -294,6 +302,13 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE16_M_construct_auxIPcEEvT_S
         -:  268:
         -:  269:      template<typename _InIterator>
         -:  270:        void
+    #####:  271:        _M_construct(_InIterator __beg, _InIterator __end)
+        -:  272:	{
+        -:  273:	  typedef typename std::__is_integer<_InIterator>::__type _Integral;
+    #####:  274:	  _M_construct_aux(__beg, __end, _Integral());
+    #####:  275:        }
+------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_:
     #####:  271:        _M_construct(_InIterator __beg, _InIterator __end)
         -:  272:	{
         -:  273:	  typedef typename std::__is_integer<_InIterator>::__type _Integral;
@@ -578,14 +593,24 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE12_M_constructIPcEEvT_S7_:
         -:  530:      // 3076. basic_string CTAD ambiguity
         -:  531:      template<typename = _RequireAllocator<_Alloc>>
         -:  532:#endif
-       2*:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
-       2*:  534:      : _M_dataplus(_M_local_data(), __a)
+       9*:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+       9*:  534:      : _M_dataplus(_M_local_data(), __a)
         -:  535:      {
-       2*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
+       9*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
         -:  537:	  // We just need a non-null pointer here to get an exception:
         -:  538:	  : reinterpret_cast<const _CharT*>(__alignof__(_CharT));
-       2*:  539:	_M_construct(__s, __end, random_access_iterator_tag());
-       2*:  540:      }
+       9*:  539:	_M_construct(__s, __end, random_access_iterator_tag());
+       9*:  540:      }
+------------------
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
+        9:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+        9:  534:      : _M_dataplus(_M_local_data(), __a)
+        -:  535:      {
+       9*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
+        -:  537:	  // We just need a non-null pointer here to get an exception:
+        -:  538:	  : reinterpret_cast<const _CharT*>(__alignof__(_CharT));
+        9:  539:	_M_construct(__s, __end, random_access_iterator_tag());
+        9:  540:      }
 ------------------
 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
     #####:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
@@ -608,14 +633,14 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
     #####:  540:      }
 ------------------
 _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
-        2:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
-        2:  534:      : _M_dataplus(_M_local_data(), __a)
+    #####:  533:      basic_string(const _CharT* __s, const _Alloc& __a = _Alloc())
+    #####:  534:      : _M_dataplus(_M_local_data(), __a)
         -:  535:      {
-       2*:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
+    #####:  536:	const _CharT* __end = __s ? __s + traits_type::length(__s)
         -:  537:	  // We just need a non-null pointer here to get an exception:
         -:  538:	  : reinterpret_cast<const _CharT*>(__alignof__(_CharT));
-        2:  539:	_M_construct(__s, __end, random_access_iterator_tag());
-        2:  540:      }
+    #####:  539:	_M_construct(__s, __end, random_access_iterator_tag());
+    #####:  540:      }
 ------------------
         -:  541:
         -:  542:      /**
@@ -6310,18 +6335,18 @@ _ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2IS3_EEPKcRKS3_:
         -: 6231:  template<typename _CharT>
         -: 6232:    inline
         -: 6233:    typename __gnu_cxx::__enable_if<__is_char<_CharT>::__value, bool>::__type
-  300003*: 6234:    operator==(const basic_string<_CharT>& __lhs,
+  300005*: 6234:    operator==(const basic_string<_CharT>& __lhs,
         -: 6235:	       const basic_string<_CharT>& __rhs) _GLIBCXX_NOEXCEPT
-  300003*: 6236:    { return (__lhs.size() == __rhs.size()
-  300003*: 6237:	      && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
-  300003*: 6238:						    __lhs.size())); }
+  300005*: 6236:    { return (__lhs.size() == __rhs.size()
+  300005*: 6237:	      && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
+  300005*: 6238:						    __lhs.size())); }
 ------------------
 _ZSteqIcEN9__gnu_cxx11__enable_ifIXsrSt9__is_charIT_E7__valueEbE6__typeERKNSt7__cxx1112basic_stringIS3_St11char_traitsIS3_ESaIS3_EEESE_:
-   300003: 6234:    operator==(const basic_string<_CharT>& __lhs,
+   300005: 6234:    operator==(const basic_string<_CharT>& __lhs,
         -: 6235:	       const basic_string<_CharT>& __rhs) _GLIBCXX_NOEXCEPT
-   300003: 6236:    { return (__lhs.size() == __rhs.size()
-   300003: 6237:	      && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
-   300003: 6238:						    __lhs.size())); }
+   300005: 6236:    { return (__lhs.size() == __rhs.size()
+   300005: 6237:	      && !std::char_traits<_CharT>::compare(__lhs.data(), __rhs.data(),
+   300005: 6238:						    __lhs.size())); }
 ------------------
 _ZSteqIcEN9__gnu_cxx11__enable_ifIXsrSt9__is_charIT_E7__valueEbE6__typeERKNSt7__cxx1112basic_stringIS3_St11char_traitsIS3_ESaIS3_EEESE_:
     #####: 6234:    operator==(const basic_string<_CharT>& __lhs,
@@ -6339,14 +6364,14 @@ _ZSteqIcEN9__gnu_cxx11__enable_ifIXsrSt9__is_charIT_E7__valueEbE6__typeERKNSt7__
         -: 6245:   */
         -: 6246:  template<typename _CharT, typename _Traits, typename _Alloc>
         -: 6247:    inline bool
- 1919759*: 6248:    operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+ 1917957*: 6248:    operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
         -: 6249:	       const _CharT* __rhs)
- 1919759*: 6250:    { return __lhs.compare(__rhs) == 0; }
+ 1917957*: 6250:    { return __lhs.compare(__rhs) == 0; }
 ------------------
 _ZSteqIcSt11char_traitsIcESaIcEEbRKNSt7__cxx1112basic_stringIT_T0_T1_EEPKS5_:
-  1919759: 6248:    operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
+  1917957: 6248:    operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
         -: 6249:	       const _CharT* __rhs)
-  1919759: 6250:    { return __lhs.compare(__rhs) == 0; }
+  1917957: 6250:    { return __lhs.compare(__rhs) == 0; }
 ------------------
 _ZSteqIcSt11char_traitsIcESaIcEEbRKNSt7__cxx1112basic_stringIT_T0_T1_EEPKS5_:
     #####: 6248:    operator==(const basic_string<_CharT, _Traits, _Alloc>& __lhs,
@@ -6721,14 +6746,19 @@ _ZSteqIcSt11char_traitsIcESaIcEEbRKNSt7__cxx1112basic_stringIT_T0_T1_EEPKS5_:
         -: 6616:#if _GLIBCXX_USE_C99_STDLIB
         -: 6617:  // 21.4 Numeric Conversions [string.conversions].
         -: 6618:  inline int
-        -: 6619:  stoi(const string& __str, size_t* __idx = 0, int __base = 10)
-        -: 6620:  { return __gnu_cxx::__stoa<long, int>(&std::strtol, "stoi", __str.c_str(),
-        -: 6621:					__idx, __base); }
+        8: 6619:  stoi(const string& __str, size_t* __idx = 0, int __base = 10)
+        8: 6620:  { return __gnu_cxx::__stoa<long, int>(&std::strtol, "stoi", __str.c_str(),
+        8: 6621:					__idx, __base); }
         -: 6622:
         -: 6623:  inline long
- 2388822*: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
- 2388822*: 6625:  { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
- 2389269*: 6626:			     __idx, __base); }
+ 2385388*: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
+ 2385388*: 6625:  { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
+ 2386945*: 6626:			     __idx, __base); }
+------------------
+_ZNSt7__cxx114stolERKNS_12basic_stringIcSt11char_traitsIcESaIcEEEPmi:
+  2385388: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
+  2385388: 6625:  { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
+  2386945: 6626:			     __idx, __base); }
 ------------------
 _ZNSt7__cxx114stolERKNS_12basic_stringIcSt11char_traitsIcESaIcEEEPmi:
     #####: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
@@ -6739,11 +6769,6 @@ _ZNSt7__cxx114stolERKNS_12basic_stringIcSt11char_traitsIcESaIcEEEPmi:
     #####: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
     #####: 6625:  { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
     #####: 6626:			     __idx, __base); }
-------------------
-_ZNSt7__cxx114stolERKNS_12basic_stringIcSt11char_traitsIcESaIcEEEPmi:
-  2388822: 6624:  stol(const string& __str, size_t* __idx = 0, int __base = 10)
-  2388822: 6625:  { return __gnu_cxx::__stoa(&std::strtol, "stol", __str.c_str(),
-  2389269: 6626:			     __idx, __base); }
 ------------------
         -: 6627:
         -: 6628:  inline unsigned long

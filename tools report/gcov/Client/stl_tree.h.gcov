@@ -110,26 +110,11 @@
         -:  109:    _Base_ptr		_M_right;
         -:  110:
         -:  111:    static _Base_ptr
-    #####:  112:    _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
+        -:  112:    _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
         -:  113:    {
-    #####:  114:      while (__x->_M_left != 0) __x = __x->_M_left;
-    #####:  115:      return __x;
+        -:  114:      while (__x->_M_left != 0) __x = __x->_M_left;
+        -:  115:      return __x;
         -:  116:    }
-------------------
-_ZNSt18_Rb_tree_node_base10_S_minimumEPS_:
-    #####:  112:    _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-        -:  113:    {
-    #####:  114:      while (__x->_M_left != 0) __x = __x->_M_left;
-    #####:  115:      return __x;
-        -:  116:    }
-------------------
-_ZNSt18_Rb_tree_node_base10_S_minimumEPS_:
-    #####:  112:    _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-        -:  113:    {
-    #####:  114:      while (__x->_M_left != 0) __x = __x->_M_left;
-    #####:  115:      return __x;
-        -:  116:    }
-------------------
         -:  117:
         -:  118:    static _Const_Base_ptr
         -:  119:    _S_minimum(_Const_Base_ptr __x) _GLIBCXX_NOEXCEPT
@@ -139,26 +124,11 @@ _ZNSt18_Rb_tree_node_base10_S_minimumEPS_:
         -:  123:    }
         -:  124:
         -:  125:    static _Base_ptr
-    #####:  126:    _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
+        -:  126:    _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
         -:  127:    {
-    #####:  128:      while (__x->_M_right != 0) __x = __x->_M_right;
-    #####:  129:      return __x;
+        -:  128:      while (__x->_M_right != 0) __x = __x->_M_right;
+        -:  129:      return __x;
         -:  130:    }
-------------------
-_ZNSt18_Rb_tree_node_base10_S_maximumEPS_:
-    #####:  126:    _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-        -:  127:    {
-    #####:  128:      while (__x->_M_right != 0) __x = __x->_M_right;
-    #####:  129:      return __x;
-        -:  130:    }
-------------------
-_ZNSt18_Rb_tree_node_base10_S_maximumEPS_:
-    #####:  126:    _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-        -:  127:    {
-    #####:  128:      while (__x->_M_right != 0) __x = __x->_M_right;
-    #####:  129:      return __x;
-        -:  130:    }
-------------------
         -:  131:
         -:  132:    static _Const_Base_ptr
         -:  133:    _S_maximum(_Const_Base_ptr __x) _GLIBCXX_NOEXCEPT
@@ -174,18 +144,18 @@ _ZNSt18_Rb_tree_node_base10_S_maximumEPS_:
         -:  143:    {
         -:  144:      _Key_compare		_M_key_compare;
         -:  145:
-    #####:  146:      _Rb_tree_key_compare()
+       2*:  146:      _Rb_tree_key_compare()
         -:  147:      _GLIBCXX_NOEXCEPT_IF(
         -:  148:	is_nothrow_default_constructible<_Key_compare>::value)
         -:  149:      : _M_key_compare()
-    #####:  150:      { }
+       2*:  150:      { }
 ------------------
 _ZNSt20_Rb_tree_key_compareISt4lessIlEEC2Ev:
-    #####:  146:      _Rb_tree_key_compare()
+        2:  146:      _Rb_tree_key_compare()
         -:  147:      _GLIBCXX_NOEXCEPT_IF(
         -:  148:	is_nothrow_default_constructible<_Key_compare>::value)
         -:  149:      : _M_key_compare()
-    #####:  150:      { }
+        2:  150:      { }
 ------------------
 _ZNSt20_Rb_tree_key_compareISt4lessIlEEC2Ev:
     #####:  146:      _Rb_tree_key_compare()
@@ -195,20 +165,9 @@ _ZNSt20_Rb_tree_key_compareISt4lessIlEEC2Ev:
     #####:  150:      { }
 ------------------
         -:  151:
-    #####:  152:      _Rb_tree_key_compare(const _Key_compare& __comp)
+        -:  152:      _Rb_tree_key_compare(const _Key_compare& __comp)
         -:  153:      : _M_key_compare(__comp)
-    #####:  154:      { }
-------------------
-_ZNSt20_Rb_tree_key_compareISt4lessIlEEC2ERKS1_:
-    #####:  152:      _Rb_tree_key_compare(const _Key_compare& __comp)
-        -:  153:      : _M_key_compare(__comp)
-    #####:  154:      { }
-------------------
-_ZNSt20_Rb_tree_key_compareISt4lessIlEEC2ERKS1_:
-    #####:  152:      _Rb_tree_key_compare(const _Key_compare& __comp)
-        -:  153:      : _M_key_compare(__comp)
-    #####:  154:      { }
-------------------
+        -:  154:      { }
         -:  155:
         -:  156:#if __cplusplus >= 201103L
         -:  157:      // Copy constructor added for consistency with C++98 mode.
@@ -227,18 +186,18 @@ _ZNSt20_Rb_tree_key_compareISt4lessIlEEC2ERKS1_:
         -:  170:    _Rb_tree_node_base	_M_header;
         -:  171:    size_t		_M_node_count; // Keeps track of size of tree.
         -:  172:
-    #####:  173:    _Rb_tree_header() _GLIBCXX_NOEXCEPT
-    #####:  174:    {
-    #####:  175:      _M_header._M_color = _S_red;
-    #####:  176:      _M_reset();
-    #####:  177:    }
+       2*:  173:    _Rb_tree_header() _GLIBCXX_NOEXCEPT
+       2*:  174:    {
+       2*:  175:      _M_header._M_color = _S_red;
+       2*:  176:      _M_reset();
+       2*:  177:    }
 ------------------
 _ZNSt15_Rb_tree_headerC2Ev:
-    #####:  173:    _Rb_tree_header() _GLIBCXX_NOEXCEPT
-    #####:  174:    {
-    #####:  175:      _M_header._M_color = _S_red;
-    #####:  176:      _M_reset();
-    #####:  177:    }
+        2:  173:    _Rb_tree_header() _GLIBCXX_NOEXCEPT
+        2:  174:    {
+        2:  175:      _M_header._M_color = _S_red;
+        2:  176:      _M_reset();
+        2:  177:    }
 ------------------
 _ZNSt15_Rb_tree_headerC2Ev:
     #####:  173:    _Rb_tree_header() _GLIBCXX_NOEXCEPT
@@ -275,22 +234,22 @@ _ZNSt15_Rb_tree_headerC2Ev:
         -:  203:    }
         -:  204:
         -:  205:    void
-    #####:  206:    _M_reset()
+       2*:  206:    _M_reset()
         -:  207:    {
-    #####:  208:      _M_header._M_parent = 0;
-    #####:  209:      _M_header._M_left = &_M_header;
-    #####:  210:      _M_header._M_right = &_M_header;
-    #####:  211:      _M_node_count = 0;
-    #####:  212:    }
+       2*:  208:      _M_header._M_parent = 0;
+       2*:  209:      _M_header._M_left = &_M_header;
+       2*:  210:      _M_header._M_right = &_M_header;
+       2*:  211:      _M_node_count = 0;
+       2*:  212:    }
 ------------------
 _ZNSt15_Rb_tree_header8_M_resetEv:
-    #####:  206:    _M_reset()
+        2:  206:    _M_reset()
         -:  207:    {
-    #####:  208:      _M_header._M_parent = 0;
-    #####:  209:      _M_header._M_left = &_M_header;
-    #####:  210:      _M_header._M_right = &_M_header;
-    #####:  211:      _M_node_count = 0;
-    #####:  212:    }
+        2:  208:      _M_header._M_parent = 0;
+        2:  209:      _M_header._M_left = &_M_header;
+        2:  210:      _M_header._M_right = &_M_header;
+        2:  211:      _M_node_count = 0;
+        2:  212:    }
 ------------------
 _ZNSt15_Rb_tree_header8_M_resetEv:
     #####:  206:    _M_reset()
@@ -668,214 +627,76 @@ _ZNKSt23_Rb_tree_const_iteratorISt4pairIKl8OperatorEE13_M_const_castEv:
         -:  440:      // is empty.
         -:  441:      struct _Reuse_or_alloc_node
         -:  442:      {
-    #####:  443:	_Reuse_or_alloc_node(_Rb_tree& __t)
-    #####:  444:	: _M_root(__t._M_root()), _M_nodes(__t._M_rightmost()), _M_t(__t)
+        -:  443:	_Reuse_or_alloc_node(_Rb_tree& __t)
+        -:  444:	: _M_root(__t._M_root()), _M_nodes(__t._M_rightmost()), _M_t(__t)
         -:  445:	{
-    #####:  446:	  if (_M_root)
+        -:  446:	  if (_M_root)
         -:  447:	    {
-    #####:  448:	      _M_root->_M_parent = 0;
+        -:  448:	      _M_root->_M_parent = 0;
         -:  449:
-    #####:  450:	      if (_M_nodes->_M_left)
-    #####:  451:		_M_nodes = _M_nodes->_M_left;
+        -:  450:	      if (_M_nodes->_M_left)
+        -:  451:		_M_nodes = _M_nodes->_M_left;
         -:  452:	    }
         -:  453:	  else
-    #####:  454:	    _M_nodes = 0;
-    #####:  455:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeC2ERS9_:
-    #####:  443:	_Reuse_or_alloc_node(_Rb_tree& __t)
-    #####:  444:	: _M_root(__t._M_root()), _M_nodes(__t._M_rightmost()), _M_t(__t)
-        -:  445:	{
-    #####:  446:	  if (_M_root)
-        -:  447:	    {
-    #####:  448:	      _M_root->_M_parent = 0;
-        -:  449:
-    #####:  450:	      if (_M_nodes->_M_left)
-    #####:  451:		_M_nodes = _M_nodes->_M_left;
-        -:  452:	    }
-        -:  453:	  else
-    #####:  454:	    _M_nodes = 0;
-    #####:  455:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeC2ERS9_:
-    #####:  443:	_Reuse_or_alloc_node(_Rb_tree& __t)
-    #####:  444:	: _M_root(__t._M_root()), _M_nodes(__t._M_rightmost()), _M_t(__t)
-        -:  445:	{
-    #####:  446:	  if (_M_root)
-        -:  447:	    {
-    #####:  448:	      _M_root->_M_parent = 0;
-        -:  449:
-    #####:  450:	      if (_M_nodes->_M_left)
-    #####:  451:		_M_nodes = _M_nodes->_M_left;
-        -:  452:	    }
-        -:  453:	  else
-    #####:  454:	    _M_nodes = 0;
-    #####:  455:	}
-------------------
+        -:  454:	    _M_nodes = 0;
+        -:  455:	}
         -:  456:
         -:  457:#if __cplusplus >= 201103L
         -:  458:	_Reuse_or_alloc_node(const _Reuse_or_alloc_node&) = delete;
         -:  459:#endif
         -:  460:
-    #####:  461:	~_Reuse_or_alloc_node()
-    #####:  462:	{ _M_t._M_erase(static_cast<_Link_type>(_M_root)); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeD2Ev:
-    #####:  461:	~_Reuse_or_alloc_node()
-    #####:  462:	{ _M_t._M_erase(static_cast<_Link_type>(_M_root)); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeD2Ev:
-    #####:  461:	~_Reuse_or_alloc_node()
-    #####:  462:	{ _M_t._M_erase(static_cast<_Link_type>(_M_root)); }
-------------------
+        -:  461:	~_Reuse_or_alloc_node()
+        -:  462:	{ _M_t._M_erase(static_cast<_Link_type>(_M_root)); }
         -:  463:
         -:  464:	template<typename _Arg>
         -:  465:	  _Link_type
-    #####:  466:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg)
+        -:  466:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg)
         -:  467:	  {
-    #####:  468:	    _Link_type __node = static_cast<_Link_type>(_M_extract());
-    #####:  469:	    if (__node)
+        -:  468:	    _Link_type __node = static_cast<_Link_type>(_M_extract());
+        -:  469:	    if (__node)
         -:  470:	      {
-    #####:  471:		_M_t._M_destroy_node(__node);
-    #####:  472:		_M_t._M_construct_node(__node, _GLIBCXX_FORWARD(_Arg, __arg));
-    #####:  473:		return __node;
+        -:  471:		_M_t._M_destroy_node(__node);
+        -:  472:		_M_t._M_construct_node(__node, _GLIBCXX_FORWARD(_Arg, __arg));
+        -:  473:		return __node;
         -:  474:	      }
         -:  475:
-    #####:  476:	    return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg));
+        -:  476:	    return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg));
         -:  477:	  }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeclIRKS3_EEPSt13_Rb_tree_nodeIS3_EOT_:
-    #####:  466:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg)
-        -:  467:	  {
-    #####:  468:	    _Link_type __node = static_cast<_Link_type>(_M_extract());
-    #####:  469:	    if (__node)
-        -:  470:	      {
-    #####:  471:		_M_t._M_destroy_node(__node);
-    #####:  472:		_M_t._M_construct_node(__node, _GLIBCXX_FORWARD(_Arg, __arg));
-    #####:  473:		return __node;
-        -:  474:	      }
-        -:  475:
-    #####:  476:	    return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg));
-        -:  477:	  }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_nodeclIRKS3_EEPSt13_Rb_tree_nodeIS3_EOT_:
-    #####:  466:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg)
-        -:  467:	  {
-    #####:  468:	    _Link_type __node = static_cast<_Link_type>(_M_extract());
-    #####:  469:	    if (__node)
-        -:  470:	      {
-    #####:  471:		_M_t._M_destroy_node(__node);
-    #####:  472:		_M_t._M_construct_node(__node, _GLIBCXX_FORWARD(_Arg, __arg));
-    #####:  473:		return __node;
-        -:  474:	      }
-        -:  475:
-    #####:  476:	    return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg));
-        -:  477:	  }
-------------------
         -:  478:
         -:  479:      private:
         -:  480:	_Base_ptr
-    #####:  481:	_M_extract()
+        -:  481:	_M_extract()
         -:  482:	{
-    #####:  483:	  if (!_M_nodes)
-    #####:  484:	    return _M_nodes;
+        -:  483:	  if (!_M_nodes)
+        -:  484:	    return _M_nodes;
         -:  485:
-    #####:  486:	  _Base_ptr __node = _M_nodes;
-    #####:  487:	  _M_nodes = _M_nodes->_M_parent;
-    #####:  488:	  if (_M_nodes)
+        -:  486:	  _Base_ptr __node = _M_nodes;
+        -:  487:	  _M_nodes = _M_nodes->_M_parent;
+        -:  488:	  if (_M_nodes)
         -:  489:	    {
-    #####:  490:	      if (_M_nodes->_M_right == __node)
+        -:  490:	      if (_M_nodes->_M_right == __node)
         -:  491:		{
-    #####:  492:		  _M_nodes->_M_right = 0;
+        -:  492:		  _M_nodes->_M_right = 0;
         -:  493:
-    #####:  494:		  if (_M_nodes->_M_left)
+        -:  494:		  if (_M_nodes->_M_left)
         -:  495:		    {
-    #####:  496:		      _M_nodes = _M_nodes->_M_left;
+        -:  496:		      _M_nodes = _M_nodes->_M_left;
         -:  497:
-    #####:  498:		      while (_M_nodes->_M_right)
-    #####:  499:			_M_nodes = _M_nodes->_M_right;
+        -:  498:		      while (_M_nodes->_M_right)
+        -:  499:			_M_nodes = _M_nodes->_M_right;
         -:  500:
-    #####:  501:		      if (_M_nodes->_M_left)
-    #####:  502:			_M_nodes = _M_nodes->_M_left;
+        -:  501:		      if (_M_nodes->_M_left)
+        -:  502:			_M_nodes = _M_nodes->_M_left;
         -:  503:		    }
         -:  504:		}
         -:  505:	      else // __node is on the left.
-    #####:  506:		_M_nodes->_M_left = 0;
+        -:  506:		_M_nodes->_M_left = 0;
         -:  507:	    }
         -:  508:	  else
-    #####:  509:	    _M_root = 0;
+        -:  509:	    _M_root = 0;
         -:  510:
-    #####:  511:	  return __node;
+        -:  511:	  return __node;
         -:  512:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_node10_M_extractEv:
-    #####:  481:	_M_extract()
-        -:  482:	{
-    #####:  483:	  if (!_M_nodes)
-    #####:  484:	    return _M_nodes;
-        -:  485:
-    #####:  486:	  _Base_ptr __node = _M_nodes;
-    #####:  487:	  _M_nodes = _M_nodes->_M_parent;
-    #####:  488:	  if (_M_nodes)
-        -:  489:	    {
-    #####:  490:	      if (_M_nodes->_M_right == __node)
-        -:  491:		{
-    #####:  492:		  _M_nodes->_M_right = 0;
-        -:  493:
-    #####:  494:		  if (_M_nodes->_M_left)
-        -:  495:		    {
-    #####:  496:		      _M_nodes = _M_nodes->_M_left;
-        -:  497:
-    #####:  498:		      while (_M_nodes->_M_right)
-    #####:  499:			_M_nodes = _M_nodes->_M_right;
-        -:  500:
-    #####:  501:		      if (_M_nodes->_M_left)
-    #####:  502:			_M_nodes = _M_nodes->_M_left;
-        -:  503:		    }
-        -:  504:		}
-        -:  505:	      else // __node is on the left.
-    #####:  506:		_M_nodes->_M_left = 0;
-        -:  507:	    }
-        -:  508:	  else
-    #####:  509:	    _M_root = 0;
-        -:  510:
-    #####:  511:	  return __node;
-        -:  512:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reuse_or_alloc_node10_M_extractEv:
-    #####:  481:	_M_extract()
-        -:  482:	{
-    #####:  483:	  if (!_M_nodes)
-    #####:  484:	    return _M_nodes;
-        -:  485:
-    #####:  486:	  _Base_ptr __node = _M_nodes;
-    #####:  487:	  _M_nodes = _M_nodes->_M_parent;
-    #####:  488:	  if (_M_nodes)
-        -:  489:	    {
-    #####:  490:	      if (_M_nodes->_M_right == __node)
-        -:  491:		{
-    #####:  492:		  _M_nodes->_M_right = 0;
-        -:  493:
-    #####:  494:		  if (_M_nodes->_M_left)
-        -:  495:		    {
-    #####:  496:		      _M_nodes = _M_nodes->_M_left;
-        -:  497:
-    #####:  498:		      while (_M_nodes->_M_right)
-    #####:  499:			_M_nodes = _M_nodes->_M_right;
-        -:  500:
-    #####:  501:		      if (_M_nodes->_M_left)
-    #####:  502:			_M_nodes = _M_nodes->_M_left;
-        -:  503:		    }
-        -:  504:		}
-        -:  505:	      else // __node is on the left.
-    #####:  506:		_M_nodes->_M_left = 0;
-        -:  507:	    }
-        -:  508:	  else
-    #####:  509:	    _M_root = 0;
-        -:  510:
-    #####:  511:	  return __node;
-        -:  512:	}
-------------------
         -:  513:
         -:  514:	_Base_ptr _M_root;
         -:  515:	_Base_ptr _M_nodes;
@@ -886,31 +707,13 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE20_Reus
         -:  520:      // recycle.
         -:  521:      struct _Alloc_node
         -:  522:      {
-    #####:  523:	_Alloc_node(_Rb_tree& __t)
-    #####:  524:	: _M_t(__t) { }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE11_Alloc_nodeC2ERS9_:
-    #####:  523:	_Alloc_node(_Rb_tree& __t)
-    #####:  524:	: _M_t(__t) { }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE11_Alloc_nodeC2ERS9_:
-    #####:  523:	_Alloc_node(_Rb_tree& __t)
-    #####:  524:	: _M_t(__t) { }
-------------------
+        -:  523:	_Alloc_node(_Rb_tree& __t)
+        -:  524:	: _M_t(__t) { }
         -:  525:
         -:  526:	template<typename _Arg>
         -:  527:	  _Link_type
-    #####:  528:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg) const
-    #####:  529:	  { return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg)); }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE11_Alloc_nodeclIRKS3_EEPSt13_Rb_tree_nodeIS3_EOT_:
-    #####:  528:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg) const
-    #####:  529:	  { return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg)); }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE11_Alloc_nodeclIRKS3_EEPSt13_Rb_tree_nodeIS3_EOT_:
-    #####:  528:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg) const
-    #####:  529:	  { return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg)); }
-------------------
+        -:  528:	  operator()(_GLIBCXX_FWDREF(_Arg) __arg) const
+        -:  529:	  { return _M_t._M_create_node(_GLIBCXX_FORWARD(_Arg, __arg)); }
         -:  530:
         -:  531:      private:
         -:  532:	_Rb_tree& _M_t;
@@ -941,17 +744,8 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE21_M_ge
 ------------------
         -:  549:
         -:  550:      const _Node_allocator&
-    #####:  551:      _M_get_Node_allocator() const _GLIBCXX_NOEXCEPT
-    #####:  552:      { return this->_M_impl; }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE21_M_get_Node_allocatorEv:
-    #####:  551:      _M_get_Node_allocator() const _GLIBCXX_NOEXCEPT
-    #####:  552:      { return this->_M_impl; }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE21_M_get_Node_allocatorEv:
-    #####:  551:      _M_get_Node_allocator() const _GLIBCXX_NOEXCEPT
-    #####:  552:      { return this->_M_impl; }
-------------------
+        -:  551:      _M_get_Node_allocator() const _GLIBCXX_NOEXCEPT
+        -:  552:      { return this->_M_impl; }
         -:  553:
         -:  554:      allocator_type
         -:  555:      get_allocator() const _GLIBCXX_NOEXCEPT
@@ -1024,43 +818,7 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE11_M_pu
         -:  604:	    }
     #####:  605:	}
 ------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE17_M_construct_nodeIJRKS3_EEEvPSt13_Rb_tree_nodeIS3_EDpOT_:
-    #####:  590:	_M_construct_node(_Link_type __node, _Args&&... __args)
-        -:  591:	{
-        -:  592:	  __try
-        -:  593:	    {
-    #####:  594:	      ::new(__node) _Rb_tree_node<_Val>;
-    #####:  595:	      _Alloc_traits::construct(_M_get_Node_allocator(),
-        -:  596:				       __node->_M_valptr(),
-        -:  597:				       std::forward<_Args>(__args)...);
-        -:  598:	    }
-    =====:  599:	  __catch(...)
-        -:  600:	    {
-    =====:  601:	      __node->~_Rb_tree_node<_Val>();
-    =====:  602:	      _M_put_node(__node);
-    =====:  603:	      __throw_exception_again;
-        -:  604:	    }
-    #####:  605:	}
-------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE17_M_construct_nodeIJRKSt21piecewise_construct_tSt5tupleIJRS1_EESE_IJEEEEEvPSt13_Rb_tree_nodeIS3_EDpOT_:
-    #####:  590:	_M_construct_node(_Link_type __node, _Args&&... __args)
-        -:  591:	{
-        -:  592:	  __try
-        -:  593:	    {
-    #####:  594:	      ::new(__node) _Rb_tree_node<_Val>;
-    #####:  595:	      _Alloc_traits::construct(_M_get_Node_allocator(),
-        -:  596:				       __node->_M_valptr(),
-        -:  597:				       std::forward<_Args>(__args)...);
-        -:  598:	    }
-    =====:  599:	  __catch(...)
-        -:  600:	    {
-    =====:  601:	      __node->~_Rb_tree_node<_Val>();
-    =====:  602:	      _M_put_node(__node);
-    =====:  603:	      __throw_exception_again;
-        -:  604:	    }
-    #####:  605:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE17_M_construct_nodeIJRKS3_EEEvPSt13_Rb_tree_nodeIS3_EDpOT_:
     #####:  590:	_M_construct_node(_Link_type __node, _Args&&... __args)
         -:  591:	{
         -:  592:	  __try
@@ -1106,23 +864,7 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE17_M_co
     #####:  613:	  return __tmp;
         -:  614:	}
 ------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE14_M_create_nodeIJRKS3_EEEPSt13_Rb_tree_nodeIS3_EDpOT_:
-    #####:  609:	_M_create_node(_Args&&... __args)
-        -:  610:	{
-    #####:  611:	  _Link_type __tmp = _M_get_node();
-    #####:  612:	  _M_construct_node(__tmp, std::forward<_Args>(__args)...);
-    #####:  613:	  return __tmp;
-        -:  614:	}
-------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE14_M_create_nodeIJRKSt21piecewise_construct_tSt5tupleIJRS1_EESE_IJEEEEEPSt13_Rb_tree_nodeIS3_EDpOT_:
-    #####:  609:	_M_create_node(_Args&&... __args)
-        -:  610:	{
-    #####:  611:	  _Link_type __tmp = _M_get_node();
-    #####:  612:	  _M_construct_node(__tmp, std::forward<_Args>(__args)...);
-    #####:  613:	  return __tmp;
-        -:  614:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE14_M_create_nodeIJRKS3_EEEPSt13_Rb_tree_nodeIS3_EDpOT_:
     #####:  609:	_M_create_node(_Args&&... __args)
         -:  610:	{
     #####:  611:	  _Link_type __tmp = _M_get_node();
@@ -1198,7 +940,7 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE12_M_dr
         -:  634:
         -:  635:      template<bool _MoveValue, typename _NodeGen>
         -:  636:	_Link_type
-    #####:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
+        -:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
         -:  638:	{
         -:  639:#if __cplusplus >= 201103L
         -:  640:	  using _Vp = typename conditional<_MoveValue,
@@ -1206,77 +948,12 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE12_M_dr
         -:  642:					   const value_type&>::type;
         -:  643:#endif
         -:  644:	  _Link_type __tmp
-    #####:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
-    #####:  646:	  __tmp->_M_color = __x->_M_color;
-    #####:  647:	  __tmp->_M_left = 0;
-    #####:  648:	  __tmp->_M_right = 0;
-    #####:  649:	  return __tmp;
+        -:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
+        -:  646:	  __tmp->_M_color = __x->_M_color;
+        -:  647:	  __tmp->_M_left = 0;
+        -:  648:	  __tmp->_M_right = 0;
+        -:  649:	  return __tmp;
         -:  650:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_M_clone_nodeILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_RT0_:
-    #####:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
-        -:  638:	{
-        -:  639:#if __cplusplus >= 201103L
-        -:  640:	  using _Vp = typename conditional<_MoveValue,
-        -:  641:					   value_type&&,
-        -:  642:					   const value_type&>::type;
-        -:  643:#endif
-        -:  644:	  _Link_type __tmp
-    #####:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
-    #####:  646:	  __tmp->_M_color = __x->_M_color;
-    #####:  647:	  __tmp->_M_left = 0;
-    #####:  648:	  __tmp->_M_right = 0;
-    #####:  649:	  return __tmp;
-        -:  650:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_M_clone_nodeILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_RT0_:
-    #####:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
-        -:  638:	{
-        -:  639:#if __cplusplus >= 201103L
-        -:  640:	  using _Vp = typename conditional<_MoveValue,
-        -:  641:					   value_type&&,
-        -:  642:					   const value_type&>::type;
-        -:  643:#endif
-        -:  644:	  _Link_type __tmp
-    #####:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
-    #####:  646:	  __tmp->_M_color = __x->_M_color;
-    #####:  647:	  __tmp->_M_left = 0;
-    #####:  648:	  __tmp->_M_right = 0;
-    #####:  649:	  return __tmp;
-        -:  650:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_M_clone_nodeILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_RT0_:
-    #####:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
-        -:  638:	{
-        -:  639:#if __cplusplus >= 201103L
-        -:  640:	  using _Vp = typename conditional<_MoveValue,
-        -:  641:					   value_type&&,
-        -:  642:					   const value_type&>::type;
-        -:  643:#endif
-        -:  644:	  _Link_type __tmp
-    #####:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
-    #####:  646:	  __tmp->_M_color = __x->_M_color;
-    #####:  647:	  __tmp->_M_left = 0;
-    #####:  648:	  __tmp->_M_right = 0;
-    #####:  649:	  return __tmp;
-        -:  650:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_M_clone_nodeILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_RT0_:
-    #####:  637:	_M_clone_node(_Link_type __x, _NodeGen& __node_gen)
-        -:  638:	{
-        -:  639:#if __cplusplus >= 201103L
-        -:  640:	  using _Vp = typename conditional<_MoveValue,
-        -:  641:					   value_type&&,
-        -:  642:					   const value_type&>::type;
-        -:  643:#endif
-        -:  644:	  _Link_type __tmp
-    #####:  645:	    = __node_gen(_GLIBCXX_FORWARD(_Vp, *__x->_M_valptr()));
-    #####:  646:	  __tmp->_M_color = __x->_M_color;
-    #####:  647:	  __tmp->_M_left = 0;
-    #####:  648:	  __tmp->_M_right = 0;
-    #####:  649:	  return __tmp;
-        -:  650:	}
-------------------
         -:  651:
         -:  652:    protected:
         -:  653:#if _GLIBCXX_INLINE_VERSION
@@ -1293,50 +970,35 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_M_cl
         -:  664:	{
         -:  665:	  typedef _Rb_tree_key_compare<_Key_compare> _Base_key_compare;
         -:  666:
-    #####:  667:	  _Rb_tree_impl()
+        2:  667:	  _Rb_tree_impl()
         -:  668:	    _GLIBCXX_NOEXCEPT_IF(
         -:  669:		is_nothrow_default_constructible<_Node_allocator>::value
         -:  670:		&& is_nothrow_default_constructible<_Base_key_compare>::value )
-    #####:  671:	  : _Node_allocator()
-    #####:  672:	  { }
+        2:  671:	  : _Node_allocator()
+        2:  672:	  { }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_Rb_tree_implIS7_Lb1EEC2Ev:
-    #####:  667:	  _Rb_tree_impl()
+        1:  667:	  _Rb_tree_impl()
         -:  668:	    _GLIBCXX_NOEXCEPT_IF(
         -:  669:		is_nothrow_default_constructible<_Node_allocator>::value
         -:  670:		&& is_nothrow_default_constructible<_Base_key_compare>::value )
-    #####:  671:	  : _Node_allocator()
-    #####:  672:	  { }
+        1:  671:	  : _Node_allocator()
+        1:  672:	  { }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_Rb_tree_implIS7_Lb1EEC2Ev:
-    #####:  667:	  _Rb_tree_impl()
+        1:  667:	  _Rb_tree_impl()
         -:  668:	    _GLIBCXX_NOEXCEPT_IF(
         -:  669:		is_nothrow_default_constructible<_Node_allocator>::value
         -:  670:		&& is_nothrow_default_constructible<_Base_key_compare>::value )
-    #####:  671:	  : _Node_allocator()
-    #####:  672:	  { }
+        1:  671:	  : _Node_allocator()
+        1:  672:	  { }
 ------------------
         -:  673:
-    #####:  674:	  _Rb_tree_impl(const _Rb_tree_impl& __x)
+        -:  674:	  _Rb_tree_impl(const _Rb_tree_impl& __x)
         -:  675:	  : _Node_allocator(_Alloc_traits::_S_select_on_copy(__x))
-    #####:  676:	  , _Base_key_compare(__x._M_key_compare)
-    #####:  677:	  , _Rb_tree_header()
-    #####:  678:	  { }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_Rb_tree_implIS7_Lb1EEC2ERKSB_:
-    #####:  674:	  _Rb_tree_impl(const _Rb_tree_impl& __x)
-        -:  675:	  : _Node_allocator(_Alloc_traits::_S_select_on_copy(__x))
-    #####:  676:	  , _Base_key_compare(__x._M_key_compare)
-    #####:  677:	  , _Rb_tree_header()
-    #####:  678:	  { }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_Rb_tree_implIS7_Lb1EEC2ERKSB_:
-    #####:  674:	  _Rb_tree_impl(const _Rb_tree_impl& __x)
-        -:  675:	  : _Node_allocator(_Alloc_traits::_S_select_on_copy(__x))
-    #####:  676:	  , _Base_key_compare(__x._M_key_compare)
-    #####:  677:	  , _Rb_tree_header()
-    #####:  678:	  { }
-------------------
+        -:  676:	  , _Base_key_compare(__x._M_key_compare)
+        -:  677:	  , _Rb_tree_header()
+        -:  678:	  { }
         -:  679:
         -:  680:#if __cplusplus < 201103L
         -:  681:	  _Rb_tree_impl(const _Key_compare& __comp, const _Node_allocator& __a)
@@ -1368,30 +1030,12 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE13_Rb_t
         -:  707:
         -:  708:    protected:
         -:  709:      _Base_ptr&
-    #####:  710:      _M_root() _GLIBCXX_NOEXCEPT
-    #####:  711:      { return this->_M_impl._M_header._M_parent; }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_rootEv:
-    #####:  710:      _M_root() _GLIBCXX_NOEXCEPT
-    #####:  711:      { return this->_M_impl._M_header._M_parent; }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_rootEv:
-    #####:  710:      _M_root() _GLIBCXX_NOEXCEPT
-    #####:  711:      { return this->_M_impl._M_header._M_parent; }
-------------------
+        -:  710:      _M_root() _GLIBCXX_NOEXCEPT
+        -:  711:      { return this->_M_impl._M_header._M_parent; }
         -:  712:
         -:  713:      _Const_Base_ptr
-    #####:  714:      _M_root() const _GLIBCXX_NOEXCEPT
-    #####:  715:      { return this->_M_impl._M_header._M_parent; }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_rootEv:
-    #####:  714:      _M_root() const _GLIBCXX_NOEXCEPT
-    #####:  715:      { return this->_M_impl._M_header._M_parent; }
-------------------
-_ZNKSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_rootEv:
-    #####:  714:      _M_root() const _GLIBCXX_NOEXCEPT
-    #####:  715:      { return this->_M_impl._M_header._M_parent; }
-------------------
+        -:  714:      _M_root() const _GLIBCXX_NOEXCEPT
+        -:  715:      { return this->_M_impl._M_header._M_parent; }
         -:  716:
         -:  717:      _Base_ptr&
     #####:  718:      _M_leftmost() _GLIBCXX_NOEXCEPT
@@ -1428,29 +1072,29 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE12_M_ri
         -:  731:      { return this->_M_impl._M_header._M_right; }
         -:  732:
         -:  733:      _Link_type
-    #####:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
-    #####:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
+        2:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
+        2:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
 ------------------
 _ZNKSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE9_M_mbeginEv:
-    #####:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
-    #####:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
+        1:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
+        1:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
 ------------------
 _ZNKSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE9_M_mbeginEv:
-    #####:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
-    #####:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
+        1:  734:      _M_mbegin() const _GLIBCXX_NOEXCEPT
+        1:  735:      { return static_cast<_Link_type>(this->_M_impl._M_header._M_parent); }
 ------------------
         -:  736:
         -:  737:      _Link_type
-    #####:  738:      _M_begin() _GLIBCXX_NOEXCEPT
-    #####:  739:      { return _M_mbegin(); }
+        2:  738:      _M_begin() _GLIBCXX_NOEXCEPT
+        2:  739:      { return _M_mbegin(); }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE8_M_beginEv:
-    #####:  738:      _M_begin() _GLIBCXX_NOEXCEPT
-    #####:  739:      { return _M_mbegin(); }
+        1:  738:      _M_begin() _GLIBCXX_NOEXCEPT
+        1:  739:      { return _M_mbegin(); }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE8_M_beginEv:
-    #####:  738:      _M_begin() _GLIBCXX_NOEXCEPT
-    #####:  739:      { return _M_mbegin(); }
+        1:  738:      _M_begin() _GLIBCXX_NOEXCEPT
+        1:  739:      { return _M_mbegin(); }
 ------------------
         -:  740:
         -:  741:      _Const_Link_type
@@ -1592,34 +1236,16 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE6_S_key
 ------------------
         -:  797:
         -:  798:      static _Base_ptr
-    #####:  799:      _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  800:      { return _Rb_tree_node_base::_S_minimum(__x); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE10_S_minimumEPSt18_Rb_tree_node_base:
-    #####:  799:      _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  800:      { return _Rb_tree_node_base::_S_minimum(__x); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE10_S_minimumEPSt18_Rb_tree_node_base:
-    #####:  799:      _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  800:      { return _Rb_tree_node_base::_S_minimum(__x); }
-------------------
+        -:  799:      _S_minimum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
+        -:  800:      { return _Rb_tree_node_base::_S_minimum(__x); }
         -:  801:
         -:  802:      static _Const_Base_ptr
         -:  803:      _S_minimum(_Const_Base_ptr __x) _GLIBCXX_NOEXCEPT
         -:  804:      { return _Rb_tree_node_base::_S_minimum(__x); }
         -:  805:
         -:  806:      static _Base_ptr
-    #####:  807:      _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  808:      { return _Rb_tree_node_base::_S_maximum(__x); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE10_S_maximumEPSt18_Rb_tree_node_base:
-    #####:  807:      _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  808:      { return _Rb_tree_node_base::_S_maximum(__x); }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE10_S_maximumEPSt18_Rb_tree_node_base:
-    #####:  807:      _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
-    #####:  808:      { return _Rb_tree_node_base::_S_maximum(__x); }
-------------------
+        -:  807:      _S_maximum(_Base_ptr __x) _GLIBCXX_NOEXCEPT
+        -:  808:      { return _Rb_tree_node_base::_S_maximum(__x); }
         -:  809:
         -:  810:      static _Const_Base_ptr
         -:  811:      _S_maximum(_Const_Base_ptr __x) _GLIBCXX_NOEXCEPT
@@ -1698,82 +1324,22 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE10_S_ma
         -:  884:
         -:  885:      template<bool _MoveValues, typename _NodeGen>
         -:  886:	_Link_type
-    #####:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
+        -:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
         -:  888:	{
         -:  889:	  _Link_type __root =
-    #####:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
-    #####:  891:	  _M_leftmost() = _S_minimum(__root);
-    #####:  892:	  _M_rightmost() = _S_maximum(__root);
-    #####:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
-    #####:  894:	  return __root;
+        -:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
+        -:  891:	  _M_leftmost() = _S_minimum(__root);
+        -:  892:	  _M_rightmost() = _S_maximum(__root);
+        -:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
+        -:  894:	  return __root;
         -:  895:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ERKS9_RT0_:
-    #####:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
-        -:  888:	{
-        -:  889:	  _Link_type __root =
-    #####:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
-    #####:  891:	  _M_leftmost() = _S_minimum(__root);
-    #####:  892:	  _M_rightmost() = _S_maximum(__root);
-    #####:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
-    #####:  894:	  return __root;
-        -:  895:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ERKS9_RT0_:
-    #####:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
-        -:  888:	{
-        -:  889:	  _Link_type __root =
-    #####:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
-    #####:  891:	  _M_leftmost() = _S_minimum(__root);
-    #####:  892:	  _M_rightmost() = _S_maximum(__root);
-    #####:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
-    #####:  894:	  return __root;
-        -:  895:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ERKS9_RT0_:
-    #####:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
-        -:  888:	{
-        -:  889:	  _Link_type __root =
-    #####:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
-    #####:  891:	  _M_leftmost() = _S_minimum(__root);
-    #####:  892:	  _M_rightmost() = _S_maximum(__root);
-    #####:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
-    #####:  894:	  return __root;
-        -:  895:	}
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ERKS9_RT0_:
-    #####:  887:	_M_copy(const _Rb_tree& __x, _NodeGen& __gen)
-        -:  888:	{
-        -:  889:	  _Link_type __root =
-    #####:  890:	    _M_copy<_MoveValues>(__x._M_mbegin(), _M_end(), __gen);
-    #####:  891:	  _M_leftmost() = _S_minimum(__root);
-    #####:  892:	  _M_rightmost() = _S_maximum(__root);
-    #####:  893:	  _M_impl._M_node_count = __x._M_impl._M_node_count;
-    #####:  894:	  return __root;
-        -:  895:	}
-------------------
         -:  896:
         -:  897:      _Link_type
-    #####:  898:      _M_copy(const _Rb_tree& __x)
+        -:  898:      _M_copy(const _Rb_tree& __x)
         -:  899:      {
-    #####:  900:	_Alloc_node __an(*this);
-    #####:  901:	return _M_copy<__as_lvalue>(__x, __an);
+        -:  900:	_Alloc_node __an(*this);
+        -:  901:	return _M_copy<__as_lvalue>(__x, __an);
         -:  902:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyERKS9_:
-    #####:  898:      _M_copy(const _Rb_tree& __x)
-        -:  899:      {
-    #####:  900:	_Alloc_node __an(*this);
-    #####:  901:	return _M_copy<__as_lvalue>(__x, __an);
-        -:  902:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyERKS9_:
-    #####:  898:      _M_copy(const _Rb_tree& __x)
-        -:  899:      {
-    #####:  900:	_Alloc_node __an(*this);
-    #####:  901:	return _M_copy<__as_lvalue>(__x, __an);
-        -:  902:      }
-------------------
         -:  903:
         -:  904:      void
         -:  905:      _M_erase(_Link_type __x);
@@ -1799,13 +1365,13 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_cop
         -:  925:#if __cplusplus < 201103L
         -:  926:      _Rb_tree() { }
         -:  927:#else
-    #####:  928:      _Rb_tree() = default;
+        2:  928:      _Rb_tree() = default;
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2Ev:
-    #####:  928:      _Rb_tree() = default;
+        1:  928:      _Rb_tree() = default;
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2Ev:
-    #####:  928:      _Rb_tree() = default;
+        1:  928:      _Rb_tree() = default;
 ------------------
         -:  929:#endif
         -:  930:
@@ -1813,29 +1379,12 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2Ev:
         -:  932:	       const allocator_type& __a = allocator_type())
         -:  933:      : _M_impl(__comp, _Node_allocator(__a)) { }
         -:  934:
-    #####:  935:      _Rb_tree(const _Rb_tree& __x)
-    #####:  936:      : _M_impl(__x._M_impl)
+        -:  935:      _Rb_tree(const _Rb_tree& __x)
+        -:  936:      : _M_impl(__x._M_impl)
         -:  937:      {
-    #####:  938:	if (__x._M_root() != 0)
-    #####:  939:	  _M_root() = _M_copy(__x);
-    #####:  940:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2ERKS9_:
-    #####:  935:      _Rb_tree(const _Rb_tree& __x)
-    #####:  936:      : _M_impl(__x._M_impl)
-        -:  937:      {
-    #####:  938:	if (__x._M_root() != 0)
-    #####:  939:	  _M_root() = _M_copy(__x);
-    #####:  940:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2ERKS9_:
-    #####:  935:      _Rb_tree(const _Rb_tree& __x)
-    #####:  936:      : _M_impl(__x._M_impl)
-        -:  937:      {
-    #####:  938:	if (__x._M_root() != 0)
-    #####:  939:	  _M_root() = _M_copy(__x);
-    #####:  940:      }
-------------------
+        -:  938:	if (__x._M_root() != 0)
+        -:  939:	  _M_root() = _M_copy(__x);
+        -:  940:      }
         -:  941:
         -:  942:#if __cplusplus >= 201103L
         -:  943:      _Rb_tree(const allocator_type& __a)
@@ -1878,16 +1427,16 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEC2ERKS9
         -:  980:      { }
         -:  981:#endif
         -:  982:
-    #####:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
-    #####:  984:      { _M_erase(_M_begin()); }
+        2:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
+        2:  984:      { _M_erase(_M_begin()); }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EED2Ev:
-    #####:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
-    #####:  984:      { _M_erase(_M_begin()); }
+        1:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
+        1:  984:      { _M_erase(_M_begin()); }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EED2Ev:
-    #####:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
-    #####:  984:      { _M_erase(_M_begin()); }
+        1:  983:      ~_Rb_tree() _GLIBCXX_NOEXCEPT
+        1:  984:      { _M_erase(_M_begin()); }
 ------------------
         -:  985:
         -:  986:      _Rb_tree&
@@ -2192,26 +1741,11 @@ _ZNKSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE4sizeE
         -: 1249:#endif
         -: 1250:
         -: 1251:      void
-    #####: 1252:      clear() _GLIBCXX_NOEXCEPT
+        -: 1252:      clear() _GLIBCXX_NOEXCEPT
         -: 1253:      {
-    #####: 1254:	_M_erase(_M_begin());
-    #####: 1255:	_M_impl._M_reset();
-    #####: 1256:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE5clearEv:
-    #####: 1252:      clear() _GLIBCXX_NOEXCEPT
-        -: 1253:      {
-    #####: 1254:	_M_erase(_M_begin());
-    #####: 1255:	_M_impl._M_reset();
-    #####: 1256:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE5clearEv:
-    #####: 1252:      clear() _GLIBCXX_NOEXCEPT
-        -: 1253:      {
-    #####: 1254:	_M_erase(_M_begin());
-    #####: 1255:	_M_impl._M_reset();
-    #####: 1256:      }
-------------------
+        -: 1254:	_M_erase(_M_begin());
+        -: 1255:	_M_impl._M_reset();
+        -: 1256:      }
         -: 1257:
         -: 1258:      // Set operations.
         -: 1259:      iterator
@@ -2695,104 +2229,37 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE11lower
         -: 1728:  template<typename _Key, typename _Val, typename _KeyOfValue,
         -: 1729:	   typename _Compare, typename _Alloc>
         -: 1730:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&
-    #####: 1731:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
+        -: 1731:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
         -: 1732:    operator=(const _Rb_tree& __x)
         -: 1733:    {
-    #####: 1734:      if (this != &__x)
+        -: 1734:      if (this != &__x)
         -: 1735:	{
         -: 1736:	  // Note that _Key may be a constant type.
         -: 1737:#if __cplusplus >= 201103L
-    #####: 1738:	  if (_Alloc_traits::_S_propagate_on_copy_assign())
+        -: 1738:	  if (_Alloc_traits::_S_propagate_on_copy_assign())
         -: 1739:	    {
-    #####: 1740:	      auto& __this_alloc = this->_M_get_Node_allocator();
-    #####: 1741:	      auto& __that_alloc = __x._M_get_Node_allocator();
-    #####: 1742:	      if (!_Alloc_traits::_S_always_equal()
-    #####: 1743:		  && __this_alloc != __that_alloc)
+        -: 1740:	      auto& __this_alloc = this->_M_get_Node_allocator();
+        -: 1741:	      auto& __that_alloc = __x._M_get_Node_allocator();
+        -: 1742:	      if (!_Alloc_traits::_S_always_equal()
+        -: 1743:		  && __this_alloc != __that_alloc)
         -: 1744:		{
         -: 1745:		  // Replacement allocator cannot free existing storage, we need
         -: 1746:		  // to erase nodes first.
-    #####: 1747:		  clear();
-    #####: 1748:		  std::__alloc_on_copy(__this_alloc, __that_alloc);
+        -: 1747:		  clear();
+        -: 1748:		  std::__alloc_on_copy(__this_alloc, __that_alloc);
         -: 1749:		}
         -: 1750:	    }
         -: 1751:#endif
         -: 1752:
-    #####: 1753:	  _Reuse_or_alloc_node __roan(*this);
-    #####: 1754:	  _M_impl._M_reset();
+        -: 1753:	  _Reuse_or_alloc_node __roan(*this);
+        -: 1754:	  _M_impl._M_reset();
         -: 1755:	  _M_impl._M_key_compare = __x._M_impl._M_key_compare;
-    #####: 1756:	  if (__x._M_root() != 0)
-    #####: 1757:	    _M_root() = _M_copy<__as_lvalue>(__x, __roan);
-    #####: 1758:	}
+        -: 1756:	  if (__x._M_root() != 0)
+        -: 1757:	    _M_root() = _M_copy<__as_lvalue>(__x, __roan);
+        -: 1758:	}
         -: 1759:
-    #####: 1760:      return *this;
+        -: 1760:      return *this;
         -: 1761:    }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EEaSERKS9_:
-    #####: 1731:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
-        -: 1732:    operator=(const _Rb_tree& __x)
-        -: 1733:    {
-    #####: 1734:      if (this != &__x)
-        -: 1735:	{
-        -: 1736:	  // Note that _Key may be a constant type.
-        -: 1737:#if __cplusplus >= 201103L
-    #####: 1738:	  if (_Alloc_traits::_S_propagate_on_copy_assign())
-        -: 1739:	    {
-    #####: 1740:	      auto& __this_alloc = this->_M_get_Node_allocator();
-    #####: 1741:	      auto& __that_alloc = __x._M_get_Node_allocator();
-    #####: 1742:	      if (!_Alloc_traits::_S_always_equal()
-    #####: 1743:		  && __this_alloc != __that_alloc)
-        -: 1744:		{
-        -: 1745:		  // Replacement allocator cannot free existing storage, we need
-        -: 1746:		  // to erase nodes first.
-    #####: 1747:		  clear();
-    #####: 1748:		  std::__alloc_on_copy(__this_alloc, __that_alloc);
-        -: 1749:		}
-        -: 1750:	    }
-        -: 1751:#endif
-        -: 1752:
-    #####: 1753:	  _Reuse_or_alloc_node __roan(*this);
-    #####: 1754:	  _M_impl._M_reset();
-        -: 1755:	  _M_impl._M_key_compare = __x._M_impl._M_key_compare;
-    #####: 1756:	  if (__x._M_root() != 0)
-    #####: 1757:	    _M_root() = _M_copy<__as_lvalue>(__x, __roan);
-    #####: 1758:	}
-        -: 1759:
-    #####: 1760:      return *this;
-        -: 1761:    }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEaSERKS9_:
-    #####: 1731:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
-        -: 1732:    operator=(const _Rb_tree& __x)
-        -: 1733:    {
-    #####: 1734:      if (this != &__x)
-        -: 1735:	{
-        -: 1736:	  // Note that _Key may be a constant type.
-        -: 1737:#if __cplusplus >= 201103L
-    #####: 1738:	  if (_Alloc_traits::_S_propagate_on_copy_assign())
-        -: 1739:	    {
-    #####: 1740:	      auto& __this_alloc = this->_M_get_Node_allocator();
-    #####: 1741:	      auto& __that_alloc = __x._M_get_Node_allocator();
-    #####: 1742:	      if (!_Alloc_traits::_S_always_equal()
-    #####: 1743:		  && __this_alloc != __that_alloc)
-        -: 1744:		{
-        -: 1745:		  // Replacement allocator cannot free existing storage, we need
-        -: 1746:		  // to erase nodes first.
-    #####: 1747:		  clear();
-    #####: 1748:		  std::__alloc_on_copy(__this_alloc, __that_alloc);
-        -: 1749:		}
-        -: 1750:	    }
-        -: 1751:#endif
-        -: 1752:
-    #####: 1753:	  _Reuse_or_alloc_node __roan(*this);
-    #####: 1754:	  _M_impl._M_reset();
-        -: 1755:	  _M_impl._M_key_compare = __x._M_impl._M_key_compare;
-    #####: 1756:	  if (__x._M_root() != 0)
-    #####: 1757:	    _M_root() = _M_copy<__as_lvalue>(__x, __roan);
-    #####: 1758:	}
-        -: 1759:
-    #####: 1760:      return *this;
-        -: 1761:    }
-------------------
         -: 1762:
         -: 1763:  template<typename _Key, typename _Val, typename _KeyOfValue,
         -: 1764:	   typename _Compare, typename _Alloc>
@@ -2876,229 +2343,84 @@ _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EEaSERKS9
         -: 1842:	   typename _Compare, typename _Alloc>
         -: 1843:    template<bool _MoveValues, typename _NodeGen>
         -: 1844:      typename _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::_Link_type
-    #####: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
+        -: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
         -: 1846:      _M_copy(_Link_type __x, _Base_ptr __p, _NodeGen& __node_gen)
         -: 1847:      {
         -: 1848:	// Structural copy. __x and __p must be non-null.
-    #####: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1850:	__top->_M_parent = __p;
+        -: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
+        -: 1850:	__top->_M_parent = __p;
         -: 1851:
         -: 1852:	__try
         -: 1853:	  {
-    #####: 1854:	    if (__x->_M_right)
-    #####: 1855:	      __top->_M_right =
-    #####: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
-    #####: 1857:	    __p = __top;
-    #####: 1858:	    __x = _S_left(__x);
+        -: 1854:	    if (__x->_M_right)
+        -: 1855:	      __top->_M_right =
+        -: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
+        -: 1857:	    __p = __top;
+        -: 1858:	    __x = _S_left(__x);
         -: 1859:
-    #####: 1860:	    while (__x != 0)
+        -: 1860:	    while (__x != 0)
         -: 1861:	      {
-    #####: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1863:		__p->_M_left = __y;
-    #####: 1864:		__y->_M_parent = __p;
-    #####: 1865:		if (__x->_M_right)
-    #####: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
+        -: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
+        -: 1863:		__p->_M_left = __y;
+        -: 1864:		__y->_M_parent = __p;
+        -: 1865:		if (__x->_M_right)
+        -: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
         -: 1867:						       __y, __node_gen);
-    #####: 1868:		__p = __y;
-    #####: 1869:		__x = _S_left(__x);
+        -: 1868:		__p = __y;
+        -: 1869:		__x = _S_left(__x);
         -: 1870:	      }
         -: 1871:	  }
-    =====: 1872:	__catch(...)
+        -: 1872:	__catch(...)
         -: 1873:	  {
-    =====: 1874:	    _M_erase(__top);
-    =====: 1875:	    __throw_exception_again;
+        -: 1874:	    _M_erase(__top);
+        -: 1875:	    __throw_exception_again;
         -: 1876:	  }
-    #####: 1877:	return __top;
+        -: 1877:	return __top;
         -: 1878:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_PSt18_Rb_tree_node_baseRT0_:
-    #####: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
-        -: 1846:      _M_copy(_Link_type __x, _Base_ptr __p, _NodeGen& __node_gen)
-        -: 1847:      {
-        -: 1848:	// Structural copy. __x and __p must be non-null.
-    #####: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1850:	__top->_M_parent = __p;
-        -: 1851:
-        -: 1852:	__try
-        -: 1853:	  {
-    #####: 1854:	    if (__x->_M_right)
-    #####: 1855:	      __top->_M_right =
-    #####: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
-    #####: 1857:	    __p = __top;
-    #####: 1858:	    __x = _S_left(__x);
-        -: 1859:
-    #####: 1860:	    while (__x != 0)
-        -: 1861:	      {
-    #####: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1863:		__p->_M_left = __y;
-    #####: 1864:		__y->_M_parent = __p;
-    #####: 1865:		if (__x->_M_right)
-    #####: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
-        -: 1867:						       __y, __node_gen);
-    #####: 1868:		__p = __y;
-    #####: 1869:		__x = _S_left(__x);
-        -: 1870:	      }
-        -: 1871:	  }
-    =====: 1872:	__catch(...)
-        -: 1873:	  {
-    =====: 1874:	    _M_erase(__top);
-    =====: 1875:	    __throw_exception_again;
-        -: 1876:	  }
-    #####: 1877:	return __top;
-        -: 1878:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_PSt18_Rb_tree_node_baseRT0_:
-    #####: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
-        -: 1846:      _M_copy(_Link_type __x, _Base_ptr __p, _NodeGen& __node_gen)
-        -: 1847:      {
-        -: 1848:	// Structural copy. __x and __p must be non-null.
-    #####: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1850:	__top->_M_parent = __p;
-        -: 1851:
-        -: 1852:	__try
-        -: 1853:	  {
-    #####: 1854:	    if (__x->_M_right)
-    #####: 1855:	      __top->_M_right =
-    #####: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
-    #####: 1857:	    __p = __top;
-    #####: 1858:	    __x = _S_left(__x);
-        -: 1859:
-    #####: 1860:	    while (__x != 0)
-        -: 1861:	      {
-    #####: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1863:		__p->_M_left = __y;
-    #####: 1864:		__y->_M_parent = __p;
-    #####: 1865:		if (__x->_M_right)
-    #####: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
-        -: 1867:						       __y, __node_gen);
-    #####: 1868:		__p = __y;
-    #####: 1869:		__x = _S_left(__x);
-        -: 1870:	      }
-        -: 1871:	  }
-    =====: 1872:	__catch(...)
-        -: 1873:	  {
-    =====: 1874:	    _M_erase(__top);
-    =====: 1875:	    __throw_exception_again;
-        -: 1876:	  }
-    #####: 1877:	return __top;
-        -: 1878:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_11_Alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_PSt18_Rb_tree_node_baseRT0_:
-    #####: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
-        -: 1846:      _M_copy(_Link_type __x, _Base_ptr __p, _NodeGen& __node_gen)
-        -: 1847:      {
-        -: 1848:	// Structural copy. __x and __p must be non-null.
-    #####: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1850:	__top->_M_parent = __p;
-        -: 1851:
-        -: 1852:	__try
-        -: 1853:	  {
-    #####: 1854:	    if (__x->_M_right)
-    #####: 1855:	      __top->_M_right =
-    #####: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
-    #####: 1857:	    __p = __top;
-    #####: 1858:	    __x = _S_left(__x);
-        -: 1859:
-    #####: 1860:	    while (__x != 0)
-        -: 1861:	      {
-    #####: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1863:		__p->_M_left = __y;
-    #####: 1864:		__y->_M_parent = __p;
-    #####: 1865:		if (__x->_M_right)
-    #####: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
-        -: 1867:						       __y, __node_gen);
-    #####: 1868:		__p = __y;
-    #####: 1869:		__x = _S_left(__x);
-        -: 1870:	      }
-        -: 1871:	  }
-    =====: 1872:	__catch(...)
-        -: 1873:	  {
-    =====: 1874:	    _M_erase(__top);
-    =====: 1875:	    __throw_exception_again;
-        -: 1876:	  }
-    #####: 1877:	return __top;
-        -: 1878:      }
-------------------
-_ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE7_M_copyILb0ENS9_20_Reuse_or_alloc_nodeEEEPSt13_Rb_tree_nodeIS3_ESE_PSt18_Rb_tree_node_baseRT0_:
-    #####: 1845:      _Rb_tree<_Key, _Val, _KoV, _Compare, _Alloc>::
-        -: 1846:      _M_copy(_Link_type __x, _Base_ptr __p, _NodeGen& __node_gen)
-        -: 1847:      {
-        -: 1848:	// Structural copy. __x and __p must be non-null.
-    #####: 1849:	_Link_type __top = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1850:	__top->_M_parent = __p;
-        -: 1851:
-        -: 1852:	__try
-        -: 1853:	  {
-    #####: 1854:	    if (__x->_M_right)
-    #####: 1855:	      __top->_M_right =
-    #####: 1856:		_M_copy<_MoveValues>(_S_right(__x), __top, __node_gen);
-    #####: 1857:	    __p = __top;
-    #####: 1858:	    __x = _S_left(__x);
-        -: 1859:
-    #####: 1860:	    while (__x != 0)
-        -: 1861:	      {
-    #####: 1862:		_Link_type __y = _M_clone_node<_MoveValues>(__x, __node_gen);
-    #####: 1863:		__p->_M_left = __y;
-    #####: 1864:		__y->_M_parent = __p;
-    #####: 1865:		if (__x->_M_right)
-    #####: 1866:		  __y->_M_right = _M_copy<_MoveValues>(_S_right(__x),
-        -: 1867:						       __y, __node_gen);
-    #####: 1868:		__p = __y;
-    #####: 1869:		__x = _S_left(__x);
-        -: 1870:	      }
-        -: 1871:	  }
-    =====: 1872:	__catch(...)
-        -: 1873:	  {
-    =====: 1874:	    _M_erase(__top);
-    =====: 1875:	    __throw_exception_again;
-        -: 1876:	  }
-    #####: 1877:	return __top;
-        -: 1878:      }
-------------------
         -: 1879:
         -: 1880:  template<typename _Key, typename _Val, typename _KeyOfValue,
         -: 1881:	   typename _Compare, typename _Alloc>
         -: 1882:    void
-    #####: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
+        2: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
         -: 1884:    _M_erase(_Link_type __x)
         -: 1885:    {
         -: 1886:      // Erase without rebalancing.
-    #####: 1887:      while (__x != 0)
+        2: 1887:      while (__x != 0)
         -: 1888:	{
     #####: 1889:	  _M_erase(_S_right(__x));
     #####: 1890:	  _Link_type __y = _S_left(__x);
     #####: 1891:	  _M_drop_node(__x);
     #####: 1892:	  __x = __y;
         -: 1893:	}
-    #####: 1894:    }
+        2: 1894:    }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8CustomerESt10_Select1stIS3_ESt4lessIlESaIS3_EE8_M_eraseEPSt13_Rb_tree_nodeIS3_E:
-    #####: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
+        1: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
         -: 1884:    _M_erase(_Link_type __x)
         -: 1885:    {
         -: 1886:      // Erase without rebalancing.
-    #####: 1887:      while (__x != 0)
+        1: 1887:      while (__x != 0)
         -: 1888:	{
     #####: 1889:	  _M_erase(_S_right(__x));
     #####: 1890:	  _Link_type __y = _S_left(__x);
     #####: 1891:	  _M_drop_node(__x);
     #####: 1892:	  __x = __y;
         -: 1893:	}
-    #####: 1894:    }
+        1: 1894:    }
 ------------------
 _ZNSt8_Rb_treeIlSt4pairIKl8OperatorESt10_Select1stIS3_ESt4lessIlESaIS3_EE8_M_eraseEPSt13_Rb_tree_nodeIS3_E:
-    #####: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
+        1: 1883:    _Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
         -: 1884:    _M_erase(_Link_type __x)
         -: 1885:    {
         -: 1886:      // Erase without rebalancing.
-    #####: 1887:      while (__x != 0)
+        1: 1887:      while (__x != 0)
         -: 1888:	{
     #####: 1889:	  _M_erase(_S_right(__x));
     #####: 1890:	  _Link_type __y = _S_left(__x);
     #####: 1891:	  _M_drop_node(__x);
     #####: 1892:	  __x = __y;
         -: 1893:	}
-    #####: 1894:    }
+        1: 1894:    }
 ------------------
         -: 1895:
         -: 1896:  template<typename _Key, typename _Val, typename _KeyOfValue,

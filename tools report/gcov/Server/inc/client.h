@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdio.h>
-#include <iostream>
 #include <iostream>
 #include <fstream>
 #include <sys/types.h>
@@ -12,8 +10,9 @@
 #include <sys/wait.h>
 #include <signal.h>
 #include <cstring>
-#include <string> // std::string
 #include <stdlib.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include <user.h>
 #include <utils.h>
@@ -27,26 +26,35 @@ typedef struct sockaddr_in SA_IN;
 
 class Client
 {
-private:
-    int sockfd;
-    int port;
-    char ipAddr[20];
-    struct sockaddr_in serverAddr;
-    socklen_t len;
-
 public:
     Client();
-    Client(int, char *);
+
+    void setIPAddr(const char *ipAddr)
+    {
+        this->ipAddr = ipAddr;
+    }
+    void setPort(int port)
+    {
+        this->port = port;
+    }
+
     void createSocket();
     void clientConnect();
     int getClientSockfd() { return sockfd; }
 
     int writeToFile(int, char *);
     ~Client();
+
+private:
+    int sockfd;
+    int port;
+    const char* ipAddr;
+    struct sockaddr_in serverAddr;
+    socklen_t len;
 };
 
 void clientErrExit();
-void showMenu(int menuType);
+void showMenu(int);
 int getUserChoice();
 void pressEnter();
 bool validateInput(string, int);

@@ -107,21 +107,21 @@
         -:  106:#else
         -:  107:      void
         -:  108:#endif
-        -:  109:      vector<_Tp, _Alloc>::
+        4:  109:      vector<_Tp, _Alloc>::
         -:  110:      emplace_back(_Args&&... __args)
         -:  111:      {
-        -:  112:	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
+        4:  112:	if (this->_M_impl._M_finish != this->_M_impl._M_end_of_storage)
         -:  113:	  {
         -:  114:	    _GLIBCXX_ASAN_ANNOTATE_GROW(1);
-        -:  115:	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
+        1:  115:	    _Alloc_traits::construct(this->_M_impl, this->_M_impl._M_finish,
         -:  116:				     std::forward<_Args>(__args)...);
-        -:  117:	    ++this->_M_impl._M_finish;
+        1:  117:	    ++this->_M_impl._M_finish;
         -:  118:	    _GLIBCXX_ASAN_ANNOTATE_GREW(1);
         -:  119:	  }
         -:  120:	else
-        -:  121:	  _M_realloc_insert(end(), std::forward<_Args>(__args)...);
+        3:  121:	  _M_realloc_insert(end(), std::forward<_Args>(__args)...);
         -:  122:#if __cplusplus > 201402L
-        -:  123:	return back();
+        4:  123:	return back();
         -:  124:#endif
         -:  125:      }
         -:  126:#endif
@@ -424,7 +424,7 @@
         -:  423:  template<typename _Tp, typename _Alloc>
         -:  424:    template<typename... _Args>
         -:  425:      void
-    #####:  426:      vector<_Tp, _Alloc>::
+       3*:  426:      vector<_Tp, _Alloc>::
         -:  427:      _M_realloc_insert(iterator __position, _Args&&... __args)
         -:  428:#else
         -:  429:  template<typename _Tp, typename _Alloc>
@@ -434,12 +434,12 @@
         -:  433:#endif
         -:  434:    {
         -:  435:      const size_type __len =
-    #####:  436:	_M_check_len(size_type(1), "vector::_M_realloc_insert");
-    #####:  437:      pointer __old_start = this->_M_impl._M_start;
-    #####:  438:      pointer __old_finish = this->_M_impl._M_finish;
-    #####:  439:      const size_type __elems_before = __position - begin();
-    #####:  440:      pointer __new_start(this->_M_allocate(__len));
-    #####:  441:      pointer __new_finish(__new_start);
+       3*:  436:	_M_check_len(size_type(1), "vector::_M_realloc_insert");
+       3*:  437:      pointer __old_start = this->_M_impl._M_start;
+       3*:  438:      pointer __old_finish = this->_M_impl._M_finish;
+       3*:  439:      const size_type __elems_before = __position - begin();
+       3*:  440:      pointer __new_start(this->_M_allocate(__len));
+       3*:  441:      pointer __new_finish(__new_start);
         -:  442:      __try
         -:  443:	{
         -:  444:	  // The order of the three operations is dictated by the C++11
@@ -447,25 +447,25 @@
         -:  446:	  // to the existing vector.  This is an issue only for callers
         -:  447:	  // taking the element by lvalue ref (see last bullet of C++11
         -:  448:	  // [res.on.arguments]).
-    #####:  449:	  _Alloc_traits::construct(this->_M_impl,
-    #####:  450:				   __new_start + __elems_before,
+       3*:  449:	  _Alloc_traits::construct(this->_M_impl,
+       3*:  450:				   __new_start + __elems_before,
         -:  451:#if __cplusplus >= 201103L
         -:  452:				   std::forward<_Args>(__args)...);
         -:  453:#else
         -:  454:				   __x);
         -:  455:#endif
-    #####:  456:	  __new_finish = pointer();
+       3*:  456:	  __new_finish = pointer();
         -:  457:
         -:  458:#if __cplusplus >= 201103L
         -:  459:	  if _GLIBCXX17_CONSTEXPR (_S_use_relocate())
         -:  460:	    {
-    #####:  461:	      __new_finish = _S_relocate(__old_start, __position.base(),
-    #####:  462:					 __new_start, _M_get_Tp_allocator());
+       3*:  461:	      __new_finish = _S_relocate(__old_start, __position.base(),
+       3*:  462:					 __new_start, _M_get_Tp_allocator());
         -:  463:
-    #####:  464:	      ++__new_finish;
+       3*:  464:	      ++__new_finish;
         -:  465:
-    #####:  466:	      __new_finish = _S_relocate(__position.base(), __old_finish,
-    #####:  467:					 __new_finish, _M_get_Tp_allocator());
+       3*:  466:	      __new_finish = _S_relocate(__position.base(), __old_finish,
+       3*:  467:					 __new_finish, _M_get_Tp_allocator());
         -:  468:	    }
         -:  469:	  else
         -:  470:#endif
@@ -498,12 +498,12 @@
         -:  497:#endif
         -:  498:	std::_Destroy(__old_start, __old_finish, _M_get_Tp_allocator());
         -:  499:      _GLIBCXX_ASAN_ANNOTATE_REINIT;
-    #####:  500:      _M_deallocate(__old_start,
-    #####:  501:		    this->_M_impl._M_end_of_storage - __old_start);
-    #####:  502:      this->_M_impl._M_start = __new_start;
-    #####:  503:      this->_M_impl._M_finish = __new_finish;
-    #####:  504:      this->_M_impl._M_end_of_storage = __new_start + __len;
-    #####:  505:    }
+       3*:  500:      _M_deallocate(__old_start,
+       3*:  501:		    this->_M_impl._M_end_of_storage - __old_start);
+       3*:  502:      this->_M_impl._M_start = __new_start;
+       3*:  503:      this->_M_impl._M_finish = __new_finish;
+       3*:  504:      this->_M_impl._M_end_of_storage = __new_start + __len;
+       3*:  505:    }
 ------------------
 _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE17_M_realloc_insertIJRKS5_EEEvN9__gnu_cxx17__normal_iteratorIPS5_S7_EEDpOT_:
     #####:  426:      vector<_Tp, _Alloc>::
@@ -668,6 +668,88 @@ _ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE17_M_re
     #####:  503:      this->_M_impl._M_finish = __new_finish;
     #####:  504:      this->_M_impl._M_end_of_storage = __new_start + __len;
     #####:  505:    }
+------------------
+_ZNSt6vectorINSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEESaIS5_EE17_M_realloc_insertIJS5_EEEvN9__gnu_cxx17__normal_iteratorIPS5_S7_EEDpOT_:
+        3:  426:      vector<_Tp, _Alloc>::
+        -:  427:      _M_realloc_insert(iterator __position, _Args&&... __args)
+        -:  428:#else
+        -:  429:  template<typename _Tp, typename _Alloc>
+        -:  430:    void
+        -:  431:    vector<_Tp, _Alloc>::
+        -:  432:    _M_realloc_insert(iterator __position, const _Tp& __x)
+        -:  433:#endif
+        -:  434:    {
+        -:  435:      const size_type __len =
+        3:  436:	_M_check_len(size_type(1), "vector::_M_realloc_insert");
+        3:  437:      pointer __old_start = this->_M_impl._M_start;
+        3:  438:      pointer __old_finish = this->_M_impl._M_finish;
+        3:  439:      const size_type __elems_before = __position - begin();
+        3:  440:      pointer __new_start(this->_M_allocate(__len));
+        3:  441:      pointer __new_finish(__new_start);
+        -:  442:      __try
+        -:  443:	{
+        -:  444:	  // The order of the three operations is dictated by the C++11
+        -:  445:	  // case, where the moves could alter a new element belonging
+        -:  446:	  // to the existing vector.  This is an issue only for callers
+        -:  447:	  // taking the element by lvalue ref (see last bullet of C++11
+        -:  448:	  // [res.on.arguments]).
+        3:  449:	  _Alloc_traits::construct(this->_M_impl,
+        3:  450:				   __new_start + __elems_before,
+        -:  451:#if __cplusplus >= 201103L
+        -:  452:				   std::forward<_Args>(__args)...);
+        -:  453:#else
+        -:  454:				   __x);
+        -:  455:#endif
+        3:  456:	  __new_finish = pointer();
+        -:  457:
+        -:  458:#if __cplusplus >= 201103L
+        -:  459:	  if _GLIBCXX17_CONSTEXPR (_S_use_relocate())
+        -:  460:	    {
+        3:  461:	      __new_finish = _S_relocate(__old_start, __position.base(),
+        3:  462:					 __new_start, _M_get_Tp_allocator());
+        -:  463:
+        3:  464:	      ++__new_finish;
+        -:  465:
+        3:  466:	      __new_finish = _S_relocate(__position.base(), __old_finish,
+        3:  467:					 __new_finish, _M_get_Tp_allocator());
+        -:  468:	    }
+        -:  469:	  else
+        -:  470:#endif
+        -:  471:	    {
+        -:  472:	      __new_finish
+        -:  473:		= std::__uninitialized_move_if_noexcept_a
+        -:  474:		(__old_start, __position.base(),
+        -:  475:		 __new_start, _M_get_Tp_allocator());
+        -:  476:
+        -:  477:	      ++__new_finish;
+        -:  478:
+        -:  479:	      __new_finish
+        -:  480:		= std::__uninitialized_move_if_noexcept_a
+        -:  481:		(__position.base(), __old_finish,
+        -:  482:		 __new_finish, _M_get_Tp_allocator());
+        -:  483:	    }
+        -:  484:	}
+        -:  485:      __catch(...)
+        -:  486:	{
+        -:  487:	  if (!__new_finish)
+        -:  488:	    _Alloc_traits::destroy(this->_M_impl,
+        -:  489:				   __new_start + __elems_before);
+        -:  490:	  else
+        -:  491:	    std::_Destroy(__new_start, __new_finish, _M_get_Tp_allocator());
+        -:  492:	  _M_deallocate(__new_start, __len);
+        -:  493:	  __throw_exception_again;
+        -:  494:	}
+        -:  495:#if __cplusplus >= 201103L
+        -:  496:      if _GLIBCXX17_CONSTEXPR (!_S_use_relocate())
+        -:  497:#endif
+        -:  498:	std::_Destroy(__old_start, __old_finish, _M_get_Tp_allocator());
+        -:  499:      _GLIBCXX_ASAN_ANNOTATE_REINIT;
+        3:  500:      _M_deallocate(__old_start,
+        3:  501:		    this->_M_impl._M_end_of_storage - __old_start);
+        3:  502:      this->_M_impl._M_start = __new_start;
+        3:  503:      this->_M_impl._M_finish = __new_finish;
+        3:  504:      this->_M_impl._M_end_of_storage = __new_start + __len;
+        3:  505:    }
 ------------------
         -:  506:
         -:  507:  template<typename _Tp, typename _Alloc>

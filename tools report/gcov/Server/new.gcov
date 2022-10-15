@@ -172,8 +172,12 @@
         -:  171:#endif // __cpp_aligned_new
         -:  172:
         -:  173:// Default placement versions of operator new.
- 5640601*:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
- 5640601*:  175:{ return __p; }
+ 5462766*:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+ 5462766*:  175:{ return __p; }
+------------------
+_ZnwmPv:
+  5462766:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+  5462766:  175:{ return __p; }
 ------------------
 _ZnwmPv:
     #####:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
@@ -184,8 +188,8 @@ _ZnwmPv:
     #####:  175:{ return __p; }
 ------------------
 _ZnwmPv:
-  5640601:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
-  5640601:  175:{ return __p; }
+    #####:  174:_GLIBCXX_NODISCARD inline void* operator new(std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
+    #####:  175:{ return __p; }
 ------------------
         -:  176:_GLIBCXX_NODISCARD inline void* operator new[](std::size_t, void* __p) _GLIBCXX_USE_NOEXCEPT
         -:  177:{ return __p; }

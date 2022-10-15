@@ -57,5 +57,5 @@ private:
     long downData;
     long upData;
 
-    map<long, Operator> operatorsMap;
-};
+   
+}; 

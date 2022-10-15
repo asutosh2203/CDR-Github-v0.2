@@ -228,14 +228,25 @@
         -:  227:  template<typename _Tp>
         -:  228:    _GLIBCXX14_CONSTEXPR
         -:  229:    inline const _Tp&
-    #####:  230:    min(const _Tp& __a, const _Tp& __b)
+       6*:  230:    min(const _Tp& __a, const _Tp& __b)
         -:  231:    {
         -:  232:      // concept requirements
         -:  233:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  234:      //return __b < __a ? __b : __a;
-    #####:  235:      if (__b < __a)
+       6*:  235:      if (__b < __a)
     #####:  236:	return __b;
-    #####:  237:      return __a;
+       6*:  237:      return __a;
+        -:  238:    }
+------------------
+_ZSt3minImERKT_S2_S2_:
+        6:  230:    min(const _Tp& __a, const _Tp& __b)
+        -:  231:    {
+        -:  232:      // concept requirements
+        -:  233:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
+        -:  234:      //return __b < __a ? __b : __a;
+        6:  235:      if (__b < __a)
+    #####:  236:	return __b;
+        6:  237:      return __a;
         -:  238:    }
 ------------------
 _ZSt3minImERKT_S2_S2_:
@@ -275,14 +286,25 @@ _ZSt3minImERKT_S2_S2_:
         -:  251:  template<typename _Tp>
         -:  252:    _GLIBCXX14_CONSTEXPR
         -:  253:    inline const _Tp&
-    #####:  254:    max(const _Tp& __a, const _Tp& __b)
+       3*:  254:    max(const _Tp& __a, const _Tp& __b)
         -:  255:    {
         -:  256:      // concept requirements
         -:  257:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
         -:  258:      //return  __a < __b ? __b : __a;
-    #####:  259:      if (__a < __b)
-    #####:  260:	return __b;
-    #####:  261:      return __a;
+       3*:  259:      if (__a < __b)
+       1*:  260:	return __b;
+       2*:  261:      return __a;
+        -:  262:    }
+------------------
+_ZSt3maxImERKT_S2_S2_:
+        3:  254:    max(const _Tp& __a, const _Tp& __b)
+        -:  255:    {
+        -:  256:      // concept requirements
+        -:  257:      __glibcxx_function_requires(_LessThanComparableConcept<_Tp>)
+        -:  258:      //return  __a < __b ? __b : __a;
+        3:  259:      if (__a < __b)
+        1:  260:	return __b;
+        2:  261:      return __a;
         -:  262:    }
 ------------------
 _ZSt3maxImERKT_S2_S2_:
@@ -357,9 +379,14 @@ _ZSt3maxImERKT_S2_S2_:
         -:  310:  template<typename _Iterator>
         -:  311:    _GLIBCXX20_CONSTEXPR
         -:  312:    inline _Iterator
-    #####:  313:    __niter_base(_Iterator __it)
+      18*:  313:    __niter_base(_Iterator __it)
         -:  314:    _GLIBCXX_NOEXCEPT_IF(std::is_nothrow_copy_constructible<_Iterator>::value)
-    #####:  315:    { return __it; }
+      18*:  315:    { return __it; }
+------------------
+_ZSt12__niter_baseIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEET_S7_:
+       18:  313:    __niter_base(_Iterator __it)
+        -:  314:    _GLIBCXX_NOEXCEPT_IF(std::is_nothrow_copy_constructible<_Iterator>::value)
+       18:  315:    { return __it; }
 ------------------
 _ZSt12__niter_baseIPNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEET_S7_:
     #####:  313:    __niter_base(_Iterator __it)

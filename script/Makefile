@@ -3,6 +3,9 @@ CC = g++
 CPPFLAGS = -c -g -Wall
 LDFLAGS = -o
 
+CVFLAGS = -v --leak-check=full --show-reachable=yes --log-file=$(BIN)/valClient.txt
+SVFLAGS = -v --leak-check=full --show-reachable=yes --log-file=$(BIN)/valServer.txt
+
 INC = ./inc
 SRC = ./src
 BIN = ./bin
@@ -49,7 +52,13 @@ $(OBJ)/utils.o: $(SRC)/utils.cpp
 	$(CC) $(CPPFLAGS) $(SRC)/utils.cpp -I $(INC)
 	mv *.o $(OBJ)/
 
+valgrindserver:
+	valgrind $(SVFLAGS) $(BIN)/Server 127.0.0.1 8080
+
+valgrindclient:
+	valgrind $(CVFLAGS) $(BIN)/Client 127.0.0.1 8080
+
 clean:
-	rm -f $(BIN)/Server $(BIN)/Client
+	rm -f $(BIN)/Server $(BIN)/Client $(BIN)/valClient.txt $(BIN)/valServer.txt
 	rm -f $(OBJ)/*.o
 	@echo "Cleaning Done!"
