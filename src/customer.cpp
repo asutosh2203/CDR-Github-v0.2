@@ -3,7 +3,6 @@
 Utils custUtil;
 map<long, Customer> CustomersMap;
 
-
 Customer::Customer()
 {
   // default constructor
@@ -88,7 +87,7 @@ bool Customer::processCDR()
 
       long callDuration = stol(parameters[4]);
       long dataDownload = stol(parameters[5]);
-      long dataUpload = stol(parameters[6]);  
+      long dataUpload = stol(parameters[6]);
 
       // checking if the connection occurs within the operator
       if (parameters[2] == parameters[8])
@@ -120,7 +119,7 @@ bool Customer::processCDR()
         }
       }
       // for outside operators
-      else 
+      else
       {
         if (parameters[3] == "MTC")
         {
@@ -181,7 +180,8 @@ bool Customer::mapToFile()
 
   if (CB)
   {
-    CB << "=========== CUSTOMER DATA BASE ===========\n\n";  map<long, Customer>::iterator cstr;
+    CB << "=========== CUSTOMER DATA BASE ===========\n\n";
+    map<long, Customer>::iterator cstr;
     for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
     {
       Customer cstrData = cstr->second;
@@ -202,7 +202,7 @@ bool Customer::mapToFile()
 /*
  *  FUNCTION NAME	: searchMSISDN
  *
- *  DESCRIPTION		: It takes a MSISDN as parameter, searches for it in the customersMap 
+ *  DESCRIPTION		: It takes a MSISDN as parameter, searches for it in the customersMap
                     and returns the formatted result.
  *
  *  PARAMETERS		: string custMSISDN
@@ -215,20 +215,26 @@ string Customer::searchMSISDN(long custMSISDN)
   string result;
 
   map<long, Customer>::iterator cstr;
-  for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
+  // for (cstr = CustomersMap.begin(); cstr != CustomersMap.end(); cstr++)
+  // {
+  //   Customer cstrData = cstr->second;
+  //   if (cstrData.getMSISDN() == custMSISDN)
+  //   {
+  //     result = cstrToString(cstrData);
+  //     return result;
+  //   }
+  // }
+
+  if (CustomersMap.find(custMSISDN) != CustomersMap.end())
   {
-    Customer cstrData = cstr->second;
-    if (cstrData.getMSISDN() == custMSISDN)
-    {
-      result = cstrToString(cstrData);
-      return result;
-    }
+    result = cstrToString(CustomersMap[custMSISDN]);
+    return result;
   }
 
   // checking if MSISDN is invalid
   string notFound = "MSISDN doesn't exist.";
   return notFound;
-} //end of searchMSISDN
+} // end of searchMSISDN
 
 /*
  *  FUNCTION NAME	: cstrToString
@@ -278,7 +284,7 @@ string Customer::cstrToString(Customer &cstrData)
 /*
  *  FUNCTION NAME	: processAndCreateFile
  *
- *  DESCRIPTION		: It invokes processCDR and mapToFile and returns true on successful processing 
+ *  DESCRIPTION		: It invokes processCDR and mapToFile and returns true on successful processing
                     and file creation, false otherwise.
  *
  *  PARAMETERS		: promise<bool> *isProcessed
@@ -299,7 +305,7 @@ bool Customer::processAndCreateFile(promise<bool> *isProcessed)
 
   isProcessed->set_value(false);
   return false;
-} //end of processAndCreateFile
+} // end of processAndCreateFile
 
 Customer::~Customer()
 {
